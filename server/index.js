@@ -1,14 +1,19 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const app = express();
+const authRouter = require('./routes/auth');
+const postRouter = require('./routes/post');
+const tacgiaRouter = require('./routes/tacgia');
+const theloaiRouter = require('./routes/theloai');
+const nhaxuatbanRouter = require('./routes/nhaxuatban');
+const sachRouter = require('./routes/sach');
+const cors = require('cors');
 
 const connectDB = async () => {
     try{
-        await mongoose.connect(`mongodb+srv://opensource:opensource@book-store.dpa4eks.mongodb.net/?retryWrites=true&w=majority`,{
-           
+        await mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@book-store.dpa4eks.mongodb.net/?retryWrites=true&w=majority`,{     
             useNewUrlParser: true,
-            useUnifiedTopology: true,
-           
+            useUnifiedTopology: true,       
         });
         console.log('mongodb connected');
     }catch(error){
@@ -16,10 +21,19 @@ const connectDB = async () => {
         process.exit(1)
     }
 }
+
 connectDB();
-app.get('/', (req,res) => res.send('hoee'));
-
-
+const app = express();
+app.use(express.json());
+app.use(cors());
+app.use('/api/auth', authRouter);
+app.use('/api/posts', postRouter);
+app.use('/api/tacgia', tacgiaRouter);
+app.use('/api/theloai', theloaiRouter);
+app.use('/api/nhaxuatban', nhaxuatbanRouter);
+app.use('/api/sach', sachRouter);
 const port = 6000;
 
-app.listen(port,() => console.log(`Server started on port ${port}`));
+app.listen(port, () => console.log(`server started on port ${port}`));
+
+
