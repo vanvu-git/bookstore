@@ -25,7 +25,29 @@ const tacgiaController = {
     
     find: async(req, res) => {
         try{
-            if(req.body.tentg){
+            var page = req.query.page;
+            if(page){
+                page = parseInt(page);
+                if(page < 1){
+                    page = 1;
+                }
+                var skipAmount = (page - 1) * 2;
+
+                tacgia.find()
+                .skip(skipAmount)
+                .limit(2)
+                .then(posts=>{
+                    tacgia.countDocuments().then((total)=>{
+                        var tongSoPage = Math.ceil(total / 2)
+                        res.status(200).json({success: true,tongSoPage: tongSoPage,tacgias: posts});
+                    })
+                    
+                })
+                .catch(error=>{
+                    res.status(500).json({success: false, message: 'Internal server error'});
+                })
+            }
+            else if(req.body.tentg){
                 const posts = await tacgia.findOne({tentg: new RegExp('^'+req.body.tentg+'$', "i")})
                 res.status(200).json({success: true, posts});
             }else{
