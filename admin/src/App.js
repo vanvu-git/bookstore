@@ -9,6 +9,10 @@ import NewUser from "./pages/newUser/NewUser";
 import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
+import NewNhaXuatBan from "./pages/nhaXuatBan/new/NewNhaXuatBan";
+import TacGiaList from "./pages/tacgia/list/TacGiaList";
+import NewTacGia from "./pages/tacgia/new/NewTacGia";
+import TacGiaDetails from "./pages/tacgia/details/TacGiaDetails";
 
 function App() {
   return (
@@ -37,6 +41,18 @@ function App() {
           </Route>
           <Route path="/newproduct">
             <NewProduct />
+          </Route>
+          <Route path="/newnhaxuatban">
+            <NewNhaXuatBan />
+          </Route>
+          <Route path="/dstacgia">
+            <TacGiaList />
+          </Route>
+          <Route path="/tacgia/:tacgiaId">
+            <TacGiaDetails />
+          </Route>
+          <Route path="/newtacgia">
+            <NewTacGia />
           </Route>
         </Switch>
       </div>
