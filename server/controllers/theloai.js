@@ -8,8 +8,12 @@ const theloaiController = {
     create: async(req,res) => {
         const{ tentl} = req.body;
         if(!tentl)
-        return res.status(400).json({success: false, message: 'tengtl is required'});
+        return res.status(400).json({success: false, message: 'tentl is required'});
+       
         try{
+            const tl = await theloai.findOne({ tentl });
+            if(tl)
+            return res.status(400).json({success: false, message: 'thể loại đã có rồi'});
             const newTheLoai = new theloai({
                 tentl
             })

@@ -5,6 +5,7 @@ const theloaiSchema = new Schema({
     tentl: {
         type: String,
         required: true,
+        unique: true
     }
 
 })

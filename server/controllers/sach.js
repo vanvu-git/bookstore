@@ -85,7 +85,8 @@ const sachController = {
                 populate('theloai').populate('tacgia').populate('nhaxuatban');
                 res.status(200).json({success: true, posts});
             }else{
-                const posts = await sach.find();
+                const posts = await sach.find().
+                populate('theloai').populate('tacgia').populate('nhaxuatban');
                 res.status(200).json({success: true, posts});
             }
         }catch(error){
