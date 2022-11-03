@@ -7,6 +7,7 @@ const tacgiaRouter = require('./routes/tacgia');
 const theloaiRouter = require('./routes/theloai');
 const nhaxuatbanRouter = require('./routes/nhaxuatban');
 const sachRouter = require('./routes/sach');
+const thongtintaikhoanRouter = require('./routes/thongtintaikhoan');
 const cors = require('cors');
 
 const connectDB = async () => {
@@ -32,7 +33,8 @@ app.use('/api/tacgia', tacgiaRouter);
 app.use('/api/theloai', theloaiRouter);
 app.use('/api/nhaxuatban', nhaxuatbanRouter);
 app.use('/api/sach', sachRouter);
-const port = 6000;
+app.use('/api/thongtintaikhoan', thongtintaikhoanRouter);
+const port = 6010;
 
 app.listen(port, () => console.log(`server started on port ${port}`));
 
