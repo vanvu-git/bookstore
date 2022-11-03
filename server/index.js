@@ -8,6 +8,7 @@ const nhaxuatbanRouter = require('./routes/nhaxuatban');
 const sachRouter = require('./routes/sach');
 const thongtintaikhoanRouter = require('./routes/thongtintaikhoan');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const connectDB = async () => {
     try{
@@ -24,6 +25,7 @@ const connectDB = async () => {
 
 connectDB();
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 app.use('/api/auth', authRouter);
