@@ -9,8 +9,13 @@ const sachController = {
         const{nhaxuatban,tacgia,theloai, tensach, soluong, dongia,hinhanh} = req.body;
         if(!tensach)
         return res.status(400).json({success:false, message: 'tensach is required'});
-    
+        
         try{
+            
+            const Sach = await sach.findOne({tensach});
+            if(Sach)
+            return res.status(400).json({success: false, message: 'tensach already have'});
+
             const newSach = new sach({
                 nhaxuatban,
                 tacgia,
@@ -21,10 +26,10 @@ const sachController = {
                 hinhanh
             })
             await newSach.save();
-            res.json({success: true, message: 'tạo thành công', sach: newSach});
+            res.json({success: true, message: 'create successfully!!!', data: newSach});
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'tạo thất bại'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -49,13 +54,13 @@ const sachController = {
             updatedSach = await sach.findByIdAndUpdate(sachUpdateCondition, updatedSach, {new: true});
             
             if(!updatedSach)
-            return res.status(401).json({success: false, message:'cập nhật sách thất bại'});
+            return res.status(401).json({success: false, message:'update fail'});
     
-            res.json({success: true, message: 'cập nhật thành công', sach: updatedSach});
+            res.json({success: true, message: 'update successfully!!!', data: updatedSach});
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Cập nhật thất bại'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -66,27 +71,64 @@ const sachController = {
             deletedSach = await sach.findByIdAndDelete(sachDeleteCondition);
             
             if(!deletedSach)
-            return res.status(401).json({success: false, message:'Id sách không tồn tại'});
+            return res.status(401).json({success: false, message:'not found'});
     
-            res.json({success: true, post: deletedSach});
+            res.json({success: true, message: 'delete successfully!!!'});
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'delete sách thất bại'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
     find: async(req, res) => {
         try{
-            if(req.body.tensach){
-                const query = new RegExp(req.body.tensach);
-                console.log(query)
+            var page = req.query.page;
+            if(page){
+                page = parseInt(page);
+                if(page < 1){
+                    page = 1;
+                }
+                var skipAmount = (page - 1) * 2;
+
+                sach.find()
+                .populate('theloai')
+                .populate('tacgia')
+                .populate('nhaxuatban')
+                .skip(skipAmount)
+                .limit(2)
+                .then(posts=>{
+                    sach.countDocuments().then((total)=>{
+                        var tongSoPage = Math.ceil(total / 2)
+                        res.status(200).json({success: true,tongSoPage: tongSoPage,data: posts});
+                    })
+                    
+                })
+                .catch(error=>{
+                    res.status(500).json({success: false, message: 'Internal server error'});
+                })
+            }else{
+                const posts = await sach.find().
+                populate('theloai').populate('tacgia').populate('nhaxuatban');
+                res.status(200).json({success: true, data: posts});
+            }
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
+
+    findByName: async(req, res) => {
+        try{
+            if(req.query.tensach){
+                const query = new RegExp(req.query.tensach);
                 const posts = await sach.find({tensach: {$regex: query, $options: 'i'} }).
                 populate('theloai').populate('tacgia').populate('nhaxuatban');
-                res.status(200).json({success: true, posts});
+                res.status(200).json({success: true,data: posts});
             }else{
-                const posts = await sach.find();
-                res.status(200).json({success: true, posts});
+                const posts = await sach.find().
+                populate('theloai').populate('tacgia').populate('nhaxuatban');
+                res.status(200).json({success: true,data: posts});
             }
         }catch(error){
             console.log(error);

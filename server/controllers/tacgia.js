@@ -16,7 +16,7 @@ const tacgiaController = {
                 sdt
             })
             await newTacGia.save();
-            res.json({success: true, message: 'Tạo tác giả thành công', tacgia: newTacGia});
+            res.json({success: true, message: 'create successfully!!!', data: newTacGia});
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
@@ -39,7 +39,7 @@ const tacgiaController = {
                 .then(posts=>{
                     tacgia.countDocuments().then((total)=>{
                         var tongSoPage = Math.ceil(total / 2)
-                        res.status(200).json({success: true,tongSoPage: tongSoPage,tacgias: posts});
+                        res.status(200).json({success: true,tongSoPage: tongSoPage,data: posts});
                     })
                     
                 })
@@ -47,12 +47,9 @@ const tacgiaController = {
                     res.status(500).json({success: false, message: 'Internal server error'});
                 })
             }
-            else if(req.body.tentg){
-                const posts = await tacgia.findOne({tentg: new RegExp('^'+req.body.tentg+'$', "i")})
-                res.status(200).json({success: true, posts});
-            }else{
+            else{
                 const posts = await tacgia.find();
-                res.status(200).json({success: true, posts});
+                res.status(200).json({success: true, data: posts});
             }
         }catch(error){
             console.log(error);
@@ -63,7 +60,7 @@ const tacgiaController = {
     findId: async(req, res) => {
         try{
             const posts = await tacgia.findById(req.params.id);
-            res.status(200).json({success: true, posts});
+            res.status(200).json({success: true,data: posts});
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
@@ -73,10 +70,10 @@ const tacgiaController = {
     findName: async(req, res) => {
         try{
             const posts = await tacgia.findOne({tentg: new RegExp('^'+req.body.tentg+'$', "i")})
-            res.status(200).json({success: true, posts});
+            res.status(200).json({success: true,data: posts});
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server errorss'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -89,20 +86,20 @@ const tacgiaController = {
             let updatedTacGia = {
                 tentg, 
                 diachi: diachi || '', 
-                sdt: sdt || 0,
+                sdt: sdt || '',
             }
     
             const tacgiaUpdateCondition = {_id: req.params.id};
             updatedTacGia = await tacgia.findByIdAndUpdate(tacgiaUpdateCondition, updatedTacGia, {new: true});
             
             if(!updatedTacGia)
-            return res.status(401).json({success: false, message:'tacgia không có'});
+            return res.status(401).json({success: false, message:'not found'});
     
-            res.json({success: true, message: 'sửa thành công', tacgia: updatedTacGia});
+            res.json({success: true, message: 'update successfully!!!', tacgia: updatedTacGia});
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'update fail'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -113,13 +110,13 @@ const tacgiaController = {
             deletedTacgia = await tacgia.findByIdAndDelete(tacgiaDeleteCondition);
             
             if(!deletedTacgia)
-            return res.status(401).json({success: false, message:'không tìm thấy tác giả'});
+            return res.status(401).json({success: false, message:'not found'});
     
-            res.json({success: true, deletedtacgia: deletedTacgia});
+            res.json({success: true, message: 'delete successfully!!!'});
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'delete fail'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     }
     
