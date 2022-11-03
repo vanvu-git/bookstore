@@ -13,12 +13,12 @@ const theloaiController = {
         try{
             const tl = await theloai.findOne({ tentl });
             if(tl)
-            return res.status(400).json({success: false, message: 'thể loại đã có rồi'});
+            return res.status(400).json({success: false, message: 'tentl already have'});
             const newTheLoai = new theloai({
                 tentl
             })
             await newTheLoai.save();
-            res.json({success: true, message: 'Tạo thể loại thành công', theloai: newTheLoai});
+            res.json({success: true, message: 'create successfully!!!', data: newTheLoai});
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
@@ -27,12 +27,12 @@ const theloaiController = {
     
     find: async(req, res) => {
         try{
-            if(req.body.tentl){
-                const posts = await theloai.findOne({tentl: new RegExp('^'+req.body.tentl+'$', "i")})
-                res.status(200).json({success: true, posts});
+            if(req.query.tentl){
+                const Theloai = await theloai.findOne({tentl: new RegExp('^'+req.query.tentl+'$', "i")})
+                res.status(200).json({success: true, data: Theloai});
             }else{
-                const posts = await theloai.find();
-                res.status(200).json({success: true, posts});
+                const Theloai = await theloai.find();
+                res.status(200).json({success: true, data: Theloai});
             }
         }catch(error){
             console.log(error);
@@ -43,7 +43,7 @@ const theloaiController = {
     findId: async(req, res) => {
         try{
             const posts = await theloai.findById(req.params.id);
-            res.status(200).json({success: true, posts});
+            res.status(200).json({success: true, data: posts});
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
@@ -53,7 +53,7 @@ const theloaiController = {
     findName: async(req, res) => {
         try{
             const posts = await theloai.findOne({tentl: new RegExp('^'+req.body.tentl+'$', "i")})
-            res.status(200).json({success: true, posts});
+            res.status(200).json({success: true, data: posts});
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server errorss'});
@@ -74,13 +74,13 @@ const theloaiController = {
             updatedtheloai = await theloai.findByIdAndUpdate(theloaiUpdateCondition, updatedtheloai, {new: true});
             
             if(!updatedtheloai)
-            return res.status(401).json({success: false, message:'theloai không có'});
+            return res.status(401).json({success: false, message:'theloai is not found'});
     
-            res.json({success: true, message: 'sửa thành công', theloai: updatedtheloai});
+            res.json({success: true, message: 'update successfully!!!', data: updatedtheloai});
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'update fail'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -91,13 +91,13 @@ const theloaiController = {
             deletedtheloai = await theloai.findByIdAndDelete(theloaiDeleteCondition);
             
             if(!deletedtheloai)
-            return res.status(401).json({success: false, message:'không tìm thấy tác giả'});
+            return res.status(401).json({success: false, message:'tacgia is not found'});
     
-            res.json({success: true, deletedtheloai: deletedtheloai});
+            res.json({success: true, message:'delete successfully!!!'});
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'delete fail'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     }
     

@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
-    const autHeader = req.header('Authorization');
-    const token = autHeader && autHeader.split(' ')[1];
+   
+    const token = req.cookies.accessToken;
 
     if(!token)
     return res.status(401).json({success: false, message: 'Acess token not found'})
