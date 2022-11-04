@@ -13,7 +13,7 @@ export default function TacGiaList() {
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios.get("/tacgia").then(response => {
+    axios.get("/nhaxuatban").then(response => {
       setData(response.data.data);
       setLoading(false);
     })
