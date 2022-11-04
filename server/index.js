@@ -7,6 +7,7 @@ const theloaiRouter = require('./routes/theloai');
 const nhaxuatbanRouter = require('./routes/nhaxuatban');
 const sachRouter = require('./routes/sach');
 const thongtintaikhoanRouter = require('./routes/thongtintaikhoan');
+const hoadonRouter = require('./routes/hoadon');
 const cors = require('cors');
 
 const connectDB = async () => {
@@ -32,6 +33,7 @@ app.use('/api/theloai', theloaiRouter);
 app.use('/api/nhaxuatban', nhaxuatbanRouter);
 app.use('/api/sach', sachRouter);
 app.use('/api/thongtintaikhoan', thongtintaikhoanRouter);
+app.use('/api/hoadon', hoadonRouter);
 const port = 6010;
 
 app.listen(port, () => console.log(`server started on port ${port}`));

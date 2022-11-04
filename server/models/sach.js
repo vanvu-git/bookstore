@@ -27,7 +27,8 @@ const BookSchema = new Schema({
     soluong: {
         type: Number,
         required: true,
-        default: 0
+        default: 0,
+        min: 0
     },
 
     dongia: {
