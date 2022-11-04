@@ -16,7 +16,7 @@ const nhaxuatbanController = {
                 sdt
             })
             await newnhaxuatban.save();
-            res.json({success: true, message: 'Tạo nhà xuất bản thành công', nhaxuatban: newnhaxuatban});
+            res.json({success: true, message: 'create successfully!!!', data: newnhaxuatban});
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
@@ -27,10 +27,10 @@ const nhaxuatbanController = {
         try{
             if(req.body.tennxb){
                 const posts = await nhaxuatban.findOne({tennxb: new RegExp('^'+req.body.tennxb+'$', "i")})
-                res.status(200).json({success: true, posts});
+                res.status(200).json({success: true,data: posts});
             }else{
                 const posts = await nhaxuatban.find();
-                res.status(200).json({success: true, posts});
+                res.status(200).json({success: true,data: posts});
             }
         }catch(error){
             console.log(error);
@@ -41,7 +41,7 @@ const nhaxuatbanController = {
     findId: async(req, res) => {
         try{
             const posts = await nhaxuatban.findById(req.params.id);
-            res.status(200).json({success: true, posts});
+            res.status(200).json({success: true,data: posts});
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
@@ -64,13 +64,13 @@ const nhaxuatbanController = {
             updatednhaxuatban = await nhaxuatban.findByIdAndUpdate(nhaxuatbanUpdateCondition, updatednhaxuatban, {new: true});
             
             if(!updatednhaxuatban)
-            return res.status(401).json({success: false, message:'nhaxuatban không có'});
+            return res.status(401).json({success: false, message:'not found'});
     
             res.json({success: true, message: 'sửa thành công', nhaxuatban: updatednhaxuatban});
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'update fail'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -81,13 +81,13 @@ const nhaxuatbanController = {
             deletednhaxuatban = await nhaxuatban.findByIdAndDelete(nhaxuatbanDeleteCondition);
             
             if(!deletednhaxuatban)
-            return res.status(401).json({success: false, message:'không tìm thấy tác giả'});
+            return res.status(401).json({success: false, message:'not found'});
     
-            res.json({success: true, deletednhaxuatban: deletednhaxuatban});
+            res.json({success: true, message: 'delete successfully!!!'});
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'delete fail'});
+            res.status(500).json({success: false, message: 'Internal server error'});
         }
     }
     

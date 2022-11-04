@@ -4,8 +4,8 @@ const router = express.Router();
 const verifyToken = require('../middleware/auth');
 const tacgiaController = require('../controllers/tacgia');
 
-router.post('/', tacgiaController.create);
-//router.get('/findName/:ten', tacgiaController.findName);
+router.post('/',verifyToken, tacgiaController.create);
+router.get('/findByName', tacgiaController.findByName);
 router.get('/', tacgiaController.find);
 router.get('/:id', tacgiaController.findId);
 router.put('/:id',  tacgiaController.update);

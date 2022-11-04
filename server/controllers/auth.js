@@ -7,24 +7,37 @@ const jwt = require('jsonwebtoken');
 
 const authController = {
      register : async(req,res)=>{
-        const {username, password} = req.body;
+        const {username, password, ho, ten,sdt,email,quyen,ngaysinh,hinhanh} = req.body;
         
         if(!username || !password)
         return res.status(400).json({success: false, message: 'Missing username or password'});
+
+        if(!ho || !ten)
+        return res.status(400).json({success: false, message: 'ho ten is required'});
     
         try{
             const user = await User.findOne({ username });
             if(user)
-            return res.status(400).json({success: false, message: 'Username already taken'});
+            return res.status(400).json({success: false, message: 'username đã tồn tại'});
             
             const hashedPassword = await argon2.hash(password);
-            const newUser = new User({username,password: hashedPassword});
+            const newUser = new User({
+                username,
+                password: hashedPassword,
+                ho,
+                ten,
+                sdt,
+                email,
+                quyen,
+                ngaysinh,
+                hinhanh
+            });
             await newUser.save();
     
             //Return token
             const accessToken = jwt.sign({userId: newUser._id}, process.env.ACCESS_TOKEN_SECRET)
-            res.json({success: true, message: 'User created successfully', accessToken});
-        }catch(error){
+            res.status(200).json({success: true, message: 'User created successfully', accessToken});
+        }catch(error){  
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'})
             
@@ -32,23 +45,27 @@ const authController = {
     },
 
     login : async(req,res)=>{
-        const {username, password} = req.body;
+        const Username = req.body.username;
+        const Password = req.body.password;
         
-        if(!username || !password)
+        if(!Username || !Password)
         return res.status(400).json({success: false, message: 'Missing username or password'});
     
         try{
-            const user = await User.findOne({ username });
+            const user = await User.findOne({ Username });
             if(!user)
             return res.status(400).json({success: false, message: 'Incorrect username or password'});
             
-            const passwordValid = await argon2.verify(user.password, password);
+            const passwordValid = await argon2.verify(user.password, Password);
             if(!passwordValid)
             return res.status(400).json({success: false, message: 'Incorrect username or password'});
             
             //Return token
-            const accessToken = jwt.sign({userId: user._id}, process.env.ACCESS_TOKEN_SECRET)
-            res.json({success: true, message: 'Loggin successfully', accessToken});
+            const accessToken = jwt.sign({userId: user._id, quyen: user.quyen}, process.env.ACCESS_TOKEN_SECRET)
+            const {password,quyen, ...thongtin} = user._doc;
+            res.cookie("accessToken", accessToken, {httpOnly: true}).status(200)
+            .json({success: true, message: 'Loggin successfully', accessToken,user: {...thongtin},quyen});
+            
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'})
