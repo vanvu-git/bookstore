@@ -9,6 +9,8 @@ const tacgiaController = {
         const{ tentg,diachi,sdt} = req.body;
         if(!tentg)
         return res.status(400).json({success: false, message: 'tengtg is required'});
+
+
         try{
             const newTacGia = new tacgia({
                 tentg,
@@ -67,9 +69,10 @@ const tacgiaController = {
         }
     },
 
-    findName: async(req, res) => {
+    findByName: async(req, res) => {
         try{
-            const posts = await tacgia.findOne({tentg: new RegExp('^'+req.body.tentg+'$', "i")})
+            const query = new RegExp(req.query.tentacgia);
+            const posts = await tacgia.findOne({tentg: {$regex: query, $options: 'i'}})
             res.status(200).json({success: true,data: posts});
         }catch(error){
             console.log(error);

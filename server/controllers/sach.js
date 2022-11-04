@@ -84,19 +84,24 @@ const sachController = {
     find: async(req, res) => {
         try{
             var page = req.query.page;
+            var limit = req.query.limit;
             if(page){
                 page = parseInt(page);
+                limit = parseInt(limit);
                 if(page < 1){
                     page = 1;
                 }
-                var skipAmount = (page - 1) * 2;
+                if(limit < 1){
+                    page = 10;
+                }
+                var skipAmount = (page - 1) * limit;
 
                 sach.find()
                 .populate('theloai')
                 .populate('tacgia')
                 .populate('nhaxuatban')
                 .skip(skipAmount)
-                .limit(2)
+                .limit(limit)
                 .then(posts=>{
                     sach.countDocuments().then((total)=>{
                         var tongSoPage = Math.ceil(total / 2)
