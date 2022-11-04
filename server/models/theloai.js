@@ -6,7 +6,13 @@ const theloaiSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+
+    mota: {
+        type: String
     }
+
+
 
 })
 

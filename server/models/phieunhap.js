@@ -1,51 +1,58 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const phieunhapSchema = new Schema({
-    manhanvien: {
-        type: Schema.Types.ObjectId,
-        ref: 'thongtintaikhoans',
-        require: true
-    },
-    macungcap: {
+    nhacungcap: {
         type: Schema.Types.ObjectId,
         ref: 'nhacungcaps',
-        require: true
-    }, 
+        required: true
+    },
+
+    nguoiquanly: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
+
     chitiet: [{
-        masach: {
-            type: Schema.Types.ObjectId,
-            ref: 'sachs',
-            require: true
+        sach: {
+            type: Schema.ObjectId,
+            require: true,
+            ref: 'sachs'
         },
+
         soluong: {
             type: Number,
-            require: true
-        }, 
+            default: 1
+        },
+
         dongia: {
             type: Number,
-            require: true
+            default: 1
         },
+
         thanhtien: {
             type: Number,
-            require: true
+            default: 1
         }
     }],
+
     trangthai: {
-        type: String,
-        default: "Not processed",
-        enum: ["Not processed", "Processing", "Cancel", "Shipping", "Finish"]
-    }, 
+        type: Boolean,
+        default: false
+    },
+
     tongtien: {
         type: Number,
-        require: true
+        default:1
     },
-    ngaynhap: {
+
+    ngaynhap:{
         type: Date,
-        default: Date.now,
-        require: true
+        default: Date.now()
     }
 
-});
 
-module.exports = mongoose.model("phieunhaps", phieunhapSchema);
+})
+
+module.exports = mongoose.model('phieunhaps', phieunhapSchema);
