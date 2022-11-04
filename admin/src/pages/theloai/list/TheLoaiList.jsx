@@ -2,18 +2,19 @@ import "./userList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 // import { userRows } from "../../dummyData";
-import { Link, Redirect, useNavigate } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useFetch from "../../../hooks/useFetch";
 import axios from "axios";
 
-export default function TacGiaList() {
+export default function TheLoaiList() {
   // const {posts, data, loading, error} = useFetch('/tacgia');
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
+  const history = useHistory();
 
   useEffect(() => {
-    axios.get("/nhaxuatban").then(response => {
+    axios.get("/theloai").then(response => {
       setData(response.data.data);
       setLoading(false);
     })
@@ -21,23 +22,22 @@ export default function TacGiaList() {
   
 
   const handleDelete = (id) => {
-    axios.delete(`/tacgia/${id}`).then(()=>{
-      return <Redirect to='/tacgia' />
+    axios.delete(`/theloai/${id}`).then(()=>{
+      history.push('/dstheloai');
     })
   };
   
   const columns = [
     { field: "_id", headerName: "ID", width: 90 },
     {
-      field: "tentg",
+      field: "tentl",
       headerName: "Tên Tác Giả",
       width: 200
     },
-    { field: "diachi", headerName: "Địa Chỉ", width: 200 },
     {
-      field: "sdt",
-      headerName: "Số Điện Thoại",
-      width: 160,
+      field: "mota",
+      headerName: "Mô tả",
+      width: 300,
     },
     {
       field: "action",
@@ -46,7 +46,7 @@ export default function TacGiaList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/tacgia/" + params.row._id}>
+            <Link to={"/theloai/" + params.row._id}>
               <button className="userListEdit">Edit</button>
             </Link>
             <DeleteOutline
@@ -67,8 +67,8 @@ export default function TacGiaList() {
       
       <div className="userList">
         <div>
-          <Link to='/newtacgia'>
-            <button  className="userAddButton">Thêm tác giả mới</button>
+          <Link to='/newtheloai'>
+            <button  className="userAddButton">Thêm thể loại mới</button>
           </Link>
         </div>
         <br />

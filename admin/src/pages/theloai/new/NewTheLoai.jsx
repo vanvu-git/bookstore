@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./newUser.css";
 import axios from "axios";
 import { Link, Redirect, useHistory } from "react-router-dom";
-export default function NewTacGia() {
+export default function NewTheLoai() {
   const [info, setInfo] = useState({});
   const history = useHistory();
 
@@ -13,33 +13,29 @@ export default function NewTacGia() {
   const handleCreate = async (e) => {
     e.preventDefault();
     console.log(info);
-    const newNXB = {...info};
-    await axios.post("/nhaxuatban", newNXB);
-    history.push("/dsnhaxuatban");
+    const newTheLoai = {...info};
+    await axios.post("/theloai", newTheLoai);
+    history.push("/dstheloai");
   }
 
   return (
     <div className="newUser">
-      <h1 className="newUserTitle">Thêm NXB mới</h1>
+      <h1 className="newUserTitle">Thêm tác giả mới</h1>
       <form className="newUserForm">
         <div className="newUserItem">
-          <label>Tên Tác Giá</label>
-          <input type="text" id="tennxb" onChange={handleChange} placeholder="tên tác giả" />
+          <label>Tên Thể Loại</label>
+          <input type="text" id="tentl" onChange={handleChange} placeholder="tên" />
         </div>
         <div className="newUserItem">
-          <label>Địa chỉ</label>
-          <input type="text" id="diachi" onChange={handleChange} placeholder="123 ABC" />
-        </div>
-        <div className="newUserItem">
-          <label>Số điện thoại</label>
-          <input type="text"id="sdt" onChange={handleChange} placeholder="1 23 456 789" />
+          <label>Mô tả</label>
+          <input type="text" id="mota" onChange={handleChange} placeholder="ABC xyz" />
         </div>
       </form>
       <div>
         <button onClick={handleCreate} className="newUserButton">Create</button>
       </div>
       <div>
-        <Link to="/dsnhaxuatban">
+        <Link to="/dstheloai">
           <button className="newUserButton">Quay về danh sách</button>
         </Link>
       </div>

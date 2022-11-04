@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./newUser.css";
 import axios from "axios";
+import { Link, Redirect, useHistory } from "react-router-dom";
 export default function NewTacGia() {
   const [info, setInfo] = useState({});
+  const history = useHistory();
 
   const handleChange = async (e) => {
     setInfo( prev => ({...prev, [e.target.id]:e.target.value}))
@@ -13,6 +15,7 @@ export default function NewTacGia() {
     console.log(info);
     const newTacgia = {...info};
     await axios.post("/tacgia", newTacgia);
+    history.push("/dstacgia");
   }
 
   return (
@@ -34,6 +37,11 @@ export default function NewTacGia() {
       </form>
       <div>
         <button onClick={handleCreate} className="newUserButton">Create</button>
+      </div>
+      <div>
+        <Link to="/dstacgia">
+          <button className="newUserButton">Quay về danh sách</button>
+        </Link>
       </div>
     </div>
   );

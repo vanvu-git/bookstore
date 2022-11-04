@@ -3,16 +3,15 @@ import Topbar from "./components/topbar/Topbar";
 import "./App.css";
 import Home from "./pages/home/Home";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import UserList from "./pages/userList/UserList";
-import User from "./pages/user/User";
-import NewUser from "./pages/newUser/NewUser";
-import ProductList from "./pages/productList/ProductList";
-import Product from "./pages/product/Product";
-import NewProduct from "./pages/newProduct/NewProduct";
 import NewNhaXuatBan from "./pages/nhaXuatBan/new/NewNhaXuatBan";
 import TacGiaList from "./pages/tacgia/list/TacGiaList";
 import NewTacGia from "./pages/tacgia/new/NewTacGia";
 import TacGiaDetails from "./pages/tacgia/details/TacGiaDetails";
+import NhaXuatBanList from "./pages/nhaXuatBan/list/NhaXuatBanList";
+import NhaXuatBanDetails from "./pages/nhaXuatBan/details/NhaXuatBanDetails";
+import NewTheLoai from "./pages/theloai/new/NewTheLoai";
+import TheLoaiList from "./pages/theloai/list/TheLoaiList";
+import TheLoaiDetails from "./pages/theloai/details/TheLoaiDetails";
 
 function App() {
   return (
@@ -24,26 +23,14 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/users">
-            <UserList />
-          </Route>
-          <Route path="/user/:userId">
-            <User />
-          </Route>
-          <Route path="/newUser">
-            <NewUser />
-          </Route>
-          <Route path="/products">
-            <ProductList />
-          </Route>
-          <Route path="/product/:productId">
-            <Product />
-          </Route>
-          <Route path="/newproduct">
-            <NewProduct />
-          </Route>
           <Route path="/newnhaxuatban">
             <NewNhaXuatBan />
+          </Route>
+          <Route path="/dsnhaxuatban">
+            <NhaXuatBanList />
+          </Route>
+          <Route path="/nhaxuatban/:id">
+            <NhaXuatBanDetails />
           </Route>
           <Route path="/dstacgia">
             <TacGiaList />
@@ -53,6 +40,15 @@ function App() {
           </Route>
           <Route path="/newtacgia">
             <NewTacGia />
+          </Route>
+          <Route path="/dstheloai">
+            <TheLoaiList />
+          </Route>
+          <Route path="/theloai/:id">
+            <TheLoaiDetails />
+          </Route>
+          <Route path="/newtheloai">
+            <NewTheLoai />
           </Route>
         </Switch>
       </div>
