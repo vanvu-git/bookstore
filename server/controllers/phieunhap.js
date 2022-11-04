@@ -1,22 +1,16 @@
 const phieunhap = require('../models/phieunhap');
-
+const sach = require('../models/sach');
 
 const phieunhapController = {
     create: async(req,res) => {
-        const{ nhacungcap, nguoiquanly, trangthai, tongtien} = req.body;
+        const{ nhacungcap, trangthai,chitiet, tongtien} = req.body;
         if(!nhacungcap)
         return res.status(400).json({success: false, message: 'nhacungcap is required'});
-        const chitiet= [{
-            sach: '6363835f74623f91fb077898',
-            soluong: 1,
-            dongia: 1,
-            thanhtien: 1
-        }];
 
         try{
             const newphieunhap = new phieunhap({
                 nhacungcap,
-                nguoiquanly,
+                nguoiquanly: req.userId,
                 trangthai,
                 tongtien,
                 chitiet
@@ -29,25 +23,26 @@ const phieunhapController = {
         }
     },
     
-    // find: async(req, res) => {
-    //     try{
-    //         const posts = await nhacungcap.find();
-    //         res.status(200).json({success: true,data: posts});
-    //     }catch(error){
-    //         console.log(error);
-    //         res.status(500).json({success: false, message: 'Internal server error'});
-    //     }
-    // },
+    find: async(req, res) => {
+        try{
+            const posts = await phieunhap.find().populate({path:'nguoiquanly',select:'-password'}).populate('chitiet.sach');
+            res.status(200).json({success: true,data: posts});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
 
-    // findId: async(req, res) => {
-    //     try{
-    //         const posts = await nhacungcap.findById(req.params.id);
-    //         res.status(200).json({success: true,data: posts});
-    //     }catch(error){
-    //         console.log(error);
-    //         res.status(500).json({success: false, message: 'Internal server error'});
-    //     }
-    // },
+    findId: async(req, res) => {
+        try{
+            const posts = await phieunhap.findById(req.params.id);
+            const array = posts.chitiet;
+            res.status(200).json({success: true,data: array});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
 
     // update: async(req,res)=>{
     //     const{ tenncc, diachi, sdt,email} = req.body;
