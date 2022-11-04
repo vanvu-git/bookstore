@@ -8,6 +8,7 @@ const nhaxuatbanRouter = require('./routes/nhaxuatban');
 const nhacungcapRouter = require('./routes/nhacungcap');
 const sachRouter = require('./routes/sach');
 const phieunhapRouter = require('./routes/phieunhap');
+const hoaDonRouter = require('./routes/hoadon');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -35,6 +36,7 @@ app.use('/api/theloai', theloaiRouter);
 app.use('/api/nhaxuatban', nhaxuatbanRouter);
 app.use('/api/nhacungcap', nhacungcapRouter);
 app.use('/api/sach', sachRouter);
+app.use('/api/hoadon', hoaDonRouter);
 app.use('/api/phieunhap', phieunhapRouter);
 const port = 6010;
 

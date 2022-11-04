@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 const hoadonSchema = new Schema({
     makhachhang: {
         type: Schema.Types.ObjectId,
-        ref: 'thongtintaikhoans',
+        ref: 'users',
     }, 
    
     manhanvien: {
         type: Schema.Types.ObjectId,
-        ref: 'thongtintaikhoans',
+        ref: 'users',
         default: null
     }, 
     chitiet: [{

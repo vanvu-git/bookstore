@@ -1,5 +1,6 @@
 const hoadon = require('../models/hoadon.js');
 const sach = require('../models/sach.js');
+var mongoose = require('mongoose');
 
 const hoadonRouter = {
     create: async(req, res, next) => {
@@ -23,7 +24,7 @@ const hoadonRouter = {
     },
     getById: async(req, res, next) => {
         try {
-            const hd = await hoadon.findById(req.params.id);
+            const hd = await hoadon.findById(req.params.id).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
             res.status(200).json({success: true, hd});
     
         } catch (error) {
@@ -33,7 +34,7 @@ const hoadonRouter = {
     },
     getAll: async(req, res, next) => {
         try {
-            const hd = await hoadon.find();
+            const hd = await hoadon.find().populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
             res.status(200).json({success: true, hd});
     
         } catch (error) {
@@ -43,7 +44,7 @@ const hoadonRouter = {
     },
     getByTrangThai: async(req, res, next) => {
         try {
-            const hoadons = await hoadon.find({trangthai: req.params.status});
+            const hoadons = await hoadon.find({trangthai: req.params.status}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -58,7 +59,7 @@ const hoadonRouter = {
             if (ngayBatDau > ngayKetThuc) {
                 return res.status(400).json({success: false, message: "Tham số 'startdate' và 'enddate' không phù hợp."});
             }
-            const hoadons = await hoadon.find({createAt: {$gte: ngayBatDau , $lte: ngayKetThuc}});
+            const hoadons = await hoadon.find({createAt: {$gte: ngayBatDau , $lte: ngayKetThuc}}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -66,6 +67,26 @@ const hoadonRouter = {
             res.status(400).json({success: false, message: 'Không tìm thấy hóa đơn.'});
         }
     }, 
+    getByKhach: async(req, res, next) => {
+        try {
+            const hoadons = await hoadon.find({makhachhang: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            res.status(200).json({success: true, hoadons});
+    
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({success: false, message: 'Không tìm thấy hóa đơn.'});
+        }
+    },
+    getByNhanVien: async(req, res, next) => {
+        try {
+            const hoadons = await hoadon.find({manhanvien: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            res.status(200).json({success: true, hoadons});
+    
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({success: false, message: 'Không tìm thấy hóa đơn.'});
+        }
+    },
     updateTrangThai: async(req, res, next) => {
         try {
             const beforeHoaDon = await hoadon.findById(req.params.id);
@@ -112,10 +133,11 @@ const hoadonRouter = {
     }, 
     delete: async(req, res, next) => {
         try {
-            const checkExistHoaDon = await hoadon.findOne(req.params.id);
-            if (!checkExistHoaDon){
-                return res.status(401).json({success: false, message:'Không tìm thấy hóa đơn'});
-            } 
+            try {
+                mongoose.Types.ObjectId(req.params.id);
+             } catch (error) {
+                 return res.status(500).json({success: false, message: 'Tham số không phù hợp'});
+             }
             const deleteHoaDon = await hoadon.findByIdAndDelete(req.params.id);
             res.json({success: true, message: 'Xóa hóa đơn thành công', hoadon: deleteHoaDon});
         }catch (error) {
