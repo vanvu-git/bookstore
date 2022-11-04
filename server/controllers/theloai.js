@@ -6,7 +6,7 @@ const theloai = require('../models/theloai');
 
 const theloaiController = {
     create: async(req,res) => {
-        const{ tentl} = req.body;
+        const{ tentl, mota} = req.body;
         if(!tentl)
         return res.status(400).json({success: false, message: 'tentl is required'});
        
@@ -15,7 +15,8 @@ const theloaiController = {
             if(tl)
             return res.status(400).json({success: false, message: 'tentl already have'});
             const newTheLoai = new theloai({
-                tentl
+                tentl,
+                mota
             })
             await newTheLoai.save();
             res.json({success: true, message: 'create successfully!!!', data: newTheLoai});
@@ -61,13 +62,14 @@ const theloaiController = {
     },
 
     update: async(req,res)=>{
-        const{ tentl} = req.body;
+        const{ tentl, mota} = req.body;
     
         if(!tentl)
         return res.status(400).json({success:false, message: 'tentl is required'});
         try{
             let updatedtheloai = {
-                tentl
+                tentl,
+                mota
             }
     
             const theloaiUpdateCondition = {_id: req.params.id};
