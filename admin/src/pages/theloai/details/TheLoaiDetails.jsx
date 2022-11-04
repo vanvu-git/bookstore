@@ -11,7 +11,7 @@ import "./user.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function TacGiaDetails() {
+export default function TheLoaiDetails() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [isLoading, setLoading] = useState(true);
@@ -20,14 +20,14 @@ export default function TacGiaDetails() {
   console.log(id);
 
   useEffect(() => {
-    axios.get(`/tacgia/${id}`).then(response => {
+    axios.get(`/theloai/${id}`).then(response => {
       setData(response.data.data);
       setLoading(false);
     })
   }, []);
 
   const handleEdit = () => {
-    axios.put(`/tacgia/${id}`, info)
+    axios.put(`/theloai/${id}`, info);
   }
 
   const handleChange = async (e) => {
@@ -41,27 +41,22 @@ export default function TacGiaDetails() {
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Chi tiết tác giả</h1>
-        <Link to="/newtacgia">
+        <h1 className="userTitle">Chi tiết thể loại</h1>
+        <Link to="/newtheloai">
           <button className="userAddButton">Create</button>
         </Link>
       </div>
       <div className="userContainer">
         <div className="userShow">
-          <div className="userShowTop">
-            <div className="userShowTopTitle">
-              <span className="userShowUsername">{data.tentg}</span>
-            </div>
-          </div>
           <div className="userShowBottom">
             <span className="userShowTitle">Details</span>
             <div className="userShowInfo">
               <LocationSearching className="userShowIcon" />
-              <span className="userShowInfoTitle">{data.diachi}</span>
+              <span className="userShowInfoTitle">{data.tentl}</span>
             </div>
             <div className="userShowInfo">
               <PhoneAndroid className="userShowIcon" />
-              <span className="userShowInfoTitle">{data.sdt}</span>
+              <span className="userShowInfoTitle">{data.mota}</span>
             </div>
           </div>
         </div>
@@ -70,32 +65,22 @@ export default function TacGiaDetails() {
           <form className="userUpdateForm">
             <div className="userUpdateLeft">
               <div className="userUpdateItem">
-                <label>Tên tác giả</label>
+                <label>Tên tên loại</label>
                 <input
                   type="text"
-                  placeholder={data.tentg}
+                  placeholder={data.tentl}
                   className="userUpdateInput"
-                  id="tentg"
+                  id="tentl"
                   onChange={handleChange}
                 />
               </div>
               <div className="userUpdateItem">
-                <label>Địa chỉ</label>
+                <label>Mô tả</label>
                 <input
                   type="text"
                   placeholder={data.diachi}
                   className="userUpdateInput"
-                  id="diachi"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="userUpdateItem">
-                <label>Số điện thoại</label>
-                <input
-                  type="text"
-                  placeholder={data.sdt}
-                  className="userUpdateInput"
-                  id="sdt"
+                  id="mota"
                   onChange={handleChange}
                 />
               </div>

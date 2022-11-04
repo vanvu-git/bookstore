@@ -42,21 +42,24 @@ export default function Sidebar() {
             <Link to="/products" className="link">
               <li className="sidebarListItem">
                 <Storefront className="sidebarIcon" />
-                Sản phẩm
+                SẢN PHẨM
               </li>
             </Link>
-            <li className="sidebarListItem">
-              <AttachMoney className="sidebarIcon" />
-              Hóa đơn
-            </li>
-            <li className="sidebarListItem">
-              <BarChart className="sidebarIcon" />
-              Nhà xuất bản
-            </li>
-            <li className="sidebarListItem">
-              <BarChart className="sidebarIcon" />
-              Nhà xuất bản
-            </li>
+            <Link to="/dstacgia">
+              <li className="sidebarListItem">
+                TÁC GIẢ
+              </li>
+            </Link>
+            <Link to="/dsnhaxuatban">
+              <li className="sidebarListItem">
+                NHÀ XUẤT BẢN
+              </li>
+            </Link>
+            <Link to="/dstheloai">
+              <li className="sidebarListItem">
+                THỂ LOẠI
+              </li>
+            </Link>
           </ul>
         </div>
       </div>

@@ -6,11 +6,8 @@ const tacgiaRouter = require('./routes/tacgia');
 const theloaiRouter = require('./routes/theloai');
 const nhaxuatbanRouter = require('./routes/nhaxuatban');
 const sachRouter = require('./routes/sach');
-<<<<<<< HEAD
 const thongtintaikhoanRouter = require('./routes/thongtintaikhoan');
 const hoadonRouter = require('./routes/hoadon');
-=======
->>>>>>> 06203277180857fef07684dd616c86fb77620c65
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -37,11 +34,8 @@ app.use('/api/tacgia', tacgiaRouter);
 app.use('/api/theloai', theloaiRouter);
 app.use('/api/nhaxuatban', nhaxuatbanRouter);
 app.use('/api/sach', sachRouter);
-<<<<<<< HEAD
 app.use('/api/thongtintaikhoan', thongtintaikhoanRouter);
 app.use('/api/hoadon', hoadonRouter);
-=======
->>>>>>> 06203277180857fef07684dd616c86fb77620c65
 const port = 6010;
 
 app.listen(port, () => console.log(`server started on port ${port}`));
