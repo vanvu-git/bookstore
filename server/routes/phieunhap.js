@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../middleware/auth');
+const {verifyToken, isNhanVien} = require('../middleware/auth');
 const phieunhapController = require('../controllers/phieunhap');
 
 router.post('/',verifyToken, phieunhapController.create);
