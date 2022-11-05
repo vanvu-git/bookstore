@@ -12,6 +12,7 @@ import {
   ChatBubbleOutline,
   WorkOutline,
   Report,
+  Book
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
@@ -31,33 +32,36 @@ export default function Sidebar() {
           </ul>
         </div>
         <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Quick Menu</h3>
+          <h3 className="sidebarTitle">Quản Lý</h3>
           <ul className="sidebarList">
-            <Link to="/users" className="link">
-              <li className="sidebarListItem">
-                <PermIdentity className="sidebarIcon" />
-                Khách hàng
-              </li>
-            </Link>
             <Link to="/products" className="link">
               <li className="sidebarListItem">
                 <Storefront className="sidebarIcon" />
                 SẢN PHẨM
               </li>
             </Link>
-            <Link to="/dstacgia">
+            <Link to="/dstacgia" class="link">
               <li className="sidebarListItem">
+                <Book className="sidebarIcon"/>
                 TÁC GIẢ
               </li>
             </Link>
-            <Link to="/dsnhaxuatban">
-              <li className="sidebarListItem">
+            <Link to="/dsnhaxuatban" class="link">
+              <li className="sidebarListItem" >
+                <Book className="sidebarIcon"/>
                 NHÀ XUẤT BẢN
               </li>
             </Link>
-            <Link to="/dstheloai">
+            <Link to="/dstheloai" class="link">
               <li className="sidebarListItem">
+                <Book className="sidebarIcon"/>
                 THỂ LOẠI
+              </li>
+            </Link>
+            <Link to="/dsncc" class="link">
+              <li className="sidebarListItem">
+                <Book className="sidebarIcon"/>
+                NHÀ CUNG CẤP
               </li>
             </Link>
           </ul>

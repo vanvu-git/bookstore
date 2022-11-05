@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./newUser.css";
+import "../../style/new.css";
 import axios from "axios";
 import { Link, Redirect, useHistory } from "react-router-dom";
 export default function NewTheLoai() {
@@ -20,7 +20,7 @@ export default function NewTheLoai() {
 
   return (
     <div className="newUser">
-      <h1 className="newUserTitle">Thêm tác giả mới</h1>
+      <h1 className="newUserTitle">Thêm thể loại mới</h1>
       <form className="newUserForm">
         <div className="newUserItem">
           <label>Tên Thể Loại</label>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./newUser.css";
+import "../../style/new.css";
 import axios from "axios";
 import { Link, Redirect, useHistory } from "react-router-dom";
 export default function NewTacGia() {

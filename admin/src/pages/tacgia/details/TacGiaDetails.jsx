@@ -7,7 +7,7 @@ import {
   Publish,
 } from "@material-ui/icons";
 import { Link, Redirect, useLocation } from "react-router-dom";
-import "./user.css";
+import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 

@@ -1,5 +1,6 @@
 import {
   CalendarToday,
+  Email,
   LocationSearching,
   MailOutline,
   PermIdentity,
@@ -11,7 +12,7 @@ import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function NhaXuatBanDetails() {
+export default function NhaCungCapDetails() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [isLoading, setLoading] = useState(true);
@@ -20,14 +21,14 @@ export default function NhaXuatBanDetails() {
   console.log(id);
 
   useEffect(() => {
-    axios.get(`/nhaxuatban/${id}`).then(response => {
+    axios.get(`/nhacungcap/${id}`).then(response => {
       setData(response.data.data);
       setLoading(false);
     })
   }, []);
 
   const handleEdit = () => {
-    axios.put(`/nhaxuatban/${id}`, info);
+    axios.put(`/nhacungcap/${id}`, info);
   }
 
   const handleChange = async (e) => {
@@ -41,8 +42,8 @@ export default function NhaXuatBanDetails() {
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Chi tiết NXB</h1>
-        <Link to="/newtacgia">
+        <h1 className="userTitle">Chi tiết NCC</h1>
+        <Link to="/newncc">
           <button className="userAddButton">Create</button>
         </Link>
       </div>
@@ -50,7 +51,7 @@ export default function NhaXuatBanDetails() {
         <div className="userShow">
           <div className="userShowTop">
             <div className="userShowTopTitle">
-              <span className="userShowUsername">{data.tennxb}</span>
+              <span className="userShowUsername">{data.tenncc}</span>
             </div>
           </div>
           <div className="userShowBottom">
@@ -63,6 +64,10 @@ export default function NhaXuatBanDetails() {
               <PhoneAndroid className="userShowIcon" />
               <span className="userShowInfoTitle">{data.sdt}</span>
             </div>
+            <div className="userShowInfo">
+              <Email className="userShowIcon" />
+              <span className="userShowInfoTitle">{data.email}</span>
+            </div>
           </div>
         </div>
         <div className="userUpdate">
@@ -73,9 +78,9 @@ export default function NhaXuatBanDetails() {
                 <label>Tên nhà xuất bản</label>
                 <input
                   type="text"
-                  placeholder={data.tennxb}
+                  placeholder={data.tenncc}
                   className="userUpdateInput"
-                  id="tennxb"
+                  id="tenncc"
                   onChange={handleChange}
                 />
               </div>
@@ -100,10 +105,20 @@ export default function NhaXuatBanDetails() {
                 />
               </div>
               <div className="userUpdateItem">
+                <label>Email</label>
+                <input
+                  type="text"
+                  placeholder={data.email}
+                  className="userUpdateInput"
+                  id="email"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="userUpdateItem">
                 <button className="userUpdateButton" onClick={handleEdit}>Update</button>
               </div>
               <div className="userUpdateItem">
-                <Link to="/dsnhaxuatban">
+                <Link to="/dsncc">
                   <button className="userUpdateButton">Quay về danh sách</button>
                 </Link>
               </div>

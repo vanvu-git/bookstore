@@ -1,4 +1,4 @@
-import "./userList.css";
+import "../../style/list.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 // import { userRows } from "../../dummyData";
@@ -22,9 +22,8 @@ export default function TheLoaiList() {
   
 
   const handleDelete = (id) => {
-    axios.delete(`/theloai/${id}`).then(()=>{
-      history.push('/dstheloai');
-    })
+    axios.delete(`/theloai/${id}`);
+    setData(data.filter(item=>item._id !== id));
   };
   
   const columns = [

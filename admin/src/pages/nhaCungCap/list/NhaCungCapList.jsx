@@ -6,13 +6,13 @@ import { Link, Redirect, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function NhaXuatBanList() {
+export default function NhaCungCapList() {
   // const {posts, data, loading, error} = useFetch('/tacgia');
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios.get("/nhaxuatban").then(response => {
+    axios.get("/nhacungcap").then(response => {
       setData(response.data.data);
       setLoading(false);
     })
@@ -20,21 +20,26 @@ export default function NhaXuatBanList() {
   
 
   const handleDelete = (id) => {
-    axios.delete(`/nhaxuatban/${id}`);
+    axios.delete(`/nhacungcap/${id}`);
     setData(data.filter(item=>item._id !== id));
   };
   
   const columns = [
-    { field: "_id", headerName: "ID", width: 150 },
+    { field: "_id", headerName: "ID", width: 100 },
     {
-      field: "tennxb",
-      headerName: "Tên NXB",
-      width: 200
+      field: "tenncc",
+      headerName: "Tên NCC",
+      width: 120
     },
-    { field: "diachi", headerName: "Địa Chỉ", width: 200 },
+    { field: "diachi", headerName: "Địa Chỉ", width: 250 },
     {
       field: "sdt",
       headerName: "Số Điện Thoại",
+      width: 150,
+    },
+    {
+      field: "email",
+      headerName: "Email",
       width: 200,
     },
     {
@@ -44,7 +49,7 @@ export default function NhaXuatBanList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/nhaxuatban/" + params.row._id}>
+            <Link to={"/ncc/" + params.row._id}>
               <button className="userListEdit">Edit</button>
             </Link>
             <DeleteOutline
@@ -65,8 +70,8 @@ export default function NhaXuatBanList() {
       
       <div className="userList">
         <div>
-          <Link to='/newnhaxuatban'>
-            <button  className="userAddButton">Thêm NXB mới</button>
+          <Link to='/newncc'>
+            <button  className="userAddButton">Thêm NCC mới</button>
           </Link>
         </div>
         <br />

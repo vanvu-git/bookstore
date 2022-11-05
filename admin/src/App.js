@@ -12,6 +12,9 @@ import NhaXuatBanDetails from "./pages/nhaXuatBan/details/NhaXuatBanDetails";
 import NewTheLoai from "./pages/theloai/new/NewTheLoai";
 import TheLoaiList from "./pages/theloai/list/TheLoaiList";
 import TheLoaiDetails from "./pages/theloai/details/TheLoaiDetails";
+import NhaCungCapList from "./pages/nhaCungCap/list/NhaCungCapList";
+import NhaCungCapDetails from "./pages/nhaCungCap/details/NhaCungCapDetails";
+import NewNhaCungCap from "./pages/nhaCungCap/new/NewNhaCungCap";
 
 function App() {
   return (
@@ -49,6 +52,15 @@ function App() {
           </Route>
           <Route path="/newtheloai">
             <NewTheLoai />
+          </Route>
+          <Route path="/dsncc">
+            <NhaCungCapList />
+          </Route>
+          <Route path="/ncc/:id">
+            <NhaCungCapDetails />
+          </Route>
+          <Route path="/newncc">
+            <NewNhaCungCap />
           </Route>
         </Switch>
       </div>

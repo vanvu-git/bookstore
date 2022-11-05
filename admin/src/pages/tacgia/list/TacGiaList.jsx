@@ -1,4 +1,4 @@
-import "./userList.css";
+import "../../style/list.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 // import { userRows } from "../../dummyData";
@@ -21,9 +21,9 @@ export default function TacGiaList() {
   
 
   const handleDelete = (id) => {
-    axios.delete(`/tacgia/${id}`).then(()=>{
-      return <Redirect to='/tacgia' />
-    })
+    axios.delete(`/tacgia/${id}`);
+    
+    setData(data.filter(item=>item._id !== id));
   };
   
   const columns = [
