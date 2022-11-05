@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const user = require('../models/user');
+
+
 const verifyToken = (req, res, next) => {
    
     const token = req.cookies.accessToken;
@@ -17,20 +19,16 @@ const verifyToken = (req, res, next) => {
     }   
 }
 
-const isNhanVien = (req, res, next) => {
-   
-    const id = req.userId;
-
-
-
-
+const isNhanVien = async (req, res, next) => {
     try{
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        req.userId = decoded.userId;
-        next();
+        const id = req.userId;
+        const User = await user.findById(id).select('quyen');
+        console.log(User);
+        if(User > 0) next();
+        else return res.status(403).json({success: false, message: 'not allow'})
     }catch(error){
         console.log(error);
-        return res.status(403).json({success: false, message: 'Invalid token'});
+        return res.status(403).json({success: false, message: 'not allow'});
     }   
 }
 
