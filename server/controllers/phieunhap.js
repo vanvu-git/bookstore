@@ -36,40 +36,39 @@ const phieunhapController = {
     findId: async(req, res) => {
         try{
             const posts = await phieunhap.findById(req.params.id);
-            const array = posts.chitiet;
-            res.status(200).json({success: true,data: array});
+            res.status(200).json({success: true,data: posts});
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
-    // update: async(req,res)=>{
-    //     const{ tenncc, diachi, sdt,email} = req.body;
+    update: async(req,res)=>{
+        const{ nhacungcap, trangthai,chitiet, tongtien} = req.body;
+        if(!nhacungcap)
+        return res.status(400).json({success: false, message: 'nhacungcap is required'});
+        try{
+            let updatedphieunhap = {
+                nhacungcap,
+                nguoiquanly: req.userId,
+                trangthai,
+                tongtien,
+                chitiet
+            }
     
-    //     if(!tenncc)
-    //     return res.status(400).json({success:false, message: 'tenncc is required'});
-    //     try{
-    //         let updatednhacungcap = {
-    //             tenncc,
-    //             diachi,
-    //             sdt,
-    //             email
-    //         }
-    
-    //         const nhacungcapUpdateCondition = {_id: req.params.id};
-    //         updatednhacungcap = await nhacungcap.findByIdAndUpdate(nhacungcapUpdateCondition, updatednhacungcap, {new: true});
+            const phieunhapUpdateCondition = {_id: req.params.id};
+            updatedphieunhap = await nhacungcap.findByIdAndUpdate(phieunhapUpdateCondition, updatedphieunhap, {new: true});
             
-    //         if(!updatednhacungcap)
-    //         return res.status(401).json({success: false, message:'not found'});
+            if(!updatedphieunhap)
+            return res.status(401).json({success: false, message:'not found'});
     
-    //         res.status(200).json({success: true, message: 'update successfully!!!', data: updatednhacungcap});
+            res.status(200).json({success: true, message: 'update successfully!!!', data: updatedphieunhap});
     
-    //     }catch(error){
-    //         console.log(error);
-    //         res.status(500).json({success: false, message: 'Internal server error'});
-    //     }
-    // },
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
 
     // delete :  async(req,res)=>{
     //     try{

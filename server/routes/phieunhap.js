@@ -5,7 +5,7 @@ const phieunhapController = require('../controllers/phieunhap');
 
 router.post('/',verifyToken, phieunhapController.create);
 router.get('/', phieunhapController.find);
- router.get('/:id', phieunhapController.findId);
-// router.put('/:id',  nhacungcapController.update);
+router.get('/:id', phieunhapController.findId);
+router.put('/:id',  phieunhapController.update);
 // router.delete('/:id',  nhacungcapController.delete);
 module.exports = router;
