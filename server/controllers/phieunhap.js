@@ -90,7 +90,36 @@ const phieunhapController = {
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
         }
-    }
+    },
+
+    xuli :  async(req,res)=>{
+        try{
+            const pn = await phieunhap.findById(req.params.id);
+            if(!pn)
+            return res.status(400).json({success: false, message: 'khong tim thay phieu nhap'});
+            if(pn.trangthai)
+            return res.status(400).json({success: false, message: 'phieu nhap da xu li'});
+
+            const chitiet = pn.chitiet;
+            chitiet.map(async function(a){
+                console.log(a.soluong);
+                const Sach = await sach.findById(a.sach);
+                const soluong = a.soluong + Sach.soluong;
+                const update = { soluong: soluong };
+                const filter = {_id: a.sach};
+                const b = await sach.findOneAndUpdate(filter, update,{new: true});
+                console.log(b);
+            })
+            pn.trangthai = true;
+            pn.nguoiquanly = req.userId;
+            await pn.save();
+
+            res.status(200).json({success: true, message: 'update successfully!!!', data: pn});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
     
 
 }
