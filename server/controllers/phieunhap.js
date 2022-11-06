@@ -44,20 +44,23 @@ const phieunhapController = {
     },
 
     update: async(req,res)=>{
-        const{ nhacungcap, trangthai,chitiet, tongtien} = req.body;
+        const{ nhacungcap,chitiet, tongtien} = req.body;
         if(!nhacungcap)
         return res.status(400).json({success: false, message: 'nhacungcap is required'});
+        const pn = await phieunhap.findById(req.params.id).select('trangthai');
+        console.log(pn.trangthai);
+        if(pn.trangthai)
+        return res.status(400).json({success: false, message: 'phieu nhap da xu li'});
         try{
             let updatedphieunhap = {
                 nhacungcap,
                 nguoiquanly: req.userId,
-                trangthai,
                 tongtien,
                 chitiet
             }
     
             const phieunhapUpdateCondition = {_id: req.params.id};
-            updatedphieunhap = await nhacungcap.findByIdAndUpdate(phieunhapUpdateCondition, updatedphieunhap, {new: true});
+            updatedphieunhap = await phieunhap.findByIdAndUpdate(phieunhapUpdateCondition, updatedphieunhap, {new: true});
             
             if(!updatedphieunhap)
             return res.status(401).json({success: false, message:'not found'});
@@ -70,22 +73,24 @@ const phieunhapController = {
         }
     },
 
-    // delete :  async(req,res)=>{
-    //     try{
+    delete :  async(req,res)=>{
+        try{
            
-    //         const nhacungcapDeleteCondition = {_id: req.params.id};
-    //         deletednhacungcap = await nhacungcap.findByIdAndDelete(nhacungcapDeleteCondition);
-            
-    //         if(!deletednhacungcap)
-    //         return res.status(401).json({success: false, message:'not found'});
+            const phieunhapDeleteCondition = {_id: req.params.id};
+            const pn = await phieunhap.findById(req.params.id).select('trangthai');
+            if(!pn)
+            return res.status(401).json({success: false, message:'not found'});
+            if(pn.trangthai)
+            return res.status(400).json({success: false, message: 'phieu nhap da xu li'});
+
+            deletedphieunhap = await phieunhap.findByIdAndDelete(phieunhapDeleteCondition);
+            res.json({success: true, message: 'delete successfully!!!'});
     
-    //         res.json({success: true, message: 'delete successfully!!!'});
-    
-    //     }catch(error){
-    //         console.log(error);
-    //         res.status(500).json({success: false, message: 'Internal server error'});
-    //     }
-    // }
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    }
     
 
 }
