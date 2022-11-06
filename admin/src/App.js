@@ -22,7 +22,7 @@ import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 
 function App() {
-  const {user} = useContext(AuthContext);
+  const {user, dispatch} = useContext(AuthContext);
   const PrivateRoute = ({user, children}) => {
      if (!user) {
         return <Redirect to="/login" />;

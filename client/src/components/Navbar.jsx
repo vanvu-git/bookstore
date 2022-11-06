@@ -3,6 +3,9 @@ import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
@@ -67,6 +70,8 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  const {user} = useContext(AuthContext);
+  const navigate = useNavigate();
   return (
     <Container>
       <Wrapper>
@@ -81,8 +86,10 @@ const Navbar = () => {
           <Logo>LAMA.</Logo>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          {!user && <MenuItem onClick={() => {navigate("/register")}}>REGISTER</MenuItem>}
+          {!user && <MenuItem onClick={() => {navigate("/login")}}>LOGIN</MenuItem>}
+          {user && <MenuItem>Xin Chào, {" "+ user.ho + " " + user.ten}</MenuItem>}
+          {user && <MenuItem>Logout</MenuItem>}
           <MenuItem>
             <Badge badgeContent={4} color="primary">
               <ShoppingCartOutlined />
