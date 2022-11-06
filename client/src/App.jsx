@@ -27,12 +27,12 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<PrivateRoute user={user}><Home /></PrivateRoute>} />
+        <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<LoginRoute user={user}><Login /></LoginRoute>} />
         <Route path="/register" element={<LoginRoute user={user}><Register /></LoginRoute>} />
-        <Route path="/cart" element={<PrivateRoute user={user}><Cart /></PrivateRoute>} />
-        <Route path="/products" element={<PrivateRoute user={user}><ProductList /></PrivateRoute>} />
-        <Route path="/product/:id" element={<PrivateRoute user={user}><Product /></PrivateRoute>} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/product/:id" element={<Product />} />
       </Routes>
     </BrowserRouter>
   );
