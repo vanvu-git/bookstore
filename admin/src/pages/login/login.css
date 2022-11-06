@@ -1,0 +1,50 @@
+
+.form-login {
+  border: 3px solid #f1f1f1;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.input-class {
+  width: 50%;
+  padding: 15px 20px;
+  margin: 20px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.btn-submit {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+}
+
+.btn-submit:hover {
+  opacity: 0.8;
+}
+
+.imgcontainer {
+  text-align: center;
+  font-size: medium;
+  color: darkblue;
+  font-size: 7vh;
+  margin: 24px 0 12px 0;
+}
+
+.container-form-login {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25vh;
+  
+}

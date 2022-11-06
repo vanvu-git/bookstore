@@ -2,6 +2,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import "./App.css";
 import Home from "./pages/home/Home";
+import { AuthContext } from "./context/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NewNhaXuatBan from "./pages/nhaXuatBan/new/NewNhaXuatBan";
 import TacGiaList from "./pages/tacgia/list/TacGiaList";
@@ -15,14 +16,21 @@ import TheLoaiDetails from "./pages/theloai/details/TheLoaiDetails";
 import NhaCungCapList from "./pages/nhaCungCap/list/NhaCungCapList";
 import NhaCungCapDetails from "./pages/nhaCungCap/details/NhaCungCapDetails";
 import NewNhaCungCap from "./pages/nhaCungCap/new/NewNhaCungCap";
+import Login from "./pages/login/Login.jsx";
+import { useContext } from "react";
 
 function App() {
+  const {user} = useContext(AuthContext);
   return (
     <Router>
-      <Topbar />
+      {!user && 
+      <Route exact path="/login">
+          <Login />
+        </Route>}
+      {user && <Topbar />}
       <div className="container">
-        <Sidebar />
-        <Switch>
+      {user && <Sidebar />} 
+      <Switch>
           <Route exact path="/">
             <Home />
           </Route>
