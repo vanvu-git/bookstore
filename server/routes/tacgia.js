@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../middleware/auth');
+const {verifyToken ,isNhanVien} = require('../middleware/auth');
 const tacgiaController = require('../controllers/tacgia');
 
 router.post('/',verifyToken, tacgiaController.create);

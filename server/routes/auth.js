@@ -3,7 +3,7 @@ const router = express.Router();
 const argon2 = require('argon2');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const verifyToken = require('../middleware/auth');
+const {verifyToken, isNhanVien} = require('../middleware/auth');
 const auth = require('../controllers/auth');
 
 router.get('/', verifyToken, async (req,res) => {

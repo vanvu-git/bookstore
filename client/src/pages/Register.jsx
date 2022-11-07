@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { useState } from "react";
+import axios from 'axios';
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -53,24 +56,81 @@ const Button = styled.button`
   color: white;
   cursor: pointer;
 `;
+const Alert = styled.div`
+  margin: 15px 0px;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  width: 90%  ;
+`;
+const SuccessBox = styled.div`
+  margin: 15px 0px;
+  padding: 20px;
+  background-color: #00e600;
+  color: white;
+  width: 90%  ;
+`;
+const CloseButton = styled.span`
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+`;
 
 const Register = () => {
+  const [ data, setData] = useState({
+  username: undefined,
+  password: undefined,
+  ho: undefined,
+  ten: undefined,
+  email: undefined,
+  repassword: undefined
+});
+ const [message, setMessage] = useState(
+  {
+    success: null,
+    message: null
+  }
+ );
+
+const handleSumit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post("http://localhost:6010/api/auth/register", data);
+    setMessage({success: true, message: "Đăng ký thành công."});
+
+  } catch (err) {
+    setMessage({success: false, message: err.response.data.message});
+  }
+};
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-          <Input placeholder="name" />
-          <Input placeholder="last name" />
-          <Input placeholder="username" />
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
+          <Input placeholder="Nhập Họ"  name="ho" onChange={e => setData({...data, ho: e.target.value})} value= {data.ho} />
+          <Input placeholder="Nhập Tên" name="ten" onChange={e => setData({...data, ten: e.target.value})} value= {data.ten}/>
+          <Input placeholder="Nhập Username" name="username" onChange={e => setData({...data, username: e.target.value})} value= {data.username}/>
+          <Input type="email" placeholder="Nhập Email"  name="email" onChange={e => setData({...data, email: e.target.value})} value= {data.email}/>
+          <Input type="password" placeholder="Nhập Mật Khẩu" name="password" onChange={e => setData({...data, password: e.target.value})} value= {data.password}/>
+          <Input type="password" placeholder="Xác Nhận Mật Khẩu" name="repassword" onChange={e => setData({...data, repassword: e.target.value})} value= {data.repassword}/>
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button onClick={handleSumit}>CREATE</Button>
+          {message.success===false && <Alert>
+            <CloseButton onclick="this.parentElement.style.display='none';">&times;</CloseButton>
+            <strong>OOPS!</strong>  {message.message}
+          </Alert>}
+          {message.success===true && <SuccessBox>
+            <CloseButton onclick="this.parentElement.style.display='none';">&times;</CloseButton>
+            <strong>Thành công!</strong>  {message.message +" ."} <Link to="/login">Nhấn vào đây để đăng nhập.</Link> 
+          </SuccessBox>}
         </Form>
       </Wrapper>
     </Container>

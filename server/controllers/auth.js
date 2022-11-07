@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const argon2 = require('argon2');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
@@ -7,13 +5,19 @@ const jwt = require('jsonwebtoken');
 
 const authController = {
      register : async(req,res)=>{
-        const {username, password, ho, ten,sdt,email,quyen,ngaysinh,hinhanh} = req.body;
+        const {username, password, repassword, ho, ten,sdt,email,quyen,ngaysinh,hinhanh} = req.body;
         
         if(!username || !password)
         return res.status(400).json({success: false, message: 'Missing username or password'});
 
         if(!ho || !ten)
         return res.status(400).json({success: false, message: 'ho ten is required'});
+
+        if (password != repassword)
+        return res.status(400).json({success: false, message: 'Password và Repassword không giống nhau.'});
+        const gmailValidate = emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@gmail.com*$/;
+        if (!gmailValidate.test(email)) 
+        return res.status(400).json({success: false, message: 'Email không hợp lệ.'});
     
         try{
             const user = await User.findOne({ username });
@@ -35,7 +39,7 @@ const authController = {
             await newUser.save();
     
             //Return token
-            const accessToken = jwt.sign({userId: newUser._id}, process.env.ACCESS_TOKEN_SECRET)
+            const accessToken = jwt.sign({userId: newUser._id, quyen: newUser.quyen}, process.env.ACCESS_TOKEN_SECRET)
             res.status(200).json({success: true, message: 'User created successfully', accessToken});
         }catch(error){  
             console.log(error);
@@ -45,14 +49,16 @@ const authController = {
     },
 
     login : async(req,res)=>{
-        const Username = req.body.username;
+        const username = req.body.username;
         const Password = req.body.password;
         
-        if(!Username || !Password)
+        if(!username || !Password)
         return res.status(400).json({success: false, message: 'Missing username or password'});
     
         try{
-            const user = await User.findOne({ Username });
+            const user = await User.findOne({username});
+            console.log(username);
+            console.log(user);
             if(!user)
             return res.status(400).json({success: false, message: 'Incorrect username or password'});
             

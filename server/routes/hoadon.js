@@ -1,7 +1,7 @@
 const express = require("express");
 const hoadonRouter = require('../controllers/hoadon');
 const router = express.Router();
-const verifyToken = require('../middleware/auth');
+const {verifyToken , isNhanVien} = require('../middleware/auth');
 
 //api
 router.post('/', hoadonRouter.create); // api tạo hóa đơn  (chưa thay đổi sl sách) (chưa có má nhan viên)

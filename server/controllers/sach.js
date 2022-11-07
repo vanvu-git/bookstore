@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const verifyToken = require('../middleware/auth');
 const sach = require('../models/sach');
 
 
@@ -116,6 +113,19 @@ const sachController = {
                 const posts = await sach.find().
                 populate('theloai').populate('tacgia').populate('nhaxuatban');
                 res.status(200).json({success: true, data: posts});
+            }
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
+
+    findByIdtheloai: async(req, res) => {
+        try{
+            if(req.query.id){
+                const posts = await sach.find({theloai: req.query.id }).
+                populate('theloai').populate('tacgia').populate('nhaxuatban');
+                res.status(200).json({success: true,data: posts});
             }
         }catch(error){
             console.log(error);

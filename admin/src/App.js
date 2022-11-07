@@ -2,6 +2,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import "./App.css";
 import Home from "./pages/home/Home";
+import { AuthContext } from "./context/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NewNhaXuatBan from "./pages/nhaXuatBan/new/NewNhaXuatBan";
 import TacGiaList from "./pages/tacgia/list/TacGiaList";
@@ -15,52 +16,72 @@ import TheLoaiDetails from "./pages/theloai/details/TheLoaiDetails";
 import NhaCungCapList from "./pages/nhaCungCap/list/NhaCungCapList";
 import NhaCungCapDetails from "./pages/nhaCungCap/details/NhaCungCapDetails";
 import NewNhaCungCap from "./pages/nhaCungCap/new/NewNhaCungCap";
+import Login from "./pages/login/Login.jsx";
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 function App() {
+  const {user, dispatch} = useContext(AuthContext);
+  const PrivateRoute = ({user, children}) => {
+     if (!user) {
+        return <Redirect to="/login" />;
+      }
+      return children;
+      }
+      const LoginRoute = ({user, children}) => {
+        if (user) {
+           return <Redirect to="/" />;
+         }
+         return children;
+         }
   return (
     <Router>
-      <Topbar />
+      <Route exact path="/login" >
+          <LoginRoute user={user}><Login /></LoginRoute>
+        </Route>
+      {user && <Topbar />}
       <div className="container">
-        <Sidebar />
-        <Switch>
+      {user && <Sidebar />} 
+      <Switch>
           <Route exact path="/">
-            <Home />
+            <PrivateRoute user={user}><Home /></PrivateRoute>
           </Route>
           <Route path="/newnhaxuatban">
-            <NewNhaXuatBan />
+          <PrivateRoute user={user}><NewNhaXuatBan /></PrivateRoute>
           </Route>
           <Route path="/dsnhaxuatban">
-            <NhaXuatBanList />
+            <PrivateRoute user={user}> <NhaCungCapList /> </PrivateRoute>
           </Route>
           <Route path="/nhaxuatban/:id">
-            <NhaXuatBanDetails />
+            <PrivateRoute user={user}><NhaXuatBanDetails /></PrivateRoute>
           </Route>
           <Route path="/dstacgia">
-            <TacGiaList />
+            <PrivateRoute user={user}><TacGiaList /></PrivateRoute>
           </Route>
           <Route path="/tacgia/:tacgiaId">
-            <TacGiaDetails />
+            <PrivateRoute user={user}><TacGiaDetails /></PrivateRoute>
           </Route>
           <Route path="/newtacgia">
-            <NewTacGia />
+            <PrivateRoute user={user}><NewTacGia /></PrivateRoute>
           </Route>
           <Route path="/dstheloai">
-            <TheLoaiList />
+            <PrivateRoute user={user}><TheLoaiList /></PrivateRoute>
           </Route>
           <Route path="/theloai/:id">
-            <TheLoaiDetails />
+            <PrivateRoute user={user}><TheLoaiDetails /></PrivateRoute>
           </Route>
           <Route path="/newtheloai">
-            <NewTheLoai />
+            <PrivateRoute user={user}><NewTheLoai /></PrivateRoute>
           </Route>
           <Route path="/dsncc">
-            <NhaCungCapList />
+            <PrivateRoute user={user}><NhaCungCapList /></PrivateRoute>
           </Route>
           <Route path="/ncc/:id">
-            <NhaCungCapDetails />
+            <PrivateRoute user={user}><NhaCungCapDetails /></PrivateRoute>
           </Route>
           <Route path="/newncc">
-            <NewNhaCungCap />
+            <PrivateRoute user={user}><NewNhaCungCap /></PrivateRoute>
           </Route>
         </Switch>
       </div>
