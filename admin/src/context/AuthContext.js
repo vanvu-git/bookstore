@@ -42,6 +42,12 @@ const AuthReducer = (state, action) => {
         loading: false,
         error: null,
       };
+      case "INCORRECT_ROLE":
+      return {
+        user: null,
+        loading: false,
+        error: {success: false, message: "Quyền không phù hợp để đăng nhập vào trang admin."},
+      };
     default:
       return state;
   }

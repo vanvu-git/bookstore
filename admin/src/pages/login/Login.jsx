@@ -23,7 +23,7 @@ const LoginForm = () => {
             dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user});
             history.push('/');
           } else {
-            dispatch({ type: "LOGOUT"});
+            dispatch({ type: "INCORRECT_ROLE"});
             history.push('/login');
           }
         } catch (err) {
@@ -40,7 +40,14 @@ const LoginForm = () => {
             <input type="text" placeholder="Enter Username" name="username" required class="input-class" onChange={e => setCredentials({...credentials, username: e.target.value})} value= {credentials.username}/ >
             <input type="password" placeholder="Enter Password" name="password" required class="input-class" onChange={e => setCredentials({...credentials, password: e.target.value})} value= {credentials.password} />
             <button type="submit" class="btn-submit" onClick={handleSumit}>Login</button>  
+
+            {error && 
+            <div class="alert">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+              <strong>OOPS!</strong>  {error.message};
+             </div>}
         </div>
+       
         
       </form>
     );

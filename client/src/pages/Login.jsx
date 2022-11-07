@@ -62,6 +62,23 @@ const Link = styled.a`
   cursor: pointer;
   color: white;
 `;
+const Alert = styled.div`
+  margin: 15px 0px;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  width: 90%  ;
+`;
+const AlertCloseButton = styled.span`
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+`;
 
 const Login = () => {
   const [ credentials, setCredentials] = useState({
@@ -94,6 +111,10 @@ const Login = () => {
           <Button onClick={handleSumit}>LOGIN</Button>
           <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
           <Link href="/register">CREATE A NEW ACCOUNT</Link>
+          {error && <Alert>
+            <AlertCloseButton onclick="this.parentElement.style.display='none';">&times;</AlertCloseButton>
+            <strong>OOPS!</strong>  {error.message}
+          </Alert>}
         </Form>
       </Wrapper>
     </Container>

@@ -29,12 +29,17 @@ function App() {
       }
       return children;
       }
+      const LoginRoute = ({user, children}) => {
+        if (user) {
+           return <Redirect to="/" />;
+         }
+         return children;
+         }
   return (
     <Router>
-      {!user && 
-      <Route exact path="/login">
-          <Login />
-        </Route>}
+      <Route exact path="/login" >
+          <LoginRoute user={user}><Login /></LoginRoute>
+        </Route>
       {user && <Topbar />}
       <div className="container">
       {user && <Sidebar />} 
