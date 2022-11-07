@@ -9,12 +9,24 @@ const Container = styled.div`
     justify-content: space-between;
 `;
 
-const Products = () => {
+const Products = ({productsList}) => {
+  if (productsList !== null) {
+    console.log(productsList)
+    return (
+      <Container>
+        {
+          productsList.map((item) => {
+              return <Product item={item} key={item._id} />
+            }
+          )
+        }
+      </Container>
+    )
+  }
+
   return (
     <Container>
-      {popularProducts.map((item) => (
-        <Product item={item} key={item.id} />
-      ))}
+      <div>loading...</div>
     </Container>
   );
 };

@@ -5,6 +5,8 @@ import Products from "../components/Products";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Container = styled.div``;
 
@@ -37,6 +39,20 @@ const Select = styled.select`
 const Option = styled.option``;
 
 const ProductList = () => {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    axios.get("/sach").then(response => {
+      setData(response.data.data);
+      setLoading(false);
+    })
+  }, []);
+
+  if (data === null) {
+    return "loading...";
+  }
+
   return (
     <Container>
       <Navbar />
@@ -76,7 +92,7 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      <Products />
+      <Products productsList={data}/>
       <Newsletter />
       <Footer />
     </Container>
