@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {mobile} from "../responsive";
-import axios from 'axios'
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
@@ -96,7 +96,6 @@ const Login = () => {
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user});
       navigate('/');
     } catch (err) {
-      console.log('index');
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
     
@@ -107,14 +106,14 @@ const Login = () => {
         <Title>SIGN IN</Title>
         <Form>
           <Input placeholder="username" required onChange={e => setCredentials({...credentials, username: e.target.value})} value= {credentials.username}/>
-          <Input placeholder="password" required onChange={e => setCredentials({...credentials, password: e.target.value})} value= {credentials.password}/>
+          <Input type="password" placeholder="password" required onChange={e => setCredentials({...credentials, password: e.target.value})} value= {credentials.password}/>
           <Button onClick={handleSumit}>LOGIN</Button>
           <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
           <Link href="/register">CREATE A NEW ACCOUNT</Link>
           {error && <Alert>
             <AlertCloseButton onclick="this.parentElement.style.display='none';">&times;</AlertCloseButton>
             <strong>OOPS!</strong>  {error.message}
-          </Alert>}
+          </Alert>} 
         </Form>
       </Wrapper>
     </Container>
