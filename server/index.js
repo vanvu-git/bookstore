@@ -9,6 +9,8 @@ const nhacungcapRouter = require('./routes/nhacungcap');
 const sachRouter = require('./routes/sach');
 const phieunhapRouter = require('./routes/phieunhap');
 const hoaDonRouter = require('./routes/hoadon');
+const userRouter = require('./routes/user');
+
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -38,6 +40,7 @@ app.use('/api/nhacungcap', nhacungcapRouter);
 app.use('/api/sach', sachRouter);
 app.use('/api/hoadon', hoaDonRouter);
 app.use('/api/phieunhap', phieunhapRouter);
+app.use('/api/user', userRouter);
 const port = 6010;
 
 app.listen(port, () => console.log(`server started on port ${port}`));

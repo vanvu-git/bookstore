@@ -47,6 +47,12 @@ const UserSchema = new Schema({
         default: "https://timeoutcomputers.com.au/wp-content/uploads/2016/12/noimage.jpg"
     },
 
+    trangthai: {
+        type: Boolean,
+        require: true,
+        default: true
+    },
+
     createdAt: {
         type: Date,
         default: Date.now

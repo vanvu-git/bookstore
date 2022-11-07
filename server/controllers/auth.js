@@ -32,14 +32,13 @@ const authController = {
                 ten,
                 sdt,
                 email,
-                quyen,
                 ngaysinh,
                 hinhanh
             });
             await newUser.save();
     
             //Return token
-            const accessToken = jwt.sign({userId: newUser._id, quyen: newUser.quyen}, process.env.ACCESS_TOKEN_SECRET)
+            const accessToken = jwt.sign({userId: newUser._id}, process.env.ACCESS_TOKEN_SECRET)
             res.status(200).json({success: true, message: 'User created successfully', accessToken});
         }catch(error){  
             console.log(error);
@@ -57,17 +56,18 @@ const authController = {
     
         try{
             const user = await User.findOne({username});
-            console.log(username);
-            console.log(user);
+            
             if(!user)
             return res.status(400).json({success: false, message: 'Incorrect username or password'});
             
             const passwordValid = await argon2.verify(user.password, Password);
             if(!passwordValid)
             return res.status(400).json({success: false, message: 'Incorrect username or password'});
-            
+
+            if(!user.trangthai)
+            return res.status(403).json({success: false, message: 'forbidden'});
             //Return token
-            const accessToken = jwt.sign({userId: user._id, quyen: user.quyen}, process.env.ACCESS_TOKEN_SECRET)
+            const accessToken = jwt.sign({userId: user._id}, process.env.ACCESS_TOKEN_SECRET)
             const {password,quyen, ...thongtin} = user._doc;
             res.cookie("accessToken", accessToken, {httpOnly: true}).status(200)
             .json({success: true, message: 'Loggin successfully', accessToken,user: {...thongtin},quyen});
