@@ -90,6 +90,7 @@ const userController = {
 
     update:async(req,res)=>{
         const {ho, ten,sdt,email,ngaysinh,hinhanh} = req.body;
+        
         try{
             let updatedUser = {
                 ho,
@@ -113,6 +114,7 @@ const userController = {
             res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
+
     delete :  async(req,res)=>{
         try{
            

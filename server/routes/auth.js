@@ -5,22 +5,10 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const {verifyToken, isNhanVien} = require('../middleware/auth');
 const auth = require('../controllers/auth');
-
-router.get('/', verifyToken, async (req,res) => {
-    try{
-        const user = await User.findById(req.userId).select('-password');
-        if(!user)
-            return res.status(400).json({success: false, message: 'User not found'});
-        res.json({ success:true, user})
-    }catch(error){
-        console.log(error);
-        res.status(500).json({success: false, message: 'Internal server error'});
-    }
-})
-
   
 router.post('/register',  auth.register);
 
 router.post('/login', auth.login);
 
+router.put('/changepassword', verifyToken, auth.changepassword);
 module.exports = router;
