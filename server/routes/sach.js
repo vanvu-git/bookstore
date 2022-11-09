@@ -6,6 +6,7 @@ const sachController = require('../controllers/sach');
 router.post('/', sachController.create);
 router.get('/findByName', sachController.findByName);
 router.get('/findByIdtheloai', sachController.findByIdtheloai);
+router.get('/:id', sachController.findById);
 router.get('/', sachController.find);
 router.put('/:id',sachController.update);
 router.delete('/:id',sachController.delete);

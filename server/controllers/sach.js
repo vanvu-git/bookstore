@@ -132,7 +132,18 @@ const sachController = {
             res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
-
+    findById: async(req, res) => {
+        try{
+        
+            const posts = await sach.findById(req.params.id).
+            populate('theloai').populate('tacgia').populate('nhaxuatban');
+            res.status(200).json({success: true,data: posts});
+            
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
     findByName: async(req, res) => {
         try{
             if(req.query.tensach){
