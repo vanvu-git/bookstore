@@ -11,7 +11,7 @@ import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function NhaXuatBanDetails() {
+export default function PhieuNhapDetails() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [isLoading, setLoading] = useState(true);
@@ -20,14 +20,14 @@ export default function NhaXuatBanDetails() {
   console.log(id);
 
   useEffect(() => {
-    axios.get(`/nhaxuatban/${id}`).then(response => {
+    axios.get(`/phieunhap/${id}`).then(response => {
       setData(response.data.data);
       setLoading(false);
     })
   }, []);
 
   const handleEdit = () => {
-    axios.put(`/nhaxuatban/${id}`, info);
+    axios.put(`/phieunhap/${id}`, info);
   }
 
   const handleChange = async (e) => {

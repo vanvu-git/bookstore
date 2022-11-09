@@ -1,18 +1,11 @@
 import "./sidebar.css";
 import {
   LineStyle,
-  Timeline,
-  TrendingUp,
-  PermIdentity,
   Storefront,
-  AttachMoney,
-  BarChart,
-  MailOutline,
-  DynamicFeed,
-  ChatBubbleOutline,
-  WorkOutline,
-  Report,
-  Book
+  Book,
+  HouseRounded,
+  Category,
+  Publish
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
@@ -48,20 +41,26 @@ export default function Sidebar() {
             </Link>
             <Link to="/dsnhaxuatban" className="link">
               <li className="sidebarListItem" >
-                <Book className="sidebarIcon"/>
-                NHÀ XUẤT BẢN
+                <Publish className="sidebarIcon"/>
+                Nhà xuất bản
               </li>
             </Link>
             <Link to="/dstheloai" className="link">
               <li className="sidebarListItem">
-                <Book className="sidebarIcon"/>
-                THỂ LOẠI
+                <Category className="sidebarIcon"/>
+                Thể loại
               </li>
             </Link>
             <Link to="/dsncc" className="link">
               <li className="sidebarListItem">
-                <Book className="sidebarIcon"/>
-                NHÀ CUNG CẤP
+                <HouseRounded className="sidebarIcon"/>
+                Nhà cung cấp
+              </li>
+            </Link>
+            <Link to="/dssach" className="link">
+              <li className="sidebarListItem">
+                <HouseRounded className="sidebarIcon"/>
+                Sách
               </li>
             </Link>
           </ul>

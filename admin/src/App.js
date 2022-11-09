@@ -22,6 +22,10 @@ import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import SachList from "./pages/sach/list/SachList";
 import NewSach from "./pages/sach/new/NewSach";
+import SachDetails from "./pages/sach/details/SachDetails";
+import UserList from "./pages/user/list/UserList";
+import NewUser from "./pages/user/new/NewUser";
+
 
 function App() {
   const {user, dispatch} = useContext(AuthContext);
@@ -90,6 +94,15 @@ function App() {
           </Route>
           <Route path="/newsach">
             <PrivateRoute user={user}><NewSach /></PrivateRoute>
+          </Route>
+          <Route path="/sach/:tensach">
+            <PrivateRoute user={user}><SachDetails /></PrivateRoute>
+          </Route>
+          <Route path="/dsuser">
+            <PrivateRoute user={user}><UserList /></PrivateRoute>
+          </Route>
+          <Route path="/newuser">
+            <PrivateRoute user={user}><NewUser /></PrivateRoute>
           </Route>
         </Switch>
       </div>

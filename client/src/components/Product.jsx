@@ -66,6 +66,16 @@ const Icon = styled.div`
   }
 `;
 
+const ItemName = styled.div`
+  width: 100%;
+  position: absolute;
+  font-size: 20px;
+  bottom: 0;
+  z-index: 10;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.2);
+`;
+
 const Product = ({ item }) => {
   return (
     <Container>
@@ -82,6 +92,9 @@ const Product = ({ item }) => {
           <FavoriteBorderOutlined />
         </Icon>
       </Info>
+      <ItemName>
+        {item.tensach}
+      </ItemName>
     </Container>
   );
 };

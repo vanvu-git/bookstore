@@ -35,35 +35,40 @@ export default function NewSach() {
   const handleNxbSeletion = async (e) => {
     // setSeletion(e.target.id:e.target.value)
     setNxbSeletion({nhaxuatban: e.target.value});
-    console.log(nxbSelection);
   }
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    console.log(info);
+    // console.log(info);
 
-    try{
-      const list = await Promise.all(Object.values(imageFile).map(async (file)=>{
+    
+    let postImgPromise = new Promise(async function(resolve, reject) {
+      try{
         const data = new FormData();
         data.append('file', imageFile);
         data.append('upload_preset', 'upload');
-        const uploadRes = await axios.post(
-          "https://api.cloudinary.com/v1_1/dl2magzwn/image/upload", 
-          data
-        );
-    
+  
+        const uploadRes = await axios.post("https://api.cloudinary.com/v1_1/dl2magzwn/image/upload", data);
         const {url} = uploadRes.data;
-        return url;
-      }));
-      
 
-      const newSach = {...info, hinhanh: list[0]};
-      console.log(newSach);
-      // await axios.post("/sach", newSach);
-      // history.push("/dssach");
-    }catch (err) {
-      console.log(err);
-    }
+        resolve(url);
+      } catch (err) {
+        reject(err);
+      }
+    })
+
+      
+    postImgPromise.then(
+      async function(value) {
+        const newSach = {...info, hinhanh: value};
+        console.log(newSach);
+        await axios.post("/sach", newSach);
+        history.push("/dssach");
+      },
+      function(err) {
+        console.log(err);
+      }
+    )
   }
 
   return (
@@ -100,7 +105,7 @@ export default function NewSach() {
         </div>
         <div className="newUserItem">
           <label>Thể loại</label>
-          <select id="theloai">
+          <select id="theloai" onChange={handleChange}>
             {
               loading ? "loading" : dsTheLoai && dsTheLoai.map(tl => (
                 <option key={tl._id} value={tl._id}>{tl.tentl}</option>
@@ -110,7 +115,7 @@ export default function NewSach() {
         </div>
         <div className="newUserItem">
           <label>Nhà xuất bản</label>
-          <select id="nhaxuatban">
+          <select id="nhaxuatban" onChange={handleChange}>
             {
               loading ? "loading" : dsNxb && dsNxb.map(nxb => (
                 <option value={nxb._id} key={nxb._id}>{nxb.tennxb}</option>
@@ -120,7 +125,7 @@ export default function NewSach() {
         </div>
         <div className="newUserItem">
           <label>Tác giả</label>
-          <select id="tacgia">
+          <select id="tacgia" onChange={handleChange}>
             {
               loading ? "loading" : dsTacGia && dsTacGia.map(tg => (
                 <option value={tg._id} key={tg._id}>{tg.tentg}</option>
@@ -133,7 +138,7 @@ export default function NewSach() {
         <button onClick={handleCreate} className="newUserButton">Create</button>
       </div>
       <div>
-        <Link to="/dsnhaxuatban">
+        <Link to="/dssach">
           <button className="newUserButton">Quay về danh sách</button>
         </Link>
       </div>
