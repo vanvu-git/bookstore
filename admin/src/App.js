@@ -20,6 +20,8 @@ import Login from "./pages/login/Login.jsx";
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
+import SachList from "./pages/sach/list/SachList";
+import NewSach from "./pages/sach/new/NewSach";
 
 function App() {
   const {user, dispatch} = useContext(AuthContext);
@@ -51,7 +53,7 @@ function App() {
           <PrivateRoute user={user}><NewNhaXuatBan /></PrivateRoute>
           </Route>
           <Route path="/dsnhaxuatban">
-            <PrivateRoute user={user}> <NhaCungCapList /> </PrivateRoute>
+            <PrivateRoute user={user}> <NhaXuatBanList /> </PrivateRoute>
           </Route>
           <Route path="/nhaxuatban/:id">
             <PrivateRoute user={user}><NhaXuatBanDetails /></PrivateRoute>
@@ -82,6 +84,12 @@ function App() {
           </Route>
           <Route path="/newncc">
             <PrivateRoute user={user}><NewNhaCungCap /></PrivateRoute>
+          </Route>
+          <Route path="/dssach">
+            <PrivateRoute user={user}><SachList /></PrivateRoute>
+          </Route>
+          <Route path="/newsach">
+            <PrivateRoute user={user}><NewSach /></PrivateRoute>
           </Route>
         </Switch>
       </div>

@@ -40,25 +40,25 @@ export default function Sidebar() {
                 SẢN PHẨM
               </li>
             </Link>
-            <Link to="/dstacgia" class="link">
+            <Link to="/dstacgia" className="link">
               <li className="sidebarListItem">
                 <Book className="sidebarIcon"/>
                 TÁC GIẢ
               </li>
             </Link>
-            <Link to="/dsnhaxuatban" class="link">
+            <Link to="/dsnhaxuatban" className="link">
               <li className="sidebarListItem" >
                 <Book className="sidebarIcon"/>
                 NHÀ XUẤT BẢN
               </li>
             </Link>
-            <Link to="/dstheloai" class="link">
+            <Link to="/dstheloai" className="link">
               <li className="sidebarListItem">
                 <Book className="sidebarIcon"/>
                 THỂ LOẠI
               </li>
             </Link>
-            <Link to="/dsncc" class="link">
+            <Link to="/dsncc" className="link">
               <li className="sidebarListItem">
                 <Book className="sidebarIcon"/>
                 NHÀ CUNG CẤP

@@ -17,7 +17,7 @@ const LoginForm = () => {
         e.preventDefault();
         dispatch({ type: "LOGIN_START" });
         try {
-          const res = await axios.post("http://localhost:6010/api/auth/login", credentials);
+          const res = await axios.post("/auth/login", credentials);
        
           if (res.data.quyen > 0) {
             dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user});
@@ -32,18 +32,18 @@ const LoginForm = () => {
         
       };
     return (
-    <form class="form-login">
-        <div class="imgcontainer">
+    <form className="form-login">
+        <div className="imgcontainer">
             BookStore Admin Login
         </div>
-        <div class="container-form-login">
-            <input type="text" placeholder="Enter Username" name="username" required class="input-class" onChange={e => setCredentials({...credentials, username: e.target.value})} value= {credentials.username}/ >
-            <input type="password" placeholder="Enter Password" name="password" required class="input-class" onChange={e => setCredentials({...credentials, password: e.target.value})} value= {credentials.password} />
-            <button type="submit" class="btn-submit" onClick={handleSumit}>Login</button>  
+        <div className="container-form-login">
+            <input type="text" placeholder="Enter Username" name="username" required className="input-class" onChange={e => setCredentials({...credentials, username: e.target.value})} value= {credentials.username}/ >
+            <input type="password" placeholder="Enter Password" name="password" required className="input-class" onChange={e => setCredentials({...credentials, password: e.target.value})} value= {credentials.password} />
+            <button type="submit" className="btn-submit" onClick={handleSumit}>Login</button>  
 
             {error && 
-            <div class="alert">
-              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <div className="alert">
+              <span className="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
               <strong>OOPS!</strong>  {error.message};
              </div>}
         </div>
