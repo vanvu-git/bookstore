@@ -1,5 +1,5 @@
 const theloai = require('../models/theloai');
-
+const sach = require('../models/sach');
 
 const theloaiController = {
     create: async(req,res) => {
@@ -85,7 +85,10 @@ const theloaiController = {
 
     delete :  async(req,res)=>{
         try{
-           
+            const theloaiinsach = await sach.findOne({theloai: req.params.id});
+            console.log(theloaiinsach);
+            if(theloaiinsach)
+            return res.status(400).json({success: false, message: 'theloai have relationship with the other'});
             const theloaiDeleteCondition = {_id: req.params.id};
             deletedtheloai = await theloai.findByIdAndDelete(theloaiDeleteCondition);
             

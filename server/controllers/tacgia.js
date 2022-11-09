@@ -1,5 +1,5 @@
 const tacgia = require('../models/tacgia');
-
+const sach = require('../models/sach');
 
 const tacgiaController = {
     create: async(req,res) => {
@@ -24,32 +24,9 @@ const tacgiaController = {
     
     find: async(req, res) => {
         try{
-            var page = req.query.page;
-            if(page){
-                page = parseInt(page);
-                if(page < 1){
-                    page = 1;
-                }
-                var skipAmount = (page - 1) * 2;
-
-                tacgia.find()
-                .skip(skipAmount)
-                .limit(2)
-                .then(posts=>{
-                    tacgia.countDocuments().then((total)=>{
-                        var tongSoPage = Math.ceil(total / 2)
-                        res.status(200).json({success: true,tongSoPage: tongSoPage,data: posts});
-                    })
-                    
-                })
-                .catch(error=>{
-                    res.status(500).json({success: false, message: 'Internal server error'});
-                })
-            }
-            else{
-                const posts = await tacgia.find();
-                res.status(200).json({success: true, data: posts});
-            }
+            const posts = await tacgia.find();
+            res.status(200).json({success: true, data: posts});
+            
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
@@ -85,8 +62,8 @@ const tacgiaController = {
         try{
             let updatedTacGia = {
                 tentg, 
-                diachi: diachi || '', 
-                sdt: sdt || '',
+                diachi,
+                sdt
             }
     
             const tacgiaUpdateCondition = {_id: req.params.id};
@@ -105,7 +82,9 @@ const tacgiaController = {
 
     delete :  async(req,res)=>{
         try{
-           
+            const tacgiainsach = await sach.findOne({tacgia: req.params.id});
+            if(tacgiainsach)
+            return res.status(400).json({success: false, message: 'tacgia have relationship with the other'});
             const tacgiaDeleteCondition = {_id: req.params.id};
             deletedTacgia = await tacgia.findByIdAndDelete(tacgiaDeleteCondition);
             

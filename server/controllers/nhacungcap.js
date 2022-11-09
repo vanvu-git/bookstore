@@ -1,5 +1,5 @@
 const nhacungcap = require('../models/nhacungcap');
-
+const phieunhap = require('../models/phieunhap');
 
 const nhacungcapController = {
     create: async(req,res) => {
@@ -70,7 +70,9 @@ const nhacungcapController = {
 
     delete :  async(req,res)=>{
         try{
-           
+            const pn = await phieunhap.findOne({nhacungcap: req.params.id});
+            if(pn)
+            return res.status(400).json({success: true, message: 'nhacungcap have relationship with the other'});
             const nhacungcapDeleteCondition = {_id: req.params.id};
             deletednhacungcap = await nhacungcap.findByIdAndDelete(nhacungcapDeleteCondition);
             

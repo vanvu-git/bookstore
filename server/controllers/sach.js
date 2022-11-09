@@ -1,5 +1,5 @@
 const sach = require('../models/sach');
-
+const phieunhap = require('../models/phieunhap');
 
 const sachController = {
     create: async(req,res)=>{
@@ -63,7 +63,10 @@ const sachController = {
 
     delete :  async(req,res)=>{
         try{
-           
+            const Sachinphieunhap = await phieunhap.findOne({'chitiet.sach':req.params.id});
+            if(Sachinphieunhap)
+            return res.status(400).json({success: false, message: 'sach have relationship with the other'});
+            
             const sachDeleteCondition = {_id: req.params.id};
             deletedSach = await sach.findByIdAndDelete(sachDeleteCondition);
             
