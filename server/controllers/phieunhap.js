@@ -43,6 +43,16 @@ const phieunhapController = {
         }
     },
 
+    findByIdNhanVien: async(req, res) => {
+        try{
+            const posts = await phieunhap.find({nguoiquanly: req.params.id});
+            res.status(200).json({success: true,data: posts});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
+
     update: async(req,res)=>{
         const{ nhacungcap,chitiet, tongtien} = req.body;
         if(!nhacungcap)
