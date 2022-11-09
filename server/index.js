@@ -41,6 +41,11 @@ app.use('/api/sach', sachRouter);
 app.use('/api/hoadon', hoaDonRouter);
 app.use('/api/phieunhap', phieunhapRouter);
 app.use('/api/user', userRouter);
+app.use((req, res, next) => {
+   res.status(404)
+   res.send({error: "page not found"})
+  });
+  
 const port = 6010;
 
 app.listen(port, () => console.log(`server started on port ${port}`));

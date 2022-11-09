@@ -76,7 +76,41 @@ const authController = {
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'})
         }
-    }
+    },
+
+    changepassword: async(req,res)=>{
+        const {oldpassword , newpassword, repassword} = req.body;
+        if(!oldpassword)
+        return res.status(400).json({success: false, message: 'Missing oldpassword'});
+        if(!newpassword)
+        return res.status(400).json({success: false, message: 'Missing newpassword'});
+        if(!repassword)
+        return res.status(400).json({success: false, message: 'Missing repassword'});
+        if(newpassword != repassword)
+        return res.status(400).json({success: false, message: 'password and repassword not match'});
+        try{
+            
+            const user = await User.findById(req.userId);
+            
+            if(!user)
+            return res.status(400).json({success: false, message: 'user not exist'});
+            
+            const passwordValid = await argon2.verify(user.password, oldpassword);
+            if(!passwordValid)
+            return res.status(400).json({success: false, message: 'oldpassword not match'});
+
+            const hashedPassword = await argon2.hash(newpassword);
+
+            user.password = hashedPassword;
+            await user.save();
+
+            res.json({success: true, message: 'update successfully!!!'});
+    
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
 
 }
 
