@@ -88,6 +88,18 @@ const userController = {
         }
     },
 
+    findById: async(req, res) => {
+        try{
+            const posts = await User.findById(req.params.id).select('-password');
+            if(!posts)
+            res.status(400).json({success: false,message: 'user not exist'});
+            res.status(200).json({success: true, data: posts});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
+
     update:async(req,res)=>{
         const {ho, ten,sdt,email,ngaysinh,hinhanh} = req.body;
         

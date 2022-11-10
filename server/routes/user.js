@@ -5,7 +5,7 @@ const userController = require('../controllers/user');
 
 router.post('/',verifyToken,isAdmin, userController.create);
 router.get('/',verifyToken, isAdmin, userController.find);
-// router.get('/:id', userController.findId);
+ router.get('/:id',verifyToken, userController.findById);
 router.put('/:id',verifyToken, isAdmin, userController.update);
 router.delete('/:id',verifyToken, isAdmin,  userController.delete);
 module.exports = router;
