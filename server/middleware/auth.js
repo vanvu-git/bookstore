@@ -14,6 +14,8 @@ const verifyToken = async (req, res, next) => {
         const User = await user.findById(decoded.userId);
         if(!User)
         return res.status(403).json({success: false, message: 'Invalid token'});
+        if(!User.trangthai)
+        return res.status(403).json({success: false, message: 'forbidden'});
         req.userId = decoded.userId;
         req.quyen = User.quyen;
         next();
@@ -37,7 +39,6 @@ const isNhanVien = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     try{
         const quyen = parseInt(req.quyen);
-        console.log(quyen);
         if(quyen >= 2) next();
         else return res.status(403).json({success: false, message: 'not allow'})
     }catch(error){

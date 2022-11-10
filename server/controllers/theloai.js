@@ -16,10 +16,10 @@ const theloaiController = {
                 mota
             })
             await newTheLoai.save();
-            res.json({success: true, message: 'create successfully!!!', data: newTheLoai});
+            return res.json({success: true, message: 'create successfully!!!', data: newTheLoai});
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server error'});
+            return res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
     
@@ -27,7 +27,7 @@ const theloaiController = {
         try{
             if(req.query.tentl){
                 const Theloai = await theloai.findOne({tentl: new RegExp('^'+req.query.tentl+'$', "i")})
-                res.status(200).json({success: true, data: Theloai});
+                return res.status(200).json({success: true, data: Theloai});
             }else{
                 const Theloai = await theloai.find();
                 res.status(200).json({success: true, data: Theloai});

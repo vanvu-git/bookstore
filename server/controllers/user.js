@@ -37,13 +37,10 @@ const userController = {
                 hinhanh
             });
             await newUser.save();
-
-            //Return token
-            const accessToken = jwt.sign({userId: newUser._id, quyen: newUser.quyen}, process.env.ACCESS_TOKEN_SECRET)
-            res.status(200).json({success: true, message: 'User created successfully', accessToken});
+            return res.status(200).json({success: true, message: 'User created successfully', data: newUser});
         }catch(error){  
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server error'})
+            return res.status(500).json({success: false, message: 'Internal server error'})
             
         }
     },
@@ -70,21 +67,21 @@ const userController = {
                 .then(posts=>{
                     User.countDocuments().then((total)=>{
                         var tongSoPage = Math.ceil(total / limit)
-                        res.status(200).json({success: true,tongSoPage: tongSoPage,data: posts});
+                        return res.status(200).json({success: true,tongSoPage: tongSoPage,data: posts});
                     })
                     
                 })
                 .catch(error=>{
                     console.log(error);
-                    res.status(500).json({success: false, message: 'Internal server error'});
+                    return res.status(500).json({success: false, message: 'Internal server error'});
                 })
             }else{
                 const posts = await User.find().select('-password');
-                res.status(200).json({success: true, data: posts});
+                return res.status(200).json({success: true, data: posts});
             }
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server error'});
+            return res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -92,11 +89,11 @@ const userController = {
         try{
             const posts = await User.findById(req.params.id).select('-password');
             if(!posts)
-            res.status(400).json({success: false,message: 'user not exist'});
-            res.status(200).json({success: true, data: posts});
+            return res.status(400).json({success: false,message: 'user not exist'});
+            return res.status(200).json({success: true, data: posts});
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server error'});
+            return res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -123,10 +120,36 @@ const userController = {
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server error'});
+            return res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
+    lock :  async(req,res)=>{
+        try{
+            const user  = await User.findById(req.params.id);
+            if(!user)
+            return res.status(400).json({success: false, message: 'user not found'});
+            user.trangthai = false;
+            await user.save();
+            return res.status(200).json({success: true, message: 'block successfully!!!', data: user});
+        }catch(error){
+            console.log(error);
+            return res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
+    unlock :  async(req,res)=>{
+        try{
+            const user  = await User.findById(req.params.id);
+            if(!user)
+            return res.status(400).json({success: false, message: 'user not found'});
+            user.trangthai = true;
+            await user.save();
+            return res.status(200).json({success: true, message: 'unblock successfully!!!', data: user});
+        }catch(error){
+            console.log(error);
+            return res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
     delete :  async(req,res)=>{
         try{
            
@@ -140,7 +163,7 @@ const userController = {
     
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server error'});
+            return res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
