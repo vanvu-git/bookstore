@@ -23,8 +23,8 @@ export default function NewNhaXuatBan() {
       <h1 className="newUserTitle">Thêm NXB mới</h1>
       <form className="newUserForm">
         <div className="newUserItem">
-          <label>Tên Tác Giá</label>
-          <input type="text" id="tennxb" onChange={handleChange} placeholder="tên tác giả" />
+          <label>Tên nhà xuất bản</label>
+          <input type="text" id="tennxb" onChange={handleChange} placeholder="tên nhà xuất bản" />
         </div>
         <div className="newUserItem">
           <label>Địa chỉ</label>

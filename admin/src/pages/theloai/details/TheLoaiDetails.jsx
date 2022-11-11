@@ -68,7 +68,7 @@ export default function TheLoaiDetails() {
                 <label>Tên tên loại</label>
                 <input
                   type="text"
-                  placeholder={data.tentl}
+                  defaultValue={data.tentl}
                   className="userUpdateInput"
                   id="tentl"
                   onChange={handleChange}
@@ -78,10 +78,10 @@ export default function TheLoaiDetails() {
                 <label>Mô tả</label>
                 <input
                   type="text"
-                  placeholder={data.diachi}
                   className="userUpdateInput"
                   id="mota"
                   onChange={handleChange}
+                  defaultValue={data.mota}
                 />
               </div>
               <div className="userUpdateItem">

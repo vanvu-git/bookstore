@@ -55,3 +55,23 @@
     margin-top: 30px;
     cursor: pointer;
 }
+
+.addProductListContainer {
+  display: flex;
+  flex-direction: column;
+}
+.addProductListContainer .product {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.addProductListContainer .product .addProductItem {
+  flex: 1;
+}
+.addProductListContainer .product .addProductItem * {
+  display: block;
+  margin-top: 4px;
+  margin-right: 10px;
+  width: 86%;
+}

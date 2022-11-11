@@ -25,6 +25,11 @@ import NewSach from "./pages/sach/new/NewSach";
 import SachDetails from "./pages/sach/details/SachDetails";
 import UserList from "./pages/user/list/UserList";
 import NewUser from "./pages/user/new/NewUser";
+import PhieuNhapList from "./pages/phieuNhap/list/PhieuNhapList";
+import PhieuNhapDetails from "./pages/phieuNhap/details/PhieuNhapDetails";
+import NewPhieuNhap from "./pages/phieuNhap/new/NewPhieuNhap";
+import HoaDonList from "./pages/hoadon/list/HoaDonList";
+import HoaDonDetails from "./pages/hoadon/details/HoaDonDetails";
 
 
 function App() {
@@ -103,6 +108,21 @@ function App() {
           </Route>
           <Route path="/newuser">
             <PrivateRoute user={user}><NewUser /></PrivateRoute>
+          </Route>
+          <Route path="/dsphieunhap">
+            <PrivateRoute user={user}><PhieuNhapList /></PrivateRoute>
+          </Route>
+          <Route path="/phieunhap/:id">
+            <PrivateRoute user={user}><PhieuNhapDetails /></PrivateRoute>
+          </Route>
+          <Route path="/newphieunhap">
+            <PrivateRoute user={user}><NewPhieuNhap /></PrivateRoute>
+          </Route>
+          <Route path="/dshoadon">
+            <PrivateRoute user={user}><HoaDonList /></PrivateRoute>
+          </Route>
+          <Route path="/hoadon/:id">
+            <PrivateRoute user={user}><HoaDonDetails /></PrivateRoute>
           </Route>
         </Switch>
       </div>

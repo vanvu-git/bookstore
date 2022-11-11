@@ -1,12 +1,8 @@
 import {
-  CalendarToday,
   LocationSearching,
-  MailOutline,
-  PermIdentity,
   PhoneAndroid,
-  Publish,
 } from "@material-ui/icons";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link, Redirect, useLocation, useHistory } from "react-router-dom";
 import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -17,17 +13,27 @@ export default function NhaXuatBanDetails() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [info, setInfo] = useState();
-  console.log(id);
 
-  useEffect(() => {
-    axios.get(`/nhaxuatban/${id}`).then(response => {
+  const history = useHistory();
+
+  useEffect(async () => {
+    await axios.get(`/nhaxuatban/${id}`)
+    .then(response => {
       setData(response.data.data);
-      setLoading(false);
+      return response.data.data;
     })
+    .then((resData)=>{
+      setInfo(resData);
+      console.log(info);
+    });
+    
+    setLoading(false);
   }, []);
 
-  const handleEdit = () => {
+  const handleEdit = (e) => {
+    e.preventDefault();
     axios.put(`/nhaxuatban/${id}`, info);
+    history.push(`/dsnhaxuatban`);
   }
 
   const handleChange = async (e) => {
@@ -74,6 +80,7 @@ export default function NhaXuatBanDetails() {
                 <input
                   type="text"
                   placeholder={data.tennxb}
+                  defaultValue={data.tennxb}
                   className="userUpdateInput"
                   id="tennxb"
                   onChange={handleChange}
@@ -84,6 +91,7 @@ export default function NhaXuatBanDetails() {
                 <input
                   type="text"
                   placeholder={data.diachi}
+                  defaultValue={data.diachi}
                   className="userUpdateInput"
                   id="diachi"
                   onChange={handleChange}
@@ -94,6 +102,7 @@ export default function NhaXuatBanDetails() {
                 <input
                   type="text"
                   placeholder={data.sdt}
+                  defaultValue={data.sdt}
                   className="userUpdateInput"
                   id="sdt"
                   onChange={handleChange}

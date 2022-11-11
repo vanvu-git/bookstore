@@ -1,6 +1,5 @@
 import {
   CalendarToday,
-  Check,
   House,
   LocationSearching,
   MailOutline,
@@ -10,47 +9,49 @@ import {
   PhoneAndroid,
   Publish,
 } from "@material-ui/icons";
-import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
 import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function PhieuNhapDetails() {
+export default function HoaDonDetails() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
-  const [nhacungcap, setNhaCungCap] = useState();
-  const [nguoiquanly, setNguoiQuanLy] = useState();
+  const [khachHang, setKhachHang] = useState();
+  const [nhanVien, setNhanVien] = useState();
   const [info, setInfo] = useState();
 
-  const history = useHistory();
-
   useEffect(async() => {
-    await axios.get(`/phieunhap/${id}`)
+    await axios.get(`/hoadon/${id}`)
     .then(async response => {
-      setData(response.data.data);
-      return response.data.data;
+      setData(response.data.hd);
+      return response.data.hd;
     })
-    .then(async pn => {
-      await axios.get(`/nhacungcap/${pn.nhacungcap}`).then(res =>{
-        setNhaCungCap(res.data.data);
-      })
-      
-      
-      await axios.get(`/user/${pn.nguoiquanly}`).then(res =>{
-        setNguoiQuanLy(res.data.data);
-      })
-      
+    .then(async hd => {
+      setKhachHang(hd.makhachhang);
+      setNhanVien(hd.manhanvien);
 
       setLoading(false);
     })
     console.log(data);
   }, []);
 
-  const handleAccept = () => {
-    axios.put(`/phieunhap/xuli/${id}`);
-    history.push('/dsphieunhap');
+  const handleEdit = () => {
+    axios.put(`/hoadon/${id}`, info);
+  }
+
+  const getBookNameById = async (id) => {
+    let bookName = "";
+    await axios.get(`/sach/${id}`)
+    .then(async res => {
+      bookName = res.data.data.tensach;
+    });
+    
+    return (
+      <span>{bookName}</span>
+    )
   }
 
   const handleChange = async (e) => {
@@ -65,15 +66,12 @@ export default function PhieuNhapDetails() {
     <div className="user">
       <div className="userTitleContainer">
         <h1 className="userTitle">Chi tiết phiếu nhập</h1>
-        <Link to="/newphieunhap">
-          <button className="userAddButton">Create</button>
-        </Link>
       </div>
       <div className="userContainer">
         <div className="userShow">
           <div className="userShowTop">
             <div className="userShowTopTitle">
-              <span className="userShowUsername">Phiếu nhập ngày {data?.ngaynhap}</span>
+              <span className="userShowUsername">Hóa đơn ngày {data?.createdAt}</span>
             </div>
           </div>
           <div className="userShowBottom">
@@ -81,32 +79,32 @@ export default function PhieuNhapDetails() {
             <div className="userShowInfo">
               <Money className="userShowIcon" />
               Tổng tiền:
-              <span className="userShowInfoTitle">{data.tongtien}</span>
+              <span className="userShowInfoTitle">{data?.tongtien}</span>
             </div>
             <div className="userShowInfo">
               <Person className="userShowIcon" />
-              Người quản lý:
-              <span className="userShowInfoTitle">{`${nguoiquanly?.ho} ${nguoiquanly?.ten} `}</span>
+              Nhân viên:
+              <span className="userShowInfoTitle">{`${nhanVien?.ho} ${nhanVien?.ten}`}</span>
             </div>
             <div className="userShowInfo">
               <House className="userShowIcon" />
-              Nhà cung cấp:
-              <span className="userShowInfoTitle">{nhacungcap?.tenncc}</span>
-            </div>
-            <div className="userShowInfo">
-              <Check className="userShowIcon" />
-              Trạng thái
-              <span className="userShowInfoTitle">{data?.trangthai?"Đã duyệt":"Chưa duyệt"}</span>
+              Khách hàng:
+              <span className="userShowInfoTitle">{`${khachHang?.ho} ${khachHang?.ten}`}</span>
             </div>
           </div>
         </div>
         <div className="userShow">
           <div className="userShowBottom">
-            <div className="userShowTitle">Chi tiết phiếu nhập</div>
+            <div className="userShowTitle">Chi tiết hóa đơn</div>
+            <br />
+            <hr />
+            <br />
             {
               isLoading ? "Loading..." : data?.chitiet && data?.chitiet?.map(ct => (
                 <div key={ct._id}>
-                  <p>Sách: {ct.sach}</p>
+                  <p>
+                    Mã Sách: <a href={`/sach/${ct.masach}`}>{ct.masach}</a>
+                  </p>
                   <br />
                   <p>Số lượng: {ct.soluong}</p>
                   <br />
@@ -119,9 +117,6 @@ export default function PhieuNhapDetails() {
                 </div>
               ))
             }
-          </div>
-          <div className="userUpdateItem">
-            <button className="userUpdateButton" onClick={handleAccept}>Duyệt</button>
           </div>
         </div>
       </div>

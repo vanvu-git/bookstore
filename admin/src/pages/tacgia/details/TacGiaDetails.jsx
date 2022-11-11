@@ -17,12 +17,16 @@ export default function TacGiaDetails() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [info, setInfo] = useState();
-  console.log(id);
 
-  useEffect(() => {
-    axios.get(`/tacgia/${id}`).then(response => {
+  useEffect(async () => {
+    await axios.get(`/tacgia/${id}`)
+    .then(response => {
       setData(response.data.data);
       setLoading(false);
+      return data;
+    }).then(()=>{
+      setInfo(data);
+      console.log(info);
     })
   }, []);
 
@@ -77,6 +81,7 @@ export default function TacGiaDetails() {
                   className="userUpdateInput"
                   id="tentg"
                   onChange={handleChange}
+                  defaultValue={data.tentg}
                 />
               </div>
               <div className="userUpdateItem">
@@ -87,6 +92,7 @@ export default function TacGiaDetails() {
                   className="userUpdateInput"
                   id="diachi"
                   onChange={handleChange}
+                  defaultValue={data.diachi}
                 />
               </div>
               <div className="userUpdateItem">
@@ -97,6 +103,7 @@ export default function TacGiaDetails() {
                   className="userUpdateInput"
                   id="sdt"
                   onChange={handleChange}
+                  defaultValue={data.sdt}
                 />
               </div>
               <div className="userUpdateItem">

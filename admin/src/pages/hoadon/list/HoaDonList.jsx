@@ -6,35 +6,40 @@ import { Link, Redirect, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function NhaXuatBanList() {
+export default function HoaDonList() {
   // const {posts, data, loading, error} = useFetch('/tacgia');
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios.get("/nhaxuatban").then(response => {
-      setData(response.data.data);
+    axios.get("/hoadon").then(response => {
+      setData(response.data.hd);
       setLoading(false);
+      console.log(data);
     })
   }, []);
   
 
   const handleDelete = (id) => {
-    axios.delete(`/nhaxuatban/${id}`);
+    axios.delete(`/hoadon/${id}`);
     setData(data.filter(item=>item._id !== id));
   };
   
   const columns = [
     { field: "_id", headerName: "ID", width: 150 },
     {
-      field: "tennxb",
-      headerName: "Tên NXB",
-      width: 200
+      field: "createAt",
+      headerName: "Ngày tạo",
+      width: 200,
     },
-    { field: "diachi", headerName: "Địa Chỉ", width: 200 },
     {
-      field: "sdt",
-      headerName: "Số Điện Thoại",
+      field: "tongtien",
+      headerName: "Tổng tiền",
+      width: 200,
+    },
+    {
+      field: "trangthai",
+      headerName: "Trạng thái",
       width: 200,
     },
     {
@@ -44,7 +49,7 @@ export default function NhaXuatBanList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/nhaxuatban/" + params.row._id}>
+            <Link to={"/hoadon/" + params.row._id}>
               <button className="userListEdit">Edit</button>
             </Link>
             <DeleteOutline
@@ -64,11 +69,7 @@ export default function NhaXuatBanList() {
   return (
       
       <div className="userList">
-        <div>
-          <Link to='/newnhaxuatban'>
-            <button  className="userAddButton">Thêm NXB mới</button>
-          </Link>
-        </div>
+        <h3>Danh sách hóa đơn</h3>
         <br />
         <DataGrid
           rows={data}

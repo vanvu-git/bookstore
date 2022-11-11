@@ -28,10 +28,14 @@ export default function SachDetails() {
 
   const history = useHistory();
 
-  useEffect(() => {
-    axios.get(`/sach/${id}`).then(response => {
+  useEffect(async() => {
+    await axios.get(`/sach/${id}`)
+    .then(response => {
       setData(response.data.data);
       console.log(response.data.data);
+      return response.data.data
+    }).then((resData)=>{
+      setInfo(resData);
     });
 
     axios.get("/tacgia").then(response => {
@@ -117,6 +121,7 @@ export default function SachDetails() {
                 <input
                   type="text"
                   placeholder={data?.tensach}
+                  defaultValue={data?.tensach}
                   className="userUpdateInput"
                   id="tensach"
                   onChange={handleChange}
@@ -124,7 +129,7 @@ export default function SachDetails() {
               </div>
               <div className="userUpdateItem">
                 <label>Nhà xuất bản</label>
-                <select id="nhaxuatban" onChange={handleChange}>
+                <select id="nhaxuatban" onChange={handleChange} defaultValue={data?.nhaxuatban?._id}>
                   {
                     isLoading ? "loading" : dsNxb && dsNxb.map(nx => (
                       <option key={nx._id} value={nx._id}>{nx.tennxb}</option>
@@ -134,7 +139,7 @@ export default function SachDetails() {
               </div>
               <div className="userUpdateItem">
                 <label>Thể loại</label>
-                <select id="theloai" onChange={handleChange}>
+                <select id="theloai" onChange={handleChange} defaultValue={data?.theloai?._id}>
                   {
                     isLoading ? "loading" : dsTheLoai && dsTheLoai.map(tl => (
                       <option key={tl._id} value={tl._id}>{tl.tentl}</option>
@@ -144,7 +149,7 @@ export default function SachDetails() {
               </div>
               <div className="userUpdateItem">
                 <label>Tác giả</label>
-                <select id="tacgia" onChange={handleChange}>
+                <select id="tacgia" onChange={handleChange} defaultValue={data?.tacgia?._id}>
                   {
                     isLoading ? "loading" : dsTacGia && dsTacGia.map(tg => (
                       <option key={tg._id} value={tg._id}>{tg.tentg}</option>
@@ -155,8 +160,9 @@ export default function SachDetails() {
               <div className="userUpdateItem">
                 <label>Đơn giá</label>
                 <input
-                  type="text"
+                  type="number"
                   placeholder={data?.dongia}
+                  defaultValue={data?.dongia}
                   className="userUpdateInput"
                   id="dongia"
                   onChange={handleChange}
@@ -165,8 +171,9 @@ export default function SachDetails() {
               <div className="userUpdateItem">
                 <label>Số lượng</label>
                 <input
-                  type="text"
+                  type="number"
                   placeholder={data?.soluong}
+                  defaultValue={data?.soluong}
                   className="userUpdateInput"
                   id="soluong"
                   onChange={handleChange}

@@ -7,7 +7,7 @@ import {
   PhoneAndroid,
   Publish,
 } from "@material-ui/icons";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link, Redirect, useLocation, useHistory } from "react-router-dom";
 import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -18,17 +18,26 @@ export default function NhaCungCapDetails() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [info, setInfo] = useState();
-  console.log(id);
 
-  useEffect(() => {
-    axios.get(`/nhacungcap/${id}`).then(response => {
+  const history = useHistory();
+
+  useEffect(async () => {
+    await axios.get(`/nhacungcap/${id}`)
+    .then(response => {
       setData(response.data.data);
-      setLoading(false);
+      return response.data.data;
+    }).then((resData)=>{
+      setInfo(resData);
+      console.log(resData);
     })
+    
+    setLoading(false);
   }, []);
 
-  const handleEdit = () => {
+  const handleEdit = (e) => {
+    e.preventDefault();
     axios.put(`/nhacungcap/${id}`, info);
+    history.push(`/dsncc`);
   }
 
   const handleChange = async (e) => {
@@ -82,6 +91,7 @@ export default function NhaCungCapDetails() {
                   className="userUpdateInput"
                   id="tenncc"
                   onChange={handleChange}
+                  defaultValue={data.tenncc}
                 />
               </div>
               <div className="userUpdateItem">
@@ -89,6 +99,7 @@ export default function NhaCungCapDetails() {
                 <input
                   type="text"
                   placeholder={data.diachi}
+                  defaultValue={data.diachi}
                   className="userUpdateInput"
                   id="diachi"
                   onChange={handleChange}
@@ -99,6 +110,7 @@ export default function NhaCungCapDetails() {
                 <input
                   type="text"
                   placeholder={data.sdt}
+                  defaultValue={data.sdt}
                   className="userUpdateInput"
                   id="sdt"
                   onChange={handleChange}
@@ -109,6 +121,7 @@ export default function NhaCungCapDetails() {
                 <input
                   type="text"
                   placeholder={data.email}
+                  defaultValue={data.email}
                   className="userUpdateInput"
                   id="email"
                   onChange={handleChange}
