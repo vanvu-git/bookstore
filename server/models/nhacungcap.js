@@ -16,6 +16,11 @@ const nhacungcapSchema = new Schema({
     },
     email:{
         type: String
+    },
+    id: {
+        type: Number,
+        required: true,
+        unique: true
     }
 
 })

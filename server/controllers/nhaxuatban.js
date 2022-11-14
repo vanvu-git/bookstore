@@ -7,10 +7,14 @@ const nhaxuatbanController = {
         if(!tennxb)
         return res.status(400).json({success: false, message: 'tengtl is required'});
         try{
+            var id = 1;
+            const maxnxb = await nhaxuatban.findOne().sort({id: -1}).limit(1);
+            if(maxnxb) id = maxnxb.id + 1;
             const newnhaxuatban = new nhaxuatban({
                 tennxb,
                 diachi,
-                sdt
+                sdt,
+                id
             })
             await newnhaxuatban.save();
             res.json({success: true, message: 'create successfully!!!', data: newnhaxuatban});

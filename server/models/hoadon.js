@@ -47,6 +47,11 @@ const hoadonSchema = new Schema({
         type: String,
         default: "ChuaXuLy",
         enum: ["ChuaXuLy", "DangXuLy", "DaXacNhan","Huy", "DangGiao", "HoanThanh"]
+    },
+    id: {
+        type: Number,
+        required: true,
+        unique: true
     }
 
 });

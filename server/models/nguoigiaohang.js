@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const tacgiaSchema = new Schema({
-    tentg: {
+const nguoigiaohangSchema = new Schema({
+    ten: {
         type: String,
         required: true,
     },
 
-    diachi: {
+    email: {
         type: String
     },
 
@@ -15,6 +15,11 @@ const tacgiaSchema = new Schema({
         type: String
     },
 
+    trangthai: {
+        type: Number,
+        required: true,
+        default: 1
+    },
     id: {
         type: Number,
         required: true,
@@ -22,4 +27,6 @@ const tacgiaSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('tacgias', tacgiaSchema);
+
+
+module.exports = mongoose.model('nguoigiaohangs', nguoigiaohangSchema);

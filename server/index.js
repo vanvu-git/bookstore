@@ -10,6 +10,7 @@ const sachRouter = require('./routes/sach');
 const phieunhapRouter = require('./routes/phieunhap');
 const hoaDonRouter = require('./routes/hoadon');
 const userRouter = require('./routes/user');
+const nguoigiaohangRouter = require('./routes/nguoigiaohang');
 
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -41,6 +42,7 @@ app.use('/api/sach', sachRouter);
 app.use('/api/hoadon', hoaDonRouter);
 app.use('/api/phieunhap', phieunhapRouter);
 app.use('/api/user', userRouter);
+app.use('/api/nguoigiaohang', nguoigiaohangRouter);
 app.use((req, res, next) => {
    res.status(404)
    res.send({error: "page not found"})

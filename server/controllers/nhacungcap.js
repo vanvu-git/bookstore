@@ -7,11 +7,15 @@ const nhacungcapController = {
         if(!tenncc)
         return res.status(400).json({success: false, message: 'tenncc is required'});
         try{
+            var id = 1;
+            const maxncc = await nhacungcap.findOne().sort({id: -1}).limit(1);
+            if(maxncc) id = maxncc.id + 1;
             const newnhacungcap = new nhacungcap({
                 tenncc,
                 diachi,
                 sdt,
-                email
+                email,
+                id
             })
             await newnhacungcap.save();
             res.json({success: true, message: 'create successfully!!!', data: newnhacungcap});

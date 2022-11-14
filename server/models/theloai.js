@@ -10,6 +10,12 @@ const theloaiSchema = new Schema({
 
     mota: {
         type: String
+    },
+
+    id: {
+        type: Number,
+        required: true,
+        unique: true
     }
 
 

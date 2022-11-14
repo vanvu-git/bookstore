@@ -13,7 +13,13 @@ const nhaxuatbanSchema = new Schema({
 
     sdt: {
         type: String
+    },
+    id: {
+        type: Number,
+        required: true,
+        unique: true
     }
+
 })
 
 module.exports = mongoose.model('nhaxuatbans', nhaxuatbanSchema);

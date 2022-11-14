@@ -11,9 +11,15 @@ const theloaiController = {
             const tl = await theloai.findOne({ tentl });
             if(tl)
             return res.status(400).json({success: false, message: 'tentl already have'});
+
+            var id = 1;
+            const maxtl = await theloai.findOne().sort({id: -1}).limit(1);
+            if(maxtl) id = maxtl.id + 1;
+
             const newTheLoai = new theloai({
                 tentl,
-                mota
+                mota,
+                id
             })
             await newTheLoai.save();
             return res.json({success: true, message: 'create successfully!!!', data: newTheLoai});

@@ -50,6 +50,11 @@ const phieunhapSchema = new Schema({
     ngaynhap:{
         type: Date,
         default: Date.now()
+    },
+    id: {
+        type: Number,
+        required: true,
+        unique: true
     }
 
 

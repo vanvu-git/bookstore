@@ -9,10 +9,14 @@ const tacgiaController = {
 
 
         try{
+            var id = 1;
+            const maxtg = await tacgia.findOne().sort({id: -1}).limit(1);
+            if(maxtg) id = maxtg.id + 1;
             const newTacGia = new tacgia({
                 tentg,
                 diachi,
-                sdt
+                sdt,
+                id
             })
             await newTacGia.save();
             res.json({success: true, message: 'create successfully!!!', data: newTacGia});

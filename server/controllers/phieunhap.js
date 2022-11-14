@@ -8,12 +8,16 @@ const phieunhapController = {
         return res.status(400).json({success: false, message: 'nhacungcap is required'});
 
         try{
+            var id = 1;
+            const maxpn = await phieunhap.findOne().sort({id: -1}).limit(1);
+            if(maxpn) id = maxpn.id + 1;
             const newphieunhap = new phieunhap({
                 nhacungcap,
                 nguoiquanly: req.userId,
                 trangthai,
                 tongtien,
-                chitiet
+                chitiet,
+                id
             })
             await newphieunhap.save();
             res.json({success: true, message: 'create successfully!!!', data: newphieunhap});
@@ -112,13 +116,11 @@ const phieunhapController = {
 
             const chitiet = pn.chitiet;
             chitiet.map(async function(a){
-                console.log(a.soluong);
                 const Sach = await sach.findById(a.sach);
                 const soluong = a.soluong + Sach.soluong;
                 const update = { soluong: soluong };
                 const filter = {_id: a.sach};
                 const b = await sach.findOneAndUpdate(filter, update,{new: true});
-                console.log(b);
             })
             pn.trangthai = true;
             pn.nguoiquanly = req.userId;
