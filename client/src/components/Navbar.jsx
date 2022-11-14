@@ -1,11 +1,12 @@
 import { Badge } from "@material-ui/core";
 import { Search, ShoppingCartOutlined } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 const Container = styled.div`
   height: 60px;
@@ -71,7 +72,16 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
   const {user} = useContext(AuthContext);
+  const {cart} = useContext(CartContext);
+  const [itemNum, setItemNum] = useState(0);
   const navigate = useNavigate();
+  useEffect(()=> {
+    var itemSum=0;
+    cart.forEach((item) => {
+      itemSum+=item.qty;
+    })
+    setItemNum(itemSum);
+  }, [cart]);
   return (
     <Container>
       <Wrapper>
@@ -83,15 +93,15 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>LAMA.</Logo>
+          <Logo>BOOKSTORE</Logo>
         </Center>
         <Right>
           {!user && <MenuItem onClick={() => {navigate("/register")}}>REGISTER</MenuItem>}
           {!user && <MenuItem onClick={() => {navigate("/login")}}>LOGIN</MenuItem>}
           {user && <MenuItem>Xin Chào, {" "+ user.ho + " " + user.ten}</MenuItem>}
           {user && <MenuItem>Logout</MenuItem>}
-          <MenuItem>
-            <Badge badgeContent={4} color="primary">
+          <MenuItem onClick={() => {navigate("/cart")}}>
+            <Badge badgeContent={itemNum} color="primary">
               <ShoppingCartOutlined />
             </Badge>
           </MenuItem>

@@ -1,9 +1,15 @@
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Remove, Close} from "@material-ui/icons";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
+import { CartContext } from "../context/CartContext";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 const Container = styled.div``;
 
@@ -60,13 +66,12 @@ const Product = styled.div`
   ${mobile({ flexDirection: "column" })}
 `;
 
-const ProductDetail = styled.div`
-  flex: 2;
-  display: flex;
-`;
+
 
 const Image = styled.img`
   width: 200px;
+  height: 100px;
+  margin-top: 2vh;
 `;
 
 const Details = styled.div`
@@ -152,93 +157,121 @@ const Button = styled.button`
   color: white;
   font-weight: 600;
 `;
+const ProductDetail = styled.div`
+  flex: 2;
+  display: flex;
+`;
+const TabSpace = styled.span`
+    margin-left: 1vw; 
+  `;
+
+const EmptyProduct = styled.div`
+  text-align: center;
+  family-size: 25px;
+  famlily-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+`;
 
 const Cart = () => {
+  const {cart, dispatch} =  useContext(CartContext);
+  const [data, setData] = useState(cart);
+  const [total, setTotal] = useState(0);
+  const [itemNum, setItemNum] = useState(0);
+  const navigate = useNavigate();
+  
+  const addQty = (id) => {
+      var newCart = cart.map((item) => {
+        if (item._id == id) {
+          item.qty+=1;
+        }
+        return item
+      });    
+      setData(newCart);
+      dispatch({type: "UPDATE_CART", payload: newCart});
+      
+  };
+  
+  const minusQty = (id) => {
+    var newCart = cart.map((item) => {
+      if (item._id == id && item.qty>1) {
+        item.qty-=1;
+      }
+      return item
+    });    
+    setData(newCart);
+    dispatch({type: "UPDATE_CART", payload: newCart});
+};
+
+  const removeItem= (id) => {
+    var newCart = cart.filter((item) => {
+      return item._id != id;
+    } );
+    setData(newCart);
+    dispatch({type: "REMOVE_ITEM", payload: id});
+  }
+  useEffect(()=> {
+    var sum =0;
+    var itemSum=0;
+    data.forEach((item) => {
+      sum = sum+(item.qty*item.dongia);
+      itemSum+=item.qty;
+    })
+    setTotal(sum);
+    setItemNum(itemSum);
+  }, [data]);
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
-        <Title>YOUR BAG</Title>
+        <Title>GIỎ HÀNG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <TopButton onClick={()=>{navigate("/products")}}>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
+            <TopText>Giỏ Hàng({itemNum})</TopText>
             <TopText>Your Wishlist (0)</TopText>
           </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
-            <Product>
+          {cart.length == 0 && <EmptyProduct>Giỏ hàng rỗng</EmptyProduct>}
+            {cart.length != 0 && data.map((item) =>{
+              return <div key={item._id}>
+                <Product>
               <ProductDetail>
-                <Image src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1614188818-TD1MTHU_SHOE_ANGLE_GLOBAL_MENS_TREE_DASHERS_THUNDER_b01b1013-cd8d-48e7-bed9-52db26515dc4.png?crop=1xw:1.00xh;center,top&resize=480%3A%2A" />
+                <Image src={item.hinhanh} />
                 <Details>
                   <ProductName>
-                    <b>Product:</b> JESSIE THUNDER SHOES
+                    <b>Tên Sách:</b> {item.tensach}
                   </ProductName>
                   <ProductId>
-                    <b>ID:</b> 93813718293
+                    <b>ID:</b> {item._id}
                   </ProductId>
-                  <ProductColor color="black" />
-                  <ProductSize>
-                    <b>Size:</b> 37.5
-                  </ProductSize>
                 </Details>
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>2</ProductAmount>
-                  <Remove />
+                  <Add onClick={() => addQty(item._id)} />
+                  <ProductAmount>{item.qty}</ProductAmount>
+                  <Remove onClick={() => minusQty(item._id)} />
+                  <TabSpace></TabSpace>
+                  <Close onClick={() => removeItem(item._id)} />
                 </ProductAmountContainer>
-                <ProductPrice>$ 30</ProductPrice>
+                
+                <ProductPrice>{item.dongia}</ProductPrice>
               </PriceDetail>
             </Product>
-            <Hr />
-            <Product>
-              <ProductDetail>
-                <Image src="https://i.pinimg.com/originals/2d/af/f8/2daff8e0823e51dd752704a47d5b795c.png" />
-                <Details>
-                  <ProductName>
-                    <b>Product:</b> HAKURA T-SHIRT
-                  </ProductName>
-                  <ProductId>
-                    <b>ID:</b> 93813718293
-                  </ProductId>
-                  <ProductColor color="gray" />
-                  <ProductSize>
-                    <b>Size:</b> M
-                  </ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>1</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice>$ 20</ProductPrice>
-              </PriceDetail>
-            </Product>
+                 <Hr /></div> 
+            })}
+          
           </Info>
           <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-            </SummaryItem>
             <SummaryItem type="total">
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
+              <SummaryItemText>Tổng Tiền</SummaryItemText>
+              <SummaryItemPrice>
+                {total}
+              </SummaryItemPrice>
             </SummaryItem>
             <Button>CHECKOUT NOW</Button>
           </Summary>
@@ -248,5 +281,30 @@ const Cart = () => {
     </Container>
   );
 };
-
+/*{cart.length == 0 && <EmptyProduct>Giỏ hàng rỗng</EmptyProduct>}
+            {cart.length != 0 && cart.map((item) =>{
+              return <div>
+                <Product key={item._id}>
+              <ProductDetail>
+                <Image src={item.hinhanh} />
+                <Details>
+                  <ProductName>
+                    <b>Tên Sách:</b> {item.tensach}
+                  </ProductName>
+                  <ProductId>
+                    <b>ID:</b> {item._id}
+                  </ProductId>
+                </Details>
+              </ProductDetail>
+              <PriceDetail>
+                <ProductAmountContainer>
+                  <Add />
+                  <ProductAmount>{item.qty}</ProductAmount>
+                  <Remove />
+                </ProductAmountContainer>
+                <ProductPrice>{item.dongia}</ProductPrice>
+              </PriceDetail>
+            </Product>
+                 <Hr /></div> 
+            })}*/
 export default Cart;

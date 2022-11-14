@@ -2,8 +2,8 @@ export const sliderItems = [
     {
       id: 1,
       img: "https://i.ibb.co/XsdmR2c/1.png",
-      title: "SUMMER SALE",
-      desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+      title: "BookStore",
+      desc: "In a world without books, only those who read, have a chance to thrive",
       bg: "f5fafd",
     },
     {
@@ -25,18 +25,21 @@ export const sliderItems = [
   export const categories = [
     {
       id: 1,
-      img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "SHIRT STYLE!",
+     // img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+     img: "https://lh3.googleusercontent.com/pw/AL9nZEXq1QphggzdgwQ-zvCL3gE72esTGgfOxF3Li1_vGq5VmhbufWQwYljhNmI00A6ILTgcEWaXGKxpP1EImIzOFWPsWSmEM5JZQQf1WTG-LFNOxM-i_s2rxkFysVfZRC99CT2r7kuy1dtPhCgbDPzQqMY=w758-h568-no?authuser=0",
+     title: "Books: Food for the Brain ",
     },
     {
       id: 2,
-      img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "LOUNGEWEAR LOVE",
+      //img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      img: "https://www.oberlo.com/media/1603897398-tamarcus-brown-t3ukisfmaby-unsplash-scaled.jpg?fit=max&fm=jpg&w=1824",
+      title: "Books are forever!",
     },
     {
       id: 3,
-      img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      title: "LIGHT JACKETS",
+      //img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
+      img: "https://images.languagehumanities.org/old-man-reading-book-to-young-boy-on-couch.jpg",
+      title: "Open your mind",
     },
   ];
 

@@ -5,6 +5,10 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 const Container = styled.div``;
 
@@ -33,6 +37,8 @@ const InfoContainer = styled.div`
 
 const Title = styled.h1`
   font-weight: 200;
+  text-transform: capitalize;
+  font-family: Arial, Helvetica, sans-serif;
 `;
 
 const Desc = styled.p`
@@ -42,6 +48,9 @@ const Desc = styled.p`
 const Price = styled.span`
   font-weight: 100;
   font-size: 40px;
+  color: #ca2027;
+  font-family: Arial, Helvetica, sans-serif;
+
 `;
 
 const FilterContainer = styled.div`
@@ -77,6 +86,10 @@ const FilterSize = styled.select`
 `;
 
 const FilterSizeOption = styled.option``;
+const TitleDesc = styled.span`
+  font-weight: bold;
+`;
+const EndLine = styled.br``;
 
 const AddContainer = styled.div`
   width: 50%;
@@ -114,57 +127,85 @@ const Button = styled.button`
       background-color: #f8f4f4;
   }
 `;
-
+const NotFound = styled.div`
+  text-align: center;
+  font-size: 50px;
+  padding-top: 30vh;
+  padding-bottom: 30vh; 
+  font-weight: bold;
+`;
 const Product = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [quanty, setquanty] = useState(1);
+  const [data, setData] = useState(null);
+  const params = useParams();
+  const {cart, dispatch} = useContext(CartContext);
+  const addToCart = async  () => {
+    var {soluong, ...other} = data; 
+    var newItem = {...other, qty: quanty};
+    console.log("Hello");
+    dispatch({type: "ADD_ITEM", payload: newItem});
+
+  }; 
+  const addQty =  () => {
+    if (data.dongia > quanty) {
+      setquanty(quanty+1);
+    }
+    console.log("hello");
+  }
+  const removeQty = () => {
+    if (quanty>1) {
+      setquanty(quanty-1);
+    }
+  }
+
+  useEffect(async () => {
+    await axios.get("/sach/"+params.id).then(response => {
+      if (response.status == 200 && response.data.data != null){
+        setData(response.data.data);
+        setLoading(true);
+        window.scrollTo(0, 0);
+      }
+    })
+  }, []);
   return (
+    
     <Container>
       <Navbar />
       <Announcement />
-      <Wrapper>
+      {isLoading && <Wrapper>
         <ImgContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+          <Image src={data.hinhanh} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
+          <Title>{data.tensach}</Title>
           <Desc>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.
+            <TitleDesc>Thể loại: </TitleDesc>{data.theloai==null? "Chưa cập nhật": data.theloai.tentl}<EndLine />
+            <TitleDesc>Tên tác giả: </TitleDesc>{data.tacgia==null? "Chưa cập nhật": data.tacgia.tentg}<EndLine />
+            <TitleDesc>Nhà xuất bản: </TitleDesc>{data.nhaxuatban==null? "Chưa cập nhật": data.nhaxuatban.tennx}<EndLine />
           </Desc>
-          <Price>$ 20</Price>
+          {data.soluong > 0 && <Price>{data.dongia} VND</Price>}
+          {data.soluong <= 0 && <Price>Hết Hàng</Price>}
           <FilterContainer>
-            <Filter>
-              <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
-              </FilterSize>
-            </Filter>
           </FilterContainer>
-          <AddContainer>
+          {
+            data.soluong > 0 && 
+            <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={removeQty} />
+              <Amount>{quanty}</Amount>
+              <Add onClick={addQty} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={addToCart}>ADD TO CART</Button>
           </AddContainer>
+          }
         </InfoContainer>
-      </Wrapper>
+      </Wrapper>}
+      {!isLoading && <NotFound>  Loading... </NotFound>}
       <Newsletter />
       <Footer />
     </Container>
+   
   );
 };
 

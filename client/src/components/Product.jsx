@@ -4,6 +4,8 @@ import {
   ShoppingCartOutlined,
 } from "@material-ui/icons";
 import styled from "styled-components";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 const Info = styled.div`
   opacity: 0;
@@ -47,6 +49,7 @@ const Circle = styled.div`
 
 const Image = styled.img`
   height: 75%;
+  width: 75%;
   z-index: 2;
 `;
 
@@ -77,8 +80,9 @@ const ItemName = styled.div`
 `;
 
 const Product = ({ item }) => {
+  const navigate = useNavigate();
   return (
-    <Container>
+    <Container onClick={() => {navigate("/product/"+item._id)}}>
       <Circle />
       <Image src={item.hinhanh} />
       <Info>
