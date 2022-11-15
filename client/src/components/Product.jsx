@@ -73,12 +73,21 @@ const ItemName = styled.div`
   width: 100%;
   position: absolute;
   font-size: 20px;
-  bottom: 0;
+  bottom: 25px;
   z-index: 10;
   text-align: center;
   background-color: rgba(255, 255, 255, 0.2);
 `;
-
+const ItemPrice = styled.div`
+z-index: 10;
+position: absolute;
+  width: 100%;
+  font-size: 20px;
+  text-align: center;
+  color: #ca2027;
+  bottom: 0;
+  float: bottom;
+`;
 const Product = ({ item }) => {
   const navigate = useNavigate();
   return (
@@ -99,6 +108,7 @@ const Product = ({ item }) => {
       <ItemName>
         {item.tensach}
       </ItemName>
+      <ItemPrice>{item.dongia}</ItemPrice>
     </Container>
   );
 };
