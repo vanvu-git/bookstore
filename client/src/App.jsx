@@ -4,6 +4,7 @@ import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
+import Search from "./pages/Search";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/products" element={<ProductList />} />
         <Route path="/product/:id" element={<Product />} />
+        <Route path="/search/:query" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );

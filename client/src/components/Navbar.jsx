@@ -74,6 +74,7 @@ const Navbar = () => {
   const {user} = useContext(AuthContext);
   const {cart} = useContext(CartContext);
   const [itemNum, setItemNum] = useState(0);
+  const [searchKey, setSearchKey] = useState(""); 
   const navigate = useNavigate();
   useEffect(()=> {
     var itemSum=0;
@@ -82,13 +83,19 @@ const Navbar = () => {
     })
     setItemNum(itemSum);
   }, [cart]);
+
+  const enterPressEvent = (event) => {
+    if (event.key == "Enter") {
+        navigate(`/search/${searchKey}`);
+    } 
+  }
   return (
     <Container>
       <Wrapper>
         <Left>
           <Language>EN</Language>
           <SearchContainer>
-            <Input placeholder="Search" />
+            <Input placeholder="Search" onKeyUp={(event) => {enterPressEvent(event);}} onChange={e=>setSearchKey(e.target.value)}/>
             <Search style={{ color: "gray", fontSize: 16 }} />
           </SearchContainer>
         </Left>
