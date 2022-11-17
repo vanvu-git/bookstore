@@ -7,6 +7,7 @@ router.post('/',verifyToken, isNhanVien, nguoigiaohangController.create);
 // router.get('/findByName', nguoigiaohangController.findByName);
 // router.get('/:id', nguoigiaohangController.findId);
 router.get('/', nguoigiaohangController.find);
+router.put('/lock/:id',verifyToken, isNhanVien,  nguoigiaohangController.lock);
 router.put('/:id',verifyToken, isNhanVien,  nguoigiaohangController.update);
 router.delete('/:id',verifyToken, isNhanVien,  nguoigiaohangController.delete);
 module.exports = router;

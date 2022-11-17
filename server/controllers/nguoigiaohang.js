@@ -101,7 +101,21 @@ const nguoigiaohangController = {
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
         }
-    }
+    },
+
+    lock :  async(req,res)=>{
+        try{
+            const ngh  = await nguoigiaohang.findById(req.params.id);
+            if(!ngh)
+            return res.status(400).json({success: false, message: 'nguoigiaohang not found'});
+            ngh.trangthai = 0;
+            await ngh.save();
+            return res.status(200).json({success: true, message: 'lock successfully!!!', data: ngh});
+        }catch(error){
+            console.log(error);
+            return res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
     
 
 }
