@@ -167,6 +167,16 @@ const userController = {
         }
     },
 
+    find5newest: async(req, res) => {
+        try{
+            const post = await User.find().sort({createdAt: 1}).limit(5);
+            res.status(200).json({success: true, data: post});
+            
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
 }
 
 

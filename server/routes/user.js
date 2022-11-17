@@ -4,6 +4,7 @@ const {verifyToken, isNhanVien, isAdmin} = require('../middleware/auth');
 const userController = require('../controllers/user');
 
 router.post('/',verifyToken,isAdmin, userController.create);
+router.get('/find5newest',verifyToken,isAdmin, userController.find5newest);
 router.get('/:id',verifyToken, userController.findById);
 router.get('/',verifyToken, isAdmin, userController.find);
 router.put('/unlock/:id',verifyToken, isAdmin, userController.unlock);

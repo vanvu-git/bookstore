@@ -68,9 +68,8 @@ const authController = {
             return res.status(403).json({success: false, message: 'forbidden'});
             //Return token
             const accessToken = jwt.sign({userId: user._id}, process.env.ACCESS_TOKEN_SECRET)
-            const {password,quyen, ...thongtin} = user._doc;
             res.cookie("accessToken", accessToken, {httpOnly: true}).status(200)
-            .json({success: true, message: 'Loggin successfully', accessToken,user: {...thongtin},quyen});
+            .json({success: true, message: 'Loggin successfully', accessToken,user: user});
             
         }catch(error){
             console.log(error);
