@@ -32,7 +32,7 @@ const sachController = {
 
     update:async(req,res)=>{
         const{nhaxuatban,tacgia,theloai, tensach, soluong, dongia,hinhanh} = req.body;
-    
+        if(soluong < 0) soluong = 0;
         if(!tensach)
         return res.status(400).json({success:false, message: 'tensach is required'});
     
