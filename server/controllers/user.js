@@ -169,7 +169,7 @@ const userController = {
 
     find5newest: async(req, res) => {
         try{
-            const post = await User.find().sort({createdAt: 1}).limit(5);
+            const post = await User.find().sort({createdAt: -1}).limit(5);
             res.status(200).json({success: true, data: post});
             
         }catch(error){
