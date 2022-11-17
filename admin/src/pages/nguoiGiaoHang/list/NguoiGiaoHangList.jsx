@@ -7,13 +7,13 @@ import { useState, useEffect } from "react";
 import useFetch from "../../../hooks/useFetch";
 import axios from "axios";
 
-export default function UserList() {
+export default function NguoiGiaoHangList() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
   const history = useHistory();
 
   useEffect(() => {
-    axios.get("/user").then(response => {
+    axios.get("/nguoigiaohang").then(response => {
       setData(response.data.data);
       setLoading(false);
     })
@@ -26,46 +26,26 @@ export default function UserList() {
   };
   
   const columns = [
-    { field: "_id", headerName: "ID", width: 50 },
-    {
-      field: "username",
-      headerName: "Username",
-      width: 200
-    },
-    {
-      field: "ho",
-      headerName: "Họ",
-      width: 200,
-    },
+    { field: "_id", headerName: "ID", width: 90 },
     {
       field: "ten",
       headerName: "Tên",
-      width: 200,
+      width: 200
     },
     {
       field: "sdt",
       headerName: "Số điện thoại",
-      width: 100,
+      width: 150,
     },
     {
-      field: "quyen",
-      headerName: "Quyền",
-      width: 100,
-    },
-    {
-      field: "ngaysinh",
-      headerName: "Password",
-      width: 100,
-    },
-    {
-      field: "createAt",
-      headerName: "Ngày tạo",
-      width: 100,
+      field: "email",
+      headerName: "Email",
+      width: 150,
     },
     {
       field: "trangthai",
       headerName: "Trạng thái",
-      width: 100,
+      width: 150,
     },
     {
       field: "action",
@@ -74,7 +54,7 @@ export default function UserList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/user/" + params.row._id}>
+            <Link to={"/nguoigiaohang/" + params.row._id}>
               <button className="userListEdit">Edit</button>
             </Link>
             <DeleteOutline
@@ -95,8 +75,8 @@ export default function UserList() {
       
       <div className="userList">
         <div>
-          <Link to='/newuser'>
-            <button  className="userAddButton">Thêm người dùng mới</button>
+          <Link to='/newnguoigiaohang'>
+            <button  className="userAddButton">Thêm người giao hàng mới</button>
           </Link>
         </div>
         <br />

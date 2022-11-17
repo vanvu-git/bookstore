@@ -65,7 +65,7 @@ export default function HoaDonDetails() {
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Chi tiết phiếu nhập</h1>
+        <h1 className="userTitle">Chi tiết hóa đơn</h1>
       </div>
       <div className="userContainer">
         <div className="userShow">

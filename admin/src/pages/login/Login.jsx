@@ -10,7 +10,7 @@ const LoginForm = () => {
         password: undefined,
     });
     const history = useHistory();
-    const {  loading, error, dispatch} = useContext(AuthContext);
+    const { loading, error, dispatch } = useContext(AuthContext);
    
 
     const handleSumit = async (e) => {
@@ -30,14 +30,14 @@ const LoginForm = () => {
           dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
         }
         
-      };
+    };
     return (
-    <form className="form-login">
+      <form className="form-login">
         <div className="imgcontainer">
             BookStore Admin Login
         </div>
         <div className="container-form-login">
-            <input type="text" placeholder="Enter Username" name="username" required className="input-class" onChange={e => setCredentials({...credentials, username: e.target.value})} value= {credentials.username}/ >
+            <input type="text" placeholder="Enter Username" name="username" required className="input-class" onChange={e => setCredentials({...credentials, username: e.target.value})} value= {credentials.username} />
             <input type="password" placeholder="Enter Password" name="password" required className="input-class" onChange={e => setCredentials({...credentials, password: e.target.value})} value= {credentials.password} />
             <button type="submit" className="btn-submit" onClick={handleSumit}>Login</button>  
 

@@ -11,11 +11,19 @@ import {
   ImportContactsRounded,
   ImportExport,
   Receipt,
-  ExitToApp
+  ExitToApp,
+  LocalShipping,
+  Person,
+  BookSharp,
+  Info
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 export default function Sidebar() {
+  const {user, dispatch} = useContext(AuthContext);
+  console.log(user);
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -26,6 +34,12 @@ export default function Sidebar() {
             <li className="sidebarListItem active">
               <LineStyle className="sidebarIcon" />
               Home
+            </li>
+            </Link>
+            <Link to="/profile" className="link">
+            <li className="sidebarListItem active">
+              <Info className="sidebarIcon" />
+              Thông tin tài khoản
             </li>
             </Link>
             <Link to="/" className="link">
@@ -39,6 +53,12 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quản Lý</h3>
           <ul className="sidebarList">
+            <Link to="/dsuser" className="link">
+              <li className="sidebarListItem">
+                <Person className="sidebarIcon"/>
+                Người dùng
+              </li>
+            </Link>
             <Link to="/dstacgia" className="link">
               <li className="sidebarListItem">
                 <PersonPin className="sidebarIcon"/>
@@ -59,7 +79,7 @@ export default function Sidebar() {
             </Link>
             <Link to="/dssach" className="link">
               <li className="sidebarListItem">
-                <HouseRounded className="sidebarIcon"/>
+                <BookSharp className="sidebarIcon"/>
                 Sách
               </li>
             </Link>
@@ -79,6 +99,12 @@ export default function Sidebar() {
               <li className="sidebarListItem">
                 <Receipt className="sidebarIcon"/>
                 Hóa đơn
+              </li>
+            </Link>
+            <Link to="/dsnguoigiaohang" className="link">
+              <li className="sidebarListItem">
+                <LocalShipping className="sidebarIcon"/>
+                Người giao hàng
               </li>
             </Link>
           </ul>
