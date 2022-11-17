@@ -11,6 +11,8 @@ router.get('/status/:status', hoadonRouter.getByTrangThai); // lấy danh sách 
 router.get('/findbydate/:startdate/:enddate', hoadonRouter.getByNgay); // lấy danh sách hóa đơn theo ngày - ngày (tham số ngày dạng timestamp)
 router.get('/findbycustomer/:id', hoadonRouter.getByKhach); // lấy danh sách hóa đơn theo khách
 router.get('/findbystaff/:id', hoadonRouter.getByNhanVien); // lấy danh sách hóa đơn theo khách
+router.get('/amountbymonth/:month', hoadonRouter.getAmountByMonth);
+router.get('/latest/createdate', hoadonRouter.getLatest5Invoice);
 router.put('/:id/status/:status/staff/:manhanvien', hoadonRouter.updateTrangThai); // cập nhật trạng thái hóa đơn (thay đổi sl sách khi từ xử lý sang đã xác nhân) (thêm mã nhân viên) - dành cho admin
 router.put('/:id/cancel', hoadonRouter.huyDon); // hủy hóa đơn - đanh cho khách
 router.delete('/:id', hoadonRouter.delete); // xóa  hóa đơn

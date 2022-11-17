@@ -25,7 +25,7 @@ const Info = styled.div`
 
 const Container = styled.div`
   flex: 1;
-  margin: 5px;
+  margin-top: 5px;
   min-width: 280px;
   height: 350px;
   display: flex;
@@ -33,6 +33,7 @@ const Container = styled.div`
   justify-content: center;
   background-color: #f5fbfd;
   position: relative;
+  max-width: 25%;
 
   &:hover ${Info}{
     opacity: 1;

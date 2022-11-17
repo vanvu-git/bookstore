@@ -52,6 +52,22 @@ const hoadonSchema = new Schema({
         type: Number,
         required: true,
         unique: true
+    },
+    
+    thongtingiaohang: {
+        diachi: {
+            type: String,
+            require: true
+        },
+        nguoigiao: {
+            type: Schema.Types.ObjectId,
+            ref: 'nguoigiaohangs'
+        },
+        tienship: {
+            type: Number,
+            require: true,
+            default: 0
+        }
     }
 
 });

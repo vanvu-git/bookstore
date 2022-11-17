@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 const hoadonRouter = {
     create: async(req, res, next) => {
-        const {makhachhang, chitiet, tongtien} =  req.body;
+        const {makhachhang, chitiet, tongtien, thongtingiaohang} =  req.body;
         if (!chitiet || !chitiet.length) {
             return res.status(400).json({success: false, message: "Hóa đơn không được rỗng"});
         } 
@@ -14,7 +14,10 @@ const hoadonRouter = {
         }
         
         try {
-            const newHoaDon = new hoadon({makhachhang: makhachhang, chitiet: chitiet, tongtien: tongtien});
+            var id = 1;
+            const lastHd = await hoadon.findOne().sort({id: -1}).limit(1);
+            if (lastHd) id+=lastHd.id;
+            const newHoaDon = new hoadon({makhachhang: makhachhang, chitiet: chitiet, tongtien: tongtien, id: id, thongtingiaohang: thongtingiaohang});
             await newHoaDon.save();      
             return res.json({success: true, message: 'Tạo hóa đơn thành công', hoadon: newHoaDon});
         } catch (error) {
@@ -59,7 +62,7 @@ const hoadonRouter = {
             if (ngayBatDau > ngayKetThuc) {
                 return res.status(400).json({success: false, message: "Tham số 'startdate' và 'enddate' không phù hợp."});
             }
-            const hoadons = await hoadon.find({createAt: {$gte: ngayBatDau , $lte: ngayKetThuc}}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            const hoadons = await hoadon.find({createdAt: {$gte: ngayBatDau , $lte: ngayKetThuc}}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -81,6 +84,48 @@ const hoadonRouter = {
         try {
             const hoadons = await hoadon.find({manhanvien: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
             res.status(200).json({success: true, hoadons});
+    
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({success: false, message: 'Không tìm thấy hóa đơn.'});
+        }
+    },
+    getAmountByMonth: async(req, res, next) => {
+        const currentYear = new Date().getFullYear();
+        const currentMonth = Number(req.params.month);
+        var startStr = null; 
+        if (currentMonth <= 9) {
+            startStr = currentYear + '-0'+currentMonth + '-01';
+        } else {
+            startStr = currentYear + '-'+currentMonth + '-01';
+        }
+        const startDate = new Date(startStr);
+        var endStr = null;
+        if (currentMonth != 12) {
+            if (currentMonth < 9) {
+                endStr = currentYear + '-0'+ (currentMonth+1) + '-01';
+            } else {
+                endStr = currentYear + '-'+ (currentMonth+1) + '-01';
+            } 
+        } else {
+            endStr = (currentYear+1) + '-01-01';
+        }
+        const endDate = new Date(endStr);
+       
+        try {
+            const amount = await hoadon.find({createdAt: {$gte: startDate, $lt: endDate}}).count();
+           
+            res.status(200).json({success: true, amount: amount});
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({success: false, message: 'Không tìm thấy hóa đơn.'});
+        }
+    },
+    getLatest5Invoice: async(req, res, next) => {
+        try {
+            const hd = await hoadon.find().sort({createdAt:-1}).limit(5).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+
+            res.status(200).json({success: true, hd});
     
         } catch (error) {
             console.log(error);
