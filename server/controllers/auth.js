@@ -69,7 +69,7 @@ const authController = {
             //Return token
             const accessToken = jwt.sign({userId: user._id}, process.env.ACCESS_TOKEN_SECRET)
             res.cookie("accessToken", accessToken, {httpOnly: true}).status(200)
-            .json({success: true, message: 'Loggin successfully', accessToken,user: user});
+            .json({success: true, message: 'Loggin successfully', accessToken,user: user, quyen: user.quyen});
             
         }catch(error){
             console.log(error);
