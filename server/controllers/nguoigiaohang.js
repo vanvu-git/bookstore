@@ -2,7 +2,7 @@ const nguoigiaohang = require('../models/nguoigiaohang');
 
 const nguoigiaohangController = {
     create: async(req,res) => {
-        const{ ten,email,sdt} = req.body;
+        const{ ten,email,sdt, hinhanh} = req.body;
         if(!ten)
         return res.status(400).json({success: false, message: 'ten is required'});
         const emailValidate = emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@+[a-z]+.com*$/;
@@ -17,6 +17,7 @@ const nguoigiaohangController = {
                 ten,
                 email,
                 sdt,
+                hinhanh,
                 id
             })
             await newNguoiGiaoHang.save();
@@ -59,50 +60,62 @@ const nguoigiaohangController = {
     //     }
     // },
 
-    // update: async(req,res)=>{
-    //     const{ tentg, diachi, sdt} = req.body;
+    update: async(req,res)=>{
+        const{ ten, email, sdt, hinhanh} = req.body;
     
-    //     if(!tentg)
-    //     return res.status(400).json({success:false, message: 'tentg is required'});
-    //     try{
-    //         let updatedTacGia = {
-    //             tentg, 
-    //             diachi,
-    //             sdt
-    //         }
+        if(!ten)
+        return res.status(400).json({success:false, message: 'ten is required'});
+        try{
+            let updatedNguoiGiaoHang = {
+                ten, 
+                email,
+                sdt,
+                hinhanh
+            }
     
-    //         const tacgiaUpdateCondition = {_id: req.params.id};
-    //         updatedTacGia = await tacgia.findByIdAndUpdate(tacgiaUpdateCondition, updatedTacGia, {new: true});
+            const nguoigiaohangUpdateCondition = {_id: req.params.id};
+            updatedNguoiGiaoHang = await nguoigiaohang.findByIdAndUpdate(nguoigiaohangUpdateCondition, updatedNguoiGiaoHang, {new: true});
             
-    //         if(!updatedTacGia)
-    //         return res.status(401).json({success: false, message:'not found'});
+            if(!updatedNguoiGiaoHang)
+            return res.status(401).json({success: false, message:'not found'});
     
-    //         res.json({success: true, message: 'update successfully!!!', tacgia: updatedTacGia});
+            res.json({success: true, message: 'update successfully!!!', tacgia: updatedNguoiGiaoHang});
     
-    //     }catch(error){
-    //         console.log(error);
-    //         res.status(500).json({success: false, message: 'Internal server error'});
-    //     }
-    // },
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
 
-    // delete :  async(req,res)=>{
-    //     try{
-    //         const tacgiainsach = await sach.findOne({tacgia: req.params.id});
-    //         if(tacgiainsach)
-    //         return res.status(400).json({success: false, message: 'tacgia have relationship with the other'});
-    //         const tacgiaDeleteCondition = {_id: req.params.id};
-    //         deletedTacgia = await tacgia.findByIdAndDelete(tacgiaDeleteCondition);
+    delete :  async(req,res)=>{
+        try{
+            const nguoigiaohangDeleteCondition = {_id: req.params.id};
+            deletedNguoiGiaoHang = await nguoigiaohang.findByIdAndDelete(nguoigiaohangDeleteCondition);
             
-    //         if(!deletedTacgia)
-    //         return res.status(401).json({success: false, message:'not found'});
+            if(!deletedNguoiGiaoHang)
+            return res.status(401).json({success: false, message:'not found'});
     
-    //         res.json({success: true, message: 'delete successfully!!!'});
+            res.json({success: true, message: 'delete successfully!!!'});
     
-    //     }catch(error){
-    //         console.log(error);
-    //         res.status(500).json({success: false, message: 'Internal server error'});
-    //     }
-    // }
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
+
+    lock :  async(req,res)=>{
+        try{
+            const ngh  = await nguoigiaohang.findById(req.params.id);
+            if(!ngh)
+            return res.status(400).json({success: false, message: 'nguoigiaohang not found'});
+            ngh.trangthai = 0;
+            await ngh.save();
+            return res.status(200).json({success: true, message: 'lock successfully!!!', data: ngh});
+        }catch(error){
+            console.log(error);
+            return res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
     
 
 }

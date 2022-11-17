@@ -1,10 +1,10 @@
 import {
   CalendarToday,
+  CheckBox,
   Email,
   LocationSearching,
   MailOutline,
   PermIdentity,
-  Person,
   PhoneAndroid,
   Publish,
 } from "@material-ui/icons";
@@ -13,7 +13,7 @@ import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function UserDetails() {
+export default function NguoiGiaoHangDetails() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [isLoading, setLoading] = useState(true);
@@ -22,14 +22,14 @@ export default function UserDetails() {
   console.log(id);
 
   useEffect(() => {
-    axios.get(`/user/${id}`).then(response => {
+    axios.get(`/nguoigiaohang/${id}`).then(response => {
       setData(response.data.data);
       setLoading(false);
     })
   }, []);
 
   const handleEdit = () => {
-    axios.put(`/user/${id}`, info);
+    axios.put(`/nguoigiaohang/${id}`, info);
   }
 
   const handleChange = async (e) => {
@@ -43,8 +43,8 @@ export default function UserDetails() {
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Chi tiết người dùng</h1>
-        <Link to="/newuser">
+        <h1 className="userTitle">Chi tiết người giao hàng</h1>
+        <Link to="/newtheloai">
           <button className="userAddButton">Create</button>
         </Link>
       </div>
@@ -53,8 +53,8 @@ export default function UserDetails() {
           <div className="userShowBottom">
             <span className="userShowTitle">Details</span>
             <div className="userShowInfo">
-              <Person className="userShowIcon" />
-              <span className="userShowInfoTitle">{`${data.ho} ${data.ten}`}</span>
+              <LocationSearching className="userShowIcon" />
+              <span className="userShowInfoTitle">{data.ten}</span>
             </div>
             <div className="userShowInfo">
               <PhoneAndroid className="userShowIcon" />
@@ -64,38 +64,31 @@ export default function UserDetails() {
               <Email className="userShowIcon" />
               <span className="userShowInfoTitle">{data.email}</span>
             </div>
+            <div className="userShowInfo">
+              <CheckBox className="userShowIcon" />
+              <span className="userShowInfoTitle">
+                {
+                  data.trangthai===0
+                  ?
+                  "Bị khóa"
+                  :
+                  data.trangthai===1
+                  ?
+                  "Đang rảnh":"Đang giao hàng"
+                }
+              </span>
+            </div>
           </div>
         </div>
         <div className="userUpdate">
           <span className="userUpdateTitle">Thay đổi thông tin</span>
           <form className="userUpdateForm">
             <div className="userUpdateLeft">
-            <div className="userUpdateItem">
-                <label>Username</label>
-                <input
-                  type="text"
-                  placeholder={data.username}
-                  className="userUpdateInput"
-                  id="username"
-                  onChange={handleChange}
-                  disabled
-                />
-              </div>
               <div className="userUpdateItem">
-                <label>Họ</label>
+                <label>Tên người giao hàng</label>
                 <input
                   type="text"
-                  placeholder={data.ho}
-                  className="userUpdateInput"
-                  id="ho"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="userUpdateItem">
-                <label>Tên</label>
-                <input
-                  type="text"
-                  placeholder={data.ten}
+                  defaultValue={data.ten}
                   className="userUpdateInput"
                   id="ten"
                   onChange={handleChange}
@@ -105,7 +98,7 @@ export default function UserDetails() {
                 <label>Số điện thoại</label>
                 <input
                   type="text"
-                  placeholder={data.sdt}
+                  defaultValue={data.sdt}
                   className="userUpdateInput"
                   id="sdt"
                   onChange={handleChange}
@@ -115,22 +108,17 @@ export default function UserDetails() {
                 <label>Email</label>
                 <input
                   type="text"
-                  placeholder={data.email}
+                  defaultValue={data.email}
                   className="userUpdateInput"
                   id="email"
                   onChange={handleChange}
                 />
               </div>
-              <div className="userUpdateItem">
-                <label>Ngày sinh</label>
-                <input
-                  type="date"
-                  placeholder={data.ngaysinh}
-                  className="userUpdateInput"
-                  id="ngaysinh"
-                  onChange={handleChange}
-                />
-              </div>
+              <select id="trangthai" defaultValue={data.trangthai}>
+                <option value="0">Khóa</option>
+                <option value="1">Rảnh</option>
+                <option value="2">Đang giao hàng</option>
+              </select>
               <div className="userUpdateItem">
                 <button className="userUpdateButton" onClick={handleEdit}>Update</button>
               </div>

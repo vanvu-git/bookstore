@@ -24,6 +24,12 @@ const nguoigiaohangSchema = new Schema({
         type: Number,
         required: true,
         unique: true
+    },
+
+    hinhanh: {
+        type: String,
+        required: true,
+        default: "https://timeoutcomputers.com.au/wp-content/uploads/2016/12/noimage.jpg"
     }
 })
 

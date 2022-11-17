@@ -37,10 +37,9 @@ export default function NewPhieuNhap() {
   }
 
   const handleProducts = async (e) => {
-    setAddingProduct(prev=>({...prev, [e.target.id]:e.target.value}));
-    
+    setAddingProduct(prev=>({...prev, [e.target.id]:e.target.value, "thanhtien":addingProduct.soluong*addingProduct.dongia}));
   }
-  
+
   const handleCreate = async (e) => {
     e.preventDefault();
     console.log(info);
@@ -71,6 +70,15 @@ export default function NewPhieuNhap() {
     setAddingProduct({});
   }
 
+  const handleDeleteProduct = async (e) => {
+    let id = e.target.id;
+    let res = pnSach.filter((s)=>{
+      return s.sach !== id;
+    });
+
+    setPnSach(res);
+  }
+
   const newProductInput = () => {
     return (
       <div className="product" >
@@ -95,7 +103,7 @@ export default function NewPhieuNhap() {
         </div>
         <div className="addProductItem">
           <label>Thành tiền</label>
-          <input id="thanhtien" type="number" onChange={handleProducts}/>
+          <input id="thanhtien" type="number" onChange={handleProducts} value={addingProduct?.soluong * addingProduct?.dongia}/>
         </div>
       </div>
     );
@@ -128,7 +136,12 @@ export default function NewPhieuNhap() {
       </form>
       <div>
         {pnSach && pnSach.map(obj => (
-          <p>{obj.sach} - Số lượng: {obj.soluong} - Đơn giá: {obj.dongia} - Thành tiền: {obj.thanhtien}</p>
+          <div>
+            <p>
+              {obj.sach} - Số lượng: {obj.soluong} - Đơn giá: {obj.dongia} - Thành tiền: {obj.thanhtien} 
+              <button onClick={handleDeleteProduct} id={obj.sach} className="deleteProductLineBtn">Xóa</button>
+            </p>
+          </div>
         ))}
       </div>
       <div className="addProductListContainer">

@@ -30,22 +30,33 @@ import PhieuNhapDetails from "./pages/phieuNhap/details/PhieuNhapDetails";
 import NewPhieuNhap from "./pages/phieuNhap/new/NewPhieuNhap";
 import HoaDonList from "./pages/hoadon/list/HoaDonList";
 import HoaDonDetails from "./pages/hoadon/details/HoaDonDetails";
+import NguoiGiaoHangList from "./pages/nguoiGiaoHang/list/NguoiGiaoHangList";
+import NguoiGiaoHangDetails from "./pages/nguoiGiaoHang/details/NguoiGiaoHangDetails";
+import NewNguoiGiaoHang from "./pages/nguoiGiaoHang/new/NewNguoiGiaoHang";
+import UserDetails from "./pages/user/details/UserDetails";
+import AccountDetails from "./pages/profile/AccountDetails";
 
 
 function App() {
   const {user, dispatch} = useContext(AuthContext);
   const PrivateRoute = ({user, children}) => {
-     if (!user) {
-        return <Redirect to="/login" />;
-      }
+    if (!user) {
+      return <Redirect to="/login" />;
+    }
+    return children;
+  }
+  const LoginRoute = ({user, children}) => {
+    if (user) {
+      return <Redirect to="/" />;
+    }
+    return children;
+  }
+  const AuthRoute = ({user, children}) => {
+    if (user && user.quyen >= 2) {
       return children;
-      }
-      const LoginRoute = ({user, children}) => {
-        if (user) {
-           return <Redirect to="/" />;
-         }
-         return children;
-         }
+    }
+    return <Redirect to="/" />;
+  }
   return (
     <Router>
       <Route exact path="/login" >
@@ -57,6 +68,9 @@ function App() {
       <Switch>
           <Route exact path="/">
             <PrivateRoute user={user}><Home /></PrivateRoute>
+          </Route>
+          <Route exact path="/profile">
+            <PrivateRoute user={user}><AccountDetails user={user}/></PrivateRoute>
           </Route>
           <Route path="/newnhaxuatban">
           <PrivateRoute user={user}><NewNhaXuatBan /></PrivateRoute>
@@ -106,6 +120,9 @@ function App() {
           <Route path="/dsuser">
             <PrivateRoute user={user}><UserList /></PrivateRoute>
           </Route>
+          <Route path="/user/:id">
+            <PrivateRoute user={user}><UserDetails /></PrivateRoute>
+          </Route>
           <Route path="/newuser">
             <PrivateRoute user={user}><NewUser /></PrivateRoute>
           </Route>
@@ -123,6 +140,15 @@ function App() {
           </Route>
           <Route path="/hoadon/:id">
             <PrivateRoute user={user}><HoaDonDetails /></PrivateRoute>
+          </Route>
+          <Route path="/dsnguoigiaohang">
+            <PrivateRoute user={user}><NguoiGiaoHangList /></PrivateRoute>
+          </Route>
+          <Route path="/nguoigiaohang/:id">
+            <PrivateRoute user={user}><NguoiGiaoHangDetails /></PrivateRoute>
+          </Route>
+          <Route path="/newnguoigiaohang">
+            <PrivateRoute user={user}><NewNguoiGiaoHang /></PrivateRoute>
           </Route>
         </Switch>
       </div>

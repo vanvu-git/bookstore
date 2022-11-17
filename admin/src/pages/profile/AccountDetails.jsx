@@ -9,41 +9,38 @@ import {
   Publish,
 } from "@material-ui/icons";
 import { Link, Redirect, useLocation } from "react-router-dom";
-import "../../style/single.css";
+import "../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function UserDetails() {
+export default function AccountDetails(account) {
   const location = useLocation();
-  const id = location.pathname.split("/")[2];
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [info, setInfo] = useState();
-  console.log(id);
-
-  useEffect(() => {
-    axios.get(`/user/${id}`).then(response => {
-      setData(response.data.data);
-      setLoading(false);
-    })
-  }, []);
+  const [password, setPassword] = useState();
+  const user = account.user;
 
   const handleEdit = () => {
-    axios.put(`/user/${id}`, info);
+    // axios.put(`/user/${id}`, info);
   }
 
   const handleChange = async (e) => {
     setInfo( prev => ({...prev, [e.target.id]:e.target.value}))
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>
+  const handlePasswordChange = async (e) => {
+    axios.put(`/auth/changepassword`, password);
+  }
+
+  const handlePasswordInput = async (e) => {
+    setPassword (prev => ({...prev, [e.target.id]:e.target.value}));
   }
 
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Chi tiết người dùng</h1>
+        <h1 className="userTitle">Chi tiết tài khoản</h1>
         <Link to="/newuser">
           <button className="userAddButton">Create</button>
         </Link>
@@ -54,15 +51,58 @@ export default function UserDetails() {
             <span className="userShowTitle">Details</span>
             <div className="userShowInfo">
               <Person className="userShowIcon" />
-              <span className="userShowInfoTitle">{`${data.ho} ${data.ten}`}</span>
+              <span className="userShowInfoTitle">{`${user?.ho} ${user?.ten}`}</span>
+            </div>
+            <div className="userShowInfo">
+              <span className="userShowIcon" >Username: </span>
+              <span className="userShowInfoTitle">{`${user?.username}`}</span>
             </div>
             <div className="userShowInfo">
               <PhoneAndroid className="userShowIcon" />
-              <span className="userShowInfoTitle">{data.sdt}</span>
+              <span className="userShowInfoTitle">{user?.sdt}</span>
             </div>
             <div className="userShowInfo">
               <Email className="userShowIcon" />
-              <span className="userShowInfoTitle">{data.email}</span>
+              <span className="userShowInfoTitle">{user?.email}</span>
+            </div>
+            <div className="userShowInfo">
+              <div className="userUpdateTitle">Thay đổi mật khẩu</div>
+            </div>
+            <div className="userShowInfo">
+              <div>
+                <label>Mật khẩu cũ</label>
+                <input
+                  type="password"
+                  id="oldpassword"
+                  className="userUpdateInput"
+                  onChange={handlePasswordInput}
+                />
+              </div>
+            </div>
+            <div className="userShowInfo">
+              <div>
+                <label>Mật khẩu mới</label>
+                <input
+                  type="password"
+                  id="newpassword"
+                  className="userUpdateInput"
+                  onChange={handlePasswordInput}
+                />
+              </div>
+            </div>
+            <div className="userShowInfo">
+              <div>
+                <label>Nhập lại mật khẩu mới</label>
+                <input
+                  type="password"
+                  id="repassword"
+                  className="userUpdateInput"
+                  onChange={handlePasswordInput}
+                />
+              </div>
+            </div>
+            <div className="userShowInfo">
+              <button className="userUpdateButton" onClick={handlePasswordChange}>Thay đổi mật khẩu</button>
             </div>
           </div>
         </div>
@@ -70,11 +110,11 @@ export default function UserDetails() {
           <span className="userUpdateTitle">Thay đổi thông tin</span>
           <form className="userUpdateForm">
             <div className="userUpdateLeft">
-            <div className="userUpdateItem">
+              <div className="userUpdateItem">
                 <label>Username</label>
                 <input
                   type="text"
-                  placeholder={data.username}
+                  placeholder={user?.username}
                   className="userUpdateInput"
                   id="username"
                   onChange={handleChange}
@@ -85,7 +125,7 @@ export default function UserDetails() {
                 <label>Họ</label>
                 <input
                   type="text"
-                  placeholder={data.ho}
+                  placeholder={user?.ho}
                   className="userUpdateInput"
                   id="ho"
                   onChange={handleChange}
@@ -95,7 +135,7 @@ export default function UserDetails() {
                 <label>Tên</label>
                 <input
                   type="text"
-                  placeholder={data.ten}
+                  placeholder={user?.ten}
                   className="userUpdateInput"
                   id="ten"
                   onChange={handleChange}
@@ -105,7 +145,7 @@ export default function UserDetails() {
                 <label>Số điện thoại</label>
                 <input
                   type="text"
-                  placeholder={data.sdt}
+                  placeholder={user?.sdt}
                   className="userUpdateInput"
                   id="sdt"
                   onChange={handleChange}
@@ -115,7 +155,7 @@ export default function UserDetails() {
                 <label>Email</label>
                 <input
                   type="text"
-                  placeholder={data.email}
+                  placeholder={user?.email}
                   className="userUpdateInput"
                   id="email"
                   onChange={handleChange}
@@ -125,7 +165,7 @@ export default function UserDetails() {
                 <label>Ngày sinh</label>
                 <input
                   type="date"
-                  placeholder={data.ngaysinh}
+                  placeholder={user?.ngaysinh}
                   className="userUpdateInput"
                   id="ngaysinh"
                   onChange={handleChange}
