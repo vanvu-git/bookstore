@@ -118,6 +118,9 @@ export default function HoaDonDetails() {
               ))
             }
           </div>
+          <div className="userUpdateItem">
+            <button className="userUpdateButton">Xử lý</button>
+          </div>
         </div>
       </div>
     </div>
