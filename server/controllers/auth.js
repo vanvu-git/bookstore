@@ -1,8 +1,17 @@
 const argon2 = require('argon2');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+var nodemailer = require('nodemailer');
 
-
+const ramdomPassword = (length) => {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+};
 const authController = {
      register : async(req,res)=>{
         const {username, password, repassword, ho, ten,sdt,email,quyen,ngaysinh,hinhanh} = req.body;
@@ -120,6 +129,57 @@ const authController = {
             res.status(500).json({success: false, message: 'Internal server error'})
         }
     },
+    forgetPassword :  async(req,res)=>{
+        const {mail, username} = req.body;
+        if (mail=="" || username=="") return res.status(400).json({success: false, message: 'Không được bỏ trống các trường dữ liệu.'});
+        try {
+        const account = await User.findOne({username: username});
+        console.log(account);
+        const {ho, ten, email} = account;
+        if (!account){
+            return res.status(400).json({success: false, message: 'Username không tồn tại'});}
+        if (email != mail) {
+            console.log(account);
+            console.log(mail+"--"+email);
+            return res.status(400).json({success: false, message: 'Email không phù hợp.'});
+        }
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'fullstackdevops.developer@gmail.com',
+                pass: 'wkgkaacuwkybohuf'
+            }
+        });
+        const newPass = ramdomPassword(10);
+        const mailOptions = {
+            from: 'fullstackdevops.developer@gmail.com', 
+            to: mail, // list of receivers
+            subject: 'BOOKSTORE! Thông báo khôi phục mật khẩu.', // Subject line
+            html: `<h1 style="color: red">Thông báo về việc đặt lại mật khẩu</h1><br>
+                   <div>Kính gửi, ${ho +" "+ ten}!</div><br>
+                   <div>Chúng tôi là <b>BookStore</b>, chúng tôi vừa nhân được yêu cầu đặt lại mật khẩu <br>
+                   của bạn vào lúc ${new Date()}</div><br>
+                   <div>Đây là mật khẩu mới của bạn:<b> ${newPass}</b>  (Vui lòng không chia sẻ với bất kì ai.) <b></b></div><br>
+                   <div>Mọi thắc mắc và vấn đề có thể liên hệ với chúng tôi tại fullstackdevops.developer@gmail.com</div><br>
+                   <hr>
+                   <i>Trân thành cảm ơn đã sử dụng dịch vụ của chúng tôi</i>
+            `
+        };
+        const hashedPassword = await argon2.hash(newPass);
+        account.password = hashedPassword;
+        account.save();
+        transporter.sendMail(mailOptions, function (err, info) {
+            if(err)
+            return res.status(400).json({success: false, message: err});
+            else
+            return res.status(200).json({success: true, message: info});
+        })
+        }catch {
+            return res.status(400).json({success: false, message: 'Không tìm thấy người dùng với thông tin tương ứng.'});
+        }
+        
+
+    }
 }
 
 

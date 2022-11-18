@@ -1,23 +1,23 @@
 export const sliderItems = [
     {
       id: 1,
-      img: "https://i.ibb.co/XsdmR2c/1.png",
+      img: "https://assets.entrepreneur.com/content/3x2/2000/20150729211514-man-reading-book-hipster.jpeg",
       title: "BookStore",
-      desc: "In a world without books, only those who read, have a chance to thrive",
+      desc: "In a world without books, only those who read, have a chance to thrive.",
       bg: "f5fafd",
     },
     {
       id: 2,
-      img: "https://i.ibb.co/DG69bQ4/2.png",
-      title: "AUTUMN COLLECTION",
-      desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+      img: "https://thumbs.dreamstime.com/b/reading-e-book-top-stack-books-yellow-background-vertical-concept-education-electronic-gadgets-192187574.jpg",
+      title: "BookStore",
+      desc: "Anyone who says they have only one life to live must not know how to read a book.",
       bg: "fcf1ed",
     },
     {
       id: 3,
-      img: "https://i.ibb.co/cXFnLLV/3.png",
-      title: "LOUNGEWEAR LOVE",
-      desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+      img: "https://www.oberlo.com/media/1612639204-image3.jpg",
+      title: "BookStore",
+      desc: "Reading: Travel the world, no gas required!",
       bg: "fbf0f4",
     },
   ];
@@ -26,7 +26,7 @@ export const sliderItems = [
     {
       id: 1,
      // img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-     img: "https://lh3.googleusercontent.com/pw/AL9nZEXq1QphggzdgwQ-zvCL3gE72esTGgfOxF3Li1_vGq5VmhbufWQwYljhNmI00A6ILTgcEWaXGKxpP1EImIzOFWPsWSmEM5JZQQf1WTG-LFNOxM-i_s2rxkFysVfZRC99CT2r7kuy1dtPhCgbDPzQqMY=w758-h568-no?authuser=0",
+     img: "https://assets.entrepreneur.com/content/3x2/2000/20150827211532-reading-book-in-office-books-read.jpeg?crop=4:3",
      title: "Books: Food for the Brain ",
     },
     {

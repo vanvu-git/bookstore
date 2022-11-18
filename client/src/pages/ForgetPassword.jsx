@@ -60,7 +60,6 @@ const Link = styled.a`
   font-size: 12px;
   text-decoration: underline;
   cursor: pointer;
-  
 `;
 const Alert = styled.div`
   margin: 15px 0px;
@@ -79,45 +78,62 @@ const AlertCloseButton = styled.span`
       cursor: pointer;
       transition: 0.3s;
 `;
+const SuccessBox = styled.div`
+  margin: 15px 0px;
+  padding: 20px;
+  background-color: #00e600;
+  color: white;
+  width: 90%  ;
+`;
 
-const Login = () => {
-  const [ credentials, setCredentials] = useState({
-    username: undefined,
-    password: undefined,
-});
-
-  const navigate = useNavigate();
-  const {  loading, error, dispatch} = useContext(AuthContext);
-  const handleSumit = async (e) => {
+const ForgetPassword = () => {
+  const [data, setData] = useState({
+    mail: null,
+    username: null
+   });
+   const [msg, setMsg] = useState(null);
+   const [error, setError] = useState(null);
+   const handleSumit = async (e) => {
     e.preventDefault();
-    dispatch({ type: "LOGIN_START" });
+
     try {
-      const res = await axios.post("http://localhost:6010/api/auth/login", credentials);
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user});
-      navigate('/');
+      if (data.mail==null || data.username==null) {
+        setError("Không được bỏ trống các trường!");
+        return;
+      }
+      const res = await axios.post("http://localhost:6010/api/auth/forgetpassword", data);
+      setMsg(true);
+      setError(null);
     } catch (err) {
-      dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+      setMsg(null);
+      setError(err.response.data);
     }
     
   };
+ 
   return (
     <Container>
       <Wrapper>
-        <Title>SIGN IN</Title>
+        <Title>FORGET PASSWORD</Title>
         <Form>
-          <Input placeholder="username" required onChange={e => setCredentials({...credentials, username: e.target.value})} value= {credentials.username}/>
-          <Input type="password" placeholder="password" required onChange={e => setCredentials({...credentials, password: e.target.value})} value= {credentials.password}/>
-          <Button onClick={handleSumit}>LOGIN</Button>
-          <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
+          <Input placeholder="username" required onChange={e => setData({...data, username: e.target.value})} value= {data.username}/>
+          <Input type="email" placeholder="email" required onChange={e => setData({...data, mail: e.target.value})} value= {data.mail}/>
+          <Button onClick={handleSumit}>GET PASSWORD</Button>
+          <Link href="/login">Go to Login</Link>
           <Link href="/register">CREATE A NEW ACCOUNT</Link>
-          {error && <Alert>
+          {msg==true && <SuccessBox>
+            <AlertCloseButton onclick="this.parentElement.style.display='none';">&times;</AlertCloseButton>
+            <strong>SUCCESS!</strong>  Mật khẩu mới đã gửi tới mail của bạn. Đi đến đăng nhập để tiếp tục.
+          </SuccessBox>}
+          {error!=null && <Alert>
             <AlertCloseButton onclick="this.parentElement.style.display='none';">&times;</AlertCloseButton>
             <strong>OOPS!</strong>  {error.message}
           </Alert>} 
         </Form>
       </Wrapper>
+     
     </Container>
   );
 };
 
-export default Login;
+export default ForgetPassword;
