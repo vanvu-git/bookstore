@@ -91,6 +91,10 @@ export default function SachDetails() {
           <div className="userShowBottom">
             <span className="userShowTitle">Details</span>
             <div className="userShowInfo">
+              <span>ID: </span>
+              <span className="userShowInfoTitle">{data?.id}</span>
+            </div>
+            <div className="userShowInfo">
               <span>Thể loại: </span>
               <span className="userShowInfoTitle">{data?.theloai?.tentl}</span>
             </div>

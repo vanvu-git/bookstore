@@ -1,9 +1,24 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "./widgetLg.css";
 
 export default function WidgetLg() {
   const Button = ({ type }) => {
     return <button className={"widgetLgButton " + type}>{type}</button>;
   };
+
+  const [newestHoadon, setNewestHoadon] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(async() => {
+    await axios.get(`/hoadon/latest/createdate`)
+    .then(async response => {
+      setNewestHoadon(response.data.hd);
+      return response.data.hd;
+    });
+    setLoading(false);
+  }, []);
+
   return (
     <div className="widgetLg">
       <h3 className="widgetLgTitle">
@@ -16,36 +31,20 @@ export default function WidgetLg() {
           <th className="widgetLgTh">Hóa đơn</th>
           <th className="widgetLgTh">Trạng thái</th>
         </tr>
-        <tr className="widgetLgTr">
-          <td className="widgetLgUser">
-            <img
-              src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-              alt=""
-              className="widgetLgImg"
-            />
-            <span className="widgetLgName">Susan Carol</span>
-          </td>
-          <td className="widgetLgDate">2 Jun 2021</td>
-          <td className="widgetLgAmount">$122.00</td>
-          <td className="widgetLgStatus">
-            <Button type="Approved" />
-          </td>
-        </tr>
-        <tr className="widgetLgTr">
-          <td className="widgetLgUser">
-            <img
-              src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-              alt=""
-              className="widgetLgImg"
-            />
-            <span className="widgetLgName">Susan Carol</span>
-          </td>
-          <td className="widgetLgDate">2 Jun 2021</td>
-          <td className="widgetLgAmount">$122.00</td>
-          <td className="widgetLgStatus">
-            <Button type="Declined" />
-          </td>
-        </tr>
+        {
+          newestHoadon.map( hd => (
+            <tr className="widgetLgTr" key={hd?._id}>
+              <td className="widgetLgUser">
+                <span className="widgetLgName">{hd?.makhachang}</span>
+              </td>
+              <td className="widgetLgDate">{hd?.createdAt?.substring(0,10)}</td>
+              <td className="widgetLgAmount">{hd?.tongtien}</td>
+              <td className="widgetLgStatus">
+                <Button type={hd?.trangthai} />
+              </td>
+            </tr>
+          ))
+        }
       </table>
     </div>
   );

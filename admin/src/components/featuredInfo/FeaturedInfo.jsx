@@ -6,21 +6,29 @@ import axios from "axios";
 export default function FeaturedInfo() {
 
   const [users, setUsers] = useState();
-  const [loading, setLoading] = useState();
+  const [hoadon, setHoadon] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get("/user").then(response => {
       setUsers(response.data.data);
-      setLoading(false);
     });
+    axios.get("/hoadon").then(response => {
+      setHoadon(response.data.hd);
+    });
+    setLoading(false);
   }, []);
+
+  if(loading) return(
+    <div>loading...</div>
+  )
 
   return (
     <div className="featured">
       <div className="featuredItem">
-        <span className="featuredTitle">Đơn hàng đã xử lý</span>
+        <span className="featuredTitle">Đơn hàng đã tiếp nhận</span>
         <div className="featuredMoneyContainer">
-          <span className="featuredMoney">$4,415</span>
+          <span className="featuredMoney">{hoadon?.length}</span>
         </div>
       </div>
       <div className="featuredItem">

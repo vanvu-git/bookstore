@@ -106,7 +106,7 @@ export default function PhieuNhapDetails() {
             {
               isLoading ? "Loading..." : data?.chitiet && data?.chitiet?.map(ct => (
                 <div key={ct._id}>
-                  <p>Sách: {ct.sach}</p>
+                  <p>Sách: <Link to={`/sach/${ct.sach}`}> {ct.sach} </Link></p>
                   <br />
                   <p>Số lượng: {ct.soluong}</p>
                   <br />

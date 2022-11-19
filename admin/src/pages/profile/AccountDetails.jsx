@@ -30,7 +30,8 @@ export default function AccountDetails(account) {
   }
 
   const handlePasswordChange = async (e) => {
-    axios.put(`/auth/changepassword`, password);
+    await axios.put(`/auth/changepassword`, password);
+    alert("Thay đổi mật khẩu thành công :)");
   }
 
   const handlePasswordInput = async (e) => {

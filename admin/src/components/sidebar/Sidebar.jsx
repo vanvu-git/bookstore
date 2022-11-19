@@ -20,10 +20,18 @@ import {
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
+import axios from "axios";
 
 export default function Sidebar() {
   const {user, dispatch} = useContext(AuthContext);
   console.log(user);
+
+  const handleLogout = async () => {
+    localStorage.clear();
+    await axios.get('/auth/logout');
+    window.location.href = "/login";
+  }
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -43,7 +51,7 @@ export default function Sidebar() {
             </li>
             </Link>
             <Link to="/" className="link">
-            <li className="sidebarListItem active">
+            <li className="sidebarListItem active" onClick={handleLogout}>
               <ExitToApp className="sidebarIcon" />
               Đăng xuất
             </li>
