@@ -2,7 +2,7 @@ const argon2 = require('argon2');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
-
+var {v4: uuidv4} = require('uuid');
 const ramdomPassword = (length) => {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -12,6 +12,40 @@ const ramdomPassword = (length) => {
     }
     return result;
 };
+
+const sendMail = (newUser) => {
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.AUTH_USER,
+            pass: process.env.AUTH_PASSWORD
+        }
+    });
+    const token = jwt.sign({
+        userId: newUser._id
+    }, process.env.EMAIL_TOKEN_SECRET, { expiresIn: '1m' }  
+    );    
+    const mailOptions = {
+        from: process.env.AUTH_USER, 
+        to: newUser.email, 
+        subject: 'BOOKSTORE! Xác nhận email.', 
+        html: `<h1 style="color: red">Xác nhận email</h1><br>
+               <div>Kính gửi, ${newUser.ho +" "+ newUser.ten}!</div><br>
+               <div>Chúng tôi là <b>BookStore</b>, chúng tôi vừa nhân được yêu cầu xác nhận email<br>
+               của bạn vào lúc ${new Date()}</div><br>
+               <div>Đây là link xác thực email của bạn:<a href="http://localhost:6010/api/auth/verify/${token}">http://localhost:6010/api/auth/verify/${token}</a>  (Vui lòng không chia sẻ với bất kì ai.) <b></b></div><br>
+               <div>Mọi thắc mắc và vấn đề có thể liên hệ với chúng tôi tại fullstackdevops.developer@gmail.com</div><br>
+               <hr>
+               <i>Trân thành cảm ơn đã sử dụng dịch vụ của chúng tôi</i>
+        `
+    };
+    transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+        return res.status(400).json({success: false, message: err});
+        else
+        console.log("send success");
+    })
+}
 const authController = {
      register : async(req,res)=>{
         const {username, password, repassword, ho, ten,sdt,email,quyen,ngaysinh,hinhanh} = req.body;
@@ -27,11 +61,15 @@ const authController = {
         const gmailValidate = emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@gmail.com*$/;
         if (!gmailValidate.test(email)) 
         return res.status(400).json({success: false, message: 'Email không hợp lệ.'});
-    
+        
         try{
             const user = await User.findOne({ username });
             if(user)
             return res.status(400).json({success: false, message: 'username đã tồn tại'});
+            
+            const existEmail = await User.findOne({ email });
+            if(existEmail)
+            return res.status(400).json({success: false, message: 'email đã được đăng ký'});
             
             const hashedPassword = await argon2.hash(password);
             const newUser = new User({
@@ -44,11 +82,9 @@ const authController = {
                 ngaysinh,
                 hinhanh
             });
+            sendMail(newUser);
             await newUser.save();
-    
-            //Return token
-            const accessToken = jwt.sign({userId: newUser._id}, process.env.ACCESS_TOKEN_SECRET)
-            res.status(200).json({success: true, message: 'User created successfully', accessToken});
+            res.status(200).json({success: true, message: 'User created successfully'});
         }catch(error){  
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'})
@@ -72,6 +108,8 @@ const authController = {
             const passwordValid = await argon2.verify(user.password, Password);
             if(!passwordValid)
             return res.status(400).json({success: false, message: 'Incorrect username or password'});
+            if(!user.emailVerified)
+            return res.status(400).json({success: false, message: 'user do not verify email'});
 
             if(!user.trangthai)
             return res.status(403).json({success: false, message: 'forbidden'});
@@ -177,9 +215,45 @@ const authController = {
         }catch {
             return res.status(400).json({success: false, message: 'Không tìm thấy người dùng với thông tin tương ứng.'});
         }
-        
+    },
 
-    }
+    verifyEmail : async(req,res)=>{
+        try{
+            const user = await User.findById(req.userId);
+            if(!user)
+            return res.status(400).json({success: false, message: 'user not found'});
+            user.emailVerified = true;
+            user.trangthai = true;
+            await user.save();
+            res.json({success: true, message: 'verify email successfully!!!'});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'})
+        }
+    },
+
+    resendVerifyEmail: async(req,res)=>{
+        try{
+            var { username, email} = req.body;
+            if(!username || !email)
+            return res.status(400).json({success: false, message: 'missing username or email'});
+            username = username.trim();
+            email = email.trim();
+            if(username == "" || email == "")
+            return res.status(400).json({success: false, message: 'username or email is empty'});
+            const user = await User.findOne({username, email});
+            if(!user)
+            return res.status(400).json({success: false, message: 'username or email is not exist'});
+            if(user.emailVerified)
+            return res.status(400).json({success: false, message: 'user is verified'});
+            sendMail(user);
+            res.status(200).json({success: true, message: 'resend email successfully!!!'});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'})
+        }
+    },
+
 }
 
 

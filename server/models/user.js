@@ -29,7 +29,8 @@ const UserSchema = new Schema({
     },
 
     email: {
-        type: String
+        type: String,
+        unique: true
     },
 
     quyen: {
@@ -50,12 +51,17 @@ const UserSchema = new Schema({
     trangthai: {
         type: Boolean,
         require: true,
-        default: true
+        default: false
     },
 
     createdAt: {
         type: Date,
         default: Date.now
+    },
+
+    emailVerified: {
+        type: Boolean,
+        default: false
     }
 
 })

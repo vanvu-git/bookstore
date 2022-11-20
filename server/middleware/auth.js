@@ -24,7 +24,23 @@ const verifyToken = async (req, res, next) => {
         return res.status(403).json({success: false, message: 'Invalid token'});
     }   
 }
+const verifyEmailToken = async (req, res, next) => {
+    const token = req.params.token;
+    if(!token)
+    return res.status(401).json({success: false, message: 'Acess token not found'})
 
+    try{
+        const decoded = jwt.verify(token, process.env.EMAIL_TOKEN_SECRET);
+        const User = await user.findById(decoded.userId);
+        if(!User)
+        return res.status(403).json({success: false, message: 'Invalid token'});
+        req.userId = decoded.userId;
+        next();
+    }catch(error){
+        console.log(error);
+        return res.status(403).json({success: false, message: error});
+    }   
+}
 const isNhanVien = async (req, res, next) => {
     try{
         const quyen = parseInt(req.quyen);
@@ -47,4 +63,4 @@ const isAdmin = async (req, res, next) => {
     }   
 }
 
-module.exports = {verifyToken , isNhanVien, isAdmin};
+module.exports = {verifyToken , isNhanVien, isAdmin, verifyEmailToken};
