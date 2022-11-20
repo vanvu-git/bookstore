@@ -11,7 +11,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("https://images.pexels.com/photos/6984661/pexels-photo-6984661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+    url("https://jw-webmagazine.com/wp-content/uploads/2020/05/Best-Manga-of-All-Time.jpg")
       center;
   background-size: cover;
   display: flex;
@@ -110,7 +110,7 @@ const handleSumit = async (e) => {
   return (
     <Container>
       <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
+        <Title>Tạo tài khoản mới</Title>
         <Form>
           <Input placeholder="Nhập Họ"  name="ho" onChange={e => setData({...data, ho: e.target.value})} value= {data.ho} />
           <Input placeholder="Nhập Tên" name="ten" onChange={e => setData({...data, ten: e.target.value})} value= {data.ten}/>

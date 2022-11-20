@@ -13,7 +13,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+    url("https://img-cdn.inc.com/image/upload/w_1920,h_1080,c_fill/images/panoramic/GettyImages-577674005_492115_zfpgiw.jpg")
       center;
   background-size: cover;
   display: flex;
@@ -103,7 +103,7 @@ const Login = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>SIGN IN</Title>
+        <Title>Đăng nhập</Title>
         <Form>
           <Input placeholder="username" required onChange={e => setCredentials({...credentials, username: e.target.value})} value= {credentials.username}/>
           <Input type="password" placeholder="password" required onChange={e => setCredentials({...credentials, password: e.target.value})} value= {credentials.password}/>

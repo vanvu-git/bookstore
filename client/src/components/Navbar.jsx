@@ -7,6 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
+import axios from "axios";
 
 const Container = styled.div`
   height: 60px;
@@ -76,6 +77,7 @@ const Navbar = () => {
   const [itemNum, setItemNum] = useState(0);
   const [searchKey, setSearchKey] = useState(""); 
   const navigate = useNavigate();
+  
   useEffect(()=> {
     var itemSum=0;
     cart.forEach((item) => {
@@ -89,6 +91,14 @@ const Navbar = () => {
         navigate(`/search/${searchKey}`);
     } 
   }
+
+  const logoutPressed = async () => {
+    localStorage.clear();
+    // await axios.get("/auth/logout");
+    // setLoggedIn(false);
+    navigate("/login");
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -100,13 +110,15 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>BOOKSTORE</Logo>
+          <Logo>
+            <Link to="/">BOOKSTORE</Link>
+          </Logo>
         </Center>
         <Right>
           {!user && <MenuItem onClick={() => {navigate("/register")}}>REGISTER</MenuItem>}
           {!user && <MenuItem onClick={() => {navigate("/login")}}>LOGIN</MenuItem>}
           {user && <MenuItem>Xin Chào, {" "+ user.ho + " " + user.ten}</MenuItem>}
-          {user && <MenuItem>Logout</MenuItem>}
+          {user && <MenuItem onClick={logoutPressed}>Logout</MenuItem>}
           <MenuItem onClick={() => {navigate("/cart")}}>
             <Badge badgeContent={itemNum} color="primary">
               <ShoppingCartOutlined />

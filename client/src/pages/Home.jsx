@@ -21,7 +21,6 @@ const Home = () => {
       <Announcement />
       <Navbar />
       <Slider />
-      <Categories />
       <Products productsList={data}/>
       <Newsletter/>
       <Footer/>
