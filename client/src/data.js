@@ -77,3 +77,29 @@ export const sliderItems = [
       img:"https://www.pngarts.com/files/3/Women-Jacket-PNG-High-Quality-Image.png",
     },
   ]
+  export const priceShipping = [
+    {
+      name: "Khu_vuc_mien_bac",
+      start_province: 1,
+      end_province: 46,
+      price: 30000
+    },
+    {
+      name: "Khu_vuc_mien_trung",
+      start_province: 48,
+      end_province: 77,
+      price: 20000
+    },
+    {
+      name: "Khu_vuc_noi_thanh",
+      start_province: 79,
+      end_province: 79,
+      price: 0
+    }, 
+    {
+      name: "Khu_vuc_mien_tay",
+      start_province: 80,
+      end_province: 96,
+      price: 20000
+    }
+  ] 

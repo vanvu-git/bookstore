@@ -6,13 +6,8 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
-    url("https://jw-webmagazine.com/wp-content/uploads/2020/05/Best-Manga-of-All-Time.jpg")
-      center;
+  min-height: 100vh;
+  background: linear-gradient(50deg, #f3c680, hsla(179,54%,76%,1));
   background-size: cover;
   display: flex;
   align-items: center;
@@ -100,7 +95,7 @@ const Register = () => {
 const handleSumit = async (e) => {
   e.preventDefault();
   try {
-    const res = await axios.post("http://localhost:6010/api/auth/register", data);
+    const res = await axios.post("/auth/register", data);
     setMessage({success: true, message: "Đăng ký thành công."});
 
   } catch (err) {

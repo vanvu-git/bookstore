@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Search from "./pages/Search";
 import ForgetPassword from "./pages/ForgetPassword";
+import Checkout from "./pages/Checkout";
+import Profile from "./pages/Profile";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
@@ -37,6 +39,8 @@ const App = () => {
         <Route path="/products" element={<ProductList />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/search/:query" element={<Search />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/checkout" element={<PrivateRoute user={user}><Checkout /></PrivateRoute>} />
       </Routes>
     </BrowserRouter>
   );

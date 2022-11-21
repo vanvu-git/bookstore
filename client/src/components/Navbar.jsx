@@ -93,10 +93,8 @@ const Navbar = () => {
   }
 
   const logoutPressed = async () => {
-    localStorage.clear();
-    // await axios.get("/auth/logout");
-    // setLoggedIn(false);
-    navigate("/login");
+    localStorage.setItem('user', null);
+    window.location.reload();
   }
 
   return (

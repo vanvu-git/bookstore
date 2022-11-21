@@ -55,6 +55,14 @@ const hoadonSchema = new Schema({
     },
     
     thongtingiaohang: {
+        nguoinhan: {
+            type: String,
+            require: true
+        },
+        sdtnhan: {
+            type: String,
+            require: true
+        },
         diachi: {
             type: String,
             require: true

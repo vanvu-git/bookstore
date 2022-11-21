@@ -227,11 +227,6 @@ const Cart = () => {
         <Title>GIỎ HÀNG</Title>
         <Top>
           <TopButton onClick={()=>{navigate("/products")}}>CONTINUE SHOPPING</TopButton>
-          <TopTexts>
-            <TopText>Giỏ Hàng({itemNum})</TopText>
-            <TopText>Your Wishlist (0)</TopText>
-          </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
@@ -273,7 +268,7 @@ const Cart = () => {
                 {total}
               </SummaryItemPrice>
             </SummaryItem>
-            <Button>CHECKOUT NOW</Button>
+            <Button onClick={()=> {navigate("/checkout")}}>CHECKOUT NOW</Button>
           </Summary>
         </Bottom>
       </Wrapper>

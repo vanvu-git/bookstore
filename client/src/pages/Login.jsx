@@ -8,13 +8,8 @@ import { AuthContext } from "../context/AuthContext";
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
-    url("https://img-cdn.inc.com/image/upload/w_1920,h_1080,c_fill/images/panoramic/GettyImages-577674005_492115_zfpgiw.jpg")
-      center;
+  min-height: 100vh;
+  background: linear-gradient(50deg, #f3c680, hsla(179,54%,76%,1));
   background-size: cover;
   display: flex;
   align-items: center;
@@ -92,7 +87,7 @@ const Login = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post("http://localhost:6010/api/auth/login", credentials);
+      const res = await axios.post("/auth/login", credentials);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user});
       navigate('/');
     } catch (err) {

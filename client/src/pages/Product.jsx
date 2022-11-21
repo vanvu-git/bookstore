@@ -134,16 +134,34 @@ const NotFound = styled.div`
   padding-bottom: 30vh; 
   font-weight: bold;
 `;
+const AlertCloseButton = styled.span`
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+`;
+const SuccessBox = styled.div`
+  margin: 15px 0px;
+  padding: 20px;
+  background-color: #00e600;
+  color: white;
+  width: 90%  ;
+`;
 const Product = () => {
   const [isLoading, setLoading] = useState(false);
   const [quanty, setquanty] = useState(1);
   const [data, setData] = useState(null);
   const params = useParams();
+  const [msg, setMsg] = useState(false);
   const {cart, dispatch} = useContext(CartContext);
   const addToCart = async  () => {
     var {soluong, ...other} = data; 
     var newItem = {...other, qty: quanty};
-    console.log("Hello");
+    setMsg(true);
     dispatch({type: "ADD_ITEM", payload: newItem});
 
   }; 
@@ -158,7 +176,7 @@ const Product = () => {
       setquanty(quanty-1);
     }
   }
-
+/**/
   useEffect(async () => {
     await axios.get("/sach/"+params.id).then(response => {
       if (response.status == 200 && response.data.data != null){
@@ -186,6 +204,10 @@ const Product = () => {
           </Desc>
           {data.soluong > 0 && <Price>{data.dongia} VND</Price>}
           {data.soluong <= 0 && <Price>Hết Hàng</Price>}
+          {msg==true && <SuccessBox>
+            <AlertCloseButton onclick="this.parentElement.style.display='none';">&times;</AlertCloseButton>
+            <strong>SUCCESS!</strong>  Thêm vào giỏ thành công.
+          </SuccessBox>}
           <FilterContainer>
           </FilterContainer>
           {
