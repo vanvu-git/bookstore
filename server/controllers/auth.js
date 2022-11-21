@@ -187,7 +187,9 @@ const authController = {
         try{
             const user = await User.findById(req.userId);
             if(!user)
-            return res.status(400).json({success: false, message: 'user not found'});
+            return res.writeHead(301, {
+                Location: `http://localhost:3000/failemail`
+            }).end();
             user.emailVerified = true;
             user.trangthai = true;
             await user.save();
@@ -196,7 +198,9 @@ const authController = {
               }).end();
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server error'})
+            res.writeHead(301, {
+                Location: `http://localhost:3000/failemail`
+            }).end();
         }
     },
 
