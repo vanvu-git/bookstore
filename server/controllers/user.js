@@ -1,8 +1,7 @@
 const argon2 = require('argon2');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-
-
+const { sendMail } = require('../ultil/funciton');
 const userController = {
    create: async(req,res)=>{
         const {username, password, repassword, ho, ten,sdt,email,quyen,ngaysinh,hinhanh} = req.body;
@@ -24,6 +23,10 @@ const userController = {
             if(user)
             return res.status(400).json({success: false, message: 'username đã tồn tại'});
             
+            const existEmail = await User.findOne({ email });
+            if(existEmail)
+            return res.status(400).json({success: false, message: 'email đã được đăng ký'});
+
             const hashedPassword = await argon2.hash(password);
             const newUser = new User({
                 username,
@@ -36,6 +39,7 @@ const userController = {
                 ngaysinh,
                 hinhanh
             });
+            sendMail(newUser);
             await newUser.save();
             return res.status(200).json({success: true, message: 'User created successfully', data: newUser});
         }catch(error){  
