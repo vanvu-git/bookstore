@@ -8,9 +8,11 @@ import Search from "./pages/Search";
 import ForgetPassword from "./pages/ForgetPassword";
 import Checkout from "./pages/Checkout";
 import Profile from "./pages/Profile";
+import FailVerifyEmail from "./pages/VerifyEmailFail";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
+import { VerifiedUser } from "@material-ui/icons";
 
 
 
@@ -41,6 +43,8 @@ const App = () => {
         <Route path="/search/:query" element={<Search />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/checkout" element={<PrivateRoute user={user}><Checkout /></PrivateRoute>} />
+        <Route path="/failemail" element={<LoginRoute user={user}><FailVerifyEmail /></LoginRoute>} />
+        
       </Routes>
     </BrowserRouter>
   );

@@ -244,7 +244,6 @@ const Checkout = () =>  {
         const invoice_info = {makhachhang: user._id, chitiet: detail, tongtien: totalPrice, thongtingiaohang: shipping_info};
           const res = await axios.post("/hoadon/", invoice_info);
           localStorage.setItem('cart', JSON.stringify([]));
-          
           navigate('/');
         } catch (err) {
           setError("Đặt hàng thất bại!");
