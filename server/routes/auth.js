@@ -11,7 +11,7 @@ router.post('/resendemail',  auth.resendVerifyEmail);
 router.post('/register',  auth.register);
 router.post('/login', auth.login);
 router.post('/forgetpassword', auth.forgetPassword);
-router.get('/logout', verifyToken, auth.logout);
+router.get('/logout', auth.logout);
 router.put('/changepassword', verifyToken, auth.changepassword);
 router.put('/update', verifyToken, auth.update);
 module.exports = router;
