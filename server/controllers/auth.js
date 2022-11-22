@@ -115,6 +115,7 @@ const authController = {
             const hashedPassword = await argon2.hash(newpassword);
 
             user.password = hashedPassword;
+            user.createdAt = Date.now();
             await user.save();
 
             res.json({success: true, message: 'update successfully!!!'});

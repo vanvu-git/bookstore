@@ -11,11 +11,18 @@ const verifyToken = async (req, res, next) => {
 
     try{
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const iat = decoded.iat*1000;
+        
         const User = await user.findById(decoded.userId);
         if(!User)
         return res.status(403).json({success: false, message: 'Invalid token'});
+
+        if(iat < User.createdAt.getTime())
+        return res.clearCookie("accessToken").status(403).json({success: false, message: 'User changed password please relogin to continue'});
+
         if(!User.trangthai)
         return res.status(403).json({success: false, message: 'forbidden'});
+        
         req.userId = decoded.userId;
         req.quyen = User.quyen;
         next();
