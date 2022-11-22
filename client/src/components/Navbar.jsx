@@ -71,12 +71,32 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
+const DropdownWrap = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+const DropdownTable = styled.div`
+  display: block;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+`;
+const DropdownItem = styled.a`
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+`;
+
 const Navbar = () => {
   const {user} = useContext(AuthContext);
   const {cart} = useContext(CartContext);
   const [itemNum, setItemNum] = useState(0);
   const [searchKey, setSearchKey] = useState(""); 
   const navigate = useNavigate();
+  const [menuFlag, setMenuFlag] = useState(false);
   
   useEffect(()=> {
     var itemSum=0;
@@ -115,7 +135,16 @@ const Navbar = () => {
         <Right>
           {!user && <MenuItem onClick={() => {navigate("/register")}}>REGISTER</MenuItem>}
           {!user && <MenuItem onClick={() => {navigate("/login")}}>LOGIN</MenuItem>}
-          {user && <MenuItem>Xin Chào, {" "+ user.ho + " " + user.ten}</MenuItem>}
+          {user && <MenuItem  onMouseEnter={() => setMenuFlag(true)} onMouseLeave={() => setMenuFlag(false)} >
+            <DropdownWrap     >
+              <div>Xin Chào, {" "+ user.ho + " " + user.ten}</div>
+              {menuFlag && <DropdownTable onMouseLeave={() => setMenuFlag(false)} >
+                <DropdownItem href="/profile">Profile</DropdownItem>
+                <DropdownItem href="/cart">Cart</DropdownItem>
+                <DropdownItem onClick={()=> logoutPressed }>Logout</DropdownItem>
+              </DropdownTable>}
+            </DropdownWrap>
+          </MenuItem>}
           {user && <MenuItem onClick={logoutPressed}>Logout</MenuItem>}
           <MenuItem onClick={() => {navigate("/cart")}}>
             <Badge badgeContent={itemNum} color="primary">

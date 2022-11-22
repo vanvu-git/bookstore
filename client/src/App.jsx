@@ -41,7 +41,7 @@ const App = () => {
         <Route path="/products" element={<ProductList />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/search/:query" element={<Search />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<PrivateRoute user={user}><Profile /></PrivateRoute>} />
         <Route path="/checkout" element={<PrivateRoute user={user}><Checkout /></PrivateRoute>} />
         <Route path="/failemail" element={<LoginRoute user={user}><FailVerifyEmail /></LoginRoute>} />
         
