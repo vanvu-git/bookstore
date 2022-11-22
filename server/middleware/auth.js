@@ -69,4 +69,17 @@ const isAdmin = async (req, res, next) => {
     }   
 }
 
-module.exports = {verifyToken , isNhanVien, isAdmin, verifyEmailToken};
+const isKhachhang = async (req, res, next) => {
+    try{
+        const quyen = parseInt(req.quyen);
+        if(quyen == 0) next();
+        else return res.status(403).json({success: false, message: 'not allow'})
+    }catch(error){
+        console.log(error);
+        return res.status(403).json({success: false, message: 'not allow'});
+    }   
+}
+
+
+
+module.exports = {verifyToken , isKhachhang, isNhanVien, isAdmin, verifyEmailToken};
