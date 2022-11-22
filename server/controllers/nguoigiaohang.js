@@ -39,26 +39,17 @@ const nguoigiaohangController = {
         }
     },
 
-    // findId: async(req, res) => {
-    //     try{
-    //         const posts = await tacgia.findById(req.params.id);
-    //         res.status(200).json({success: true,data: posts});
-    //     }catch(error){
-    //         console.log(error);
-    //         res.status(500).json({success: false, message: 'Internal server error'});
-    //     }
-    // },
+    findId: async(req, res) => {
+        try{
+            const posts = await nguoigiaohang.findById(req.params.id);
+            res.status(200).json({success: true,data: posts});
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
 
-    // findByName: async(req, res) => {
-    //     try{
-    //         const query = new RegExp(req.query.tentacgia);
-    //         const posts = await tacgia.findOne({tentg: {$regex: query, $options: 'i'}})
-    //         res.status(200).json({success: true,data: posts});
-    //     }catch(error){
-    //         console.log(error);
-    //         res.status(500).json({success: false, message: 'Internal server error'});
-    //     }
-    // },
+    
 
     update: async(req,res)=>{
         const{ ten, email, sdt, hinhanh} = req.body;
