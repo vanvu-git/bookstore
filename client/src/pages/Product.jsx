@@ -151,6 +151,13 @@ const SuccessBox = styled.div`
   color: white;
   width: 90%  ;
 `;
+const AlertBox = styled.div`
+  margin: 15px 0px;
+  padding: 20px;
+  background-color: red;
+  color: white;
+  width: 90%  ;
+`;
 const Product = () => {
   const [isLoading, setLoading] = useState(false);
   const [quanty, setquanty] = useState(1);
@@ -158,18 +165,33 @@ const Product = () => {
   const params = useParams();
   const [msg, setMsg] = useState(false);
   const {cart, dispatch} = useContext(CartContext);
+  const [error, setError] = useState(null);
   const addToCart = async  () => {
     var {soluong, ...other} = data; 
     var newItem = {...other, qty: quanty};
-    setMsg(true);
-    dispatch({type: "ADD_ITEM", payload: newItem});
+    var product = cart.find(item=> {return item._id == params.id});
+    var buystock = 0;
+    if (product == undefined) {
+      buystock = quanty;
+    } else {
+      buystock = quanty + product.qty;
+    }
+    if (buystock > soluong) {
+      setError("Kho hàng không đủ số lượng.");
+    } else {
+      setMsg(true);
+      dispatch({type: "ADD_ITEM", payload: newItem});
+    }
+    
+    // 
+   
 
   }; 
   const addQty =  () => {
-    if (data.dongia > quanty) {
+    if (data.soluong > quanty) {
       setquanty(quanty+1);
     }
-    console.log("hello");
+    
   }
   const removeQty = () => {
     if (quanty>1) {
@@ -206,8 +228,12 @@ const Product = () => {
           {data.soluong <= 0 && <Price>Hết Hàng</Price>}
           {msg==true && <SuccessBox>
             <AlertCloseButton onclick="this.parentElement.style.display='none';">&times;</AlertCloseButton>
-            <strong>SUCCESS!</strong>  Thêm vào giỏ thành công.
+            <strong>OOPS!</strong>  Thêm vào giỏ thành công.
           </SuccessBox>}
+          {error && <AlertBox>
+            <AlertCloseButton onclick="this.parentElement.style.display='none';">&times;</AlertCloseButton>
+            <strong>SUCCESS!</strong>  {error}
+          </AlertBox>}
           <FilterContainer>
           </FilterContainer>
           {
