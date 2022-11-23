@@ -22,6 +22,9 @@ export default function HoaDonDetails() {
   const [khachHang, setKhachHang] = useState();
   const [nhanVien, setNhanVien] = useState();
   const [info, setInfo] = useState();
+  const [nguoiGiaoHang, setNGH] = useState();
+  const [dsNguoiGiaoHang, setDsNGH] = useState([]);
+  const [shipping, setShipping] = useState(0);
 
   useEffect(async() => {
     await axios.get(`/hoadon/${id}`)
@@ -32,9 +35,13 @@ export default function HoaDonDetails() {
     .then(async hd => {
       setKhachHang(hd.makhachhang);
       setNhanVien(hd.manhanvien);
+    });
 
-      setLoading(false);
-    })
+    await axios.get("/nguoigiaohang").then( async response => {
+      setDsNGH(response.data.data);
+    });
+
+    setLoading(false);
     console.log(data);
   }, []);
 
@@ -56,6 +63,14 @@ export default function HoaDonDetails() {
 
   const handleChange = async (e) => {
     setInfo( prev => ({...prev, [e.target.id]:e.target.value}))
+  }
+
+  const onNguoiGiaoHangSelect = async (e) => {
+    setNGH(e.target.value);
+  }
+
+  const onSetShipping = async (e) => {
+    setShipping(e.target.value);
   }
 
   if (isLoading) {
@@ -117,6 +132,26 @@ export default function HoaDonDetails() {
                 </div>
               ))
             }
+          </div>
+          <div className="userUpdateItem">
+            <input 
+              type="number" 
+              id="" 
+              placeholder="phí shipping"
+              onChange={onSetShipping} 
+              style={{width: "100%" }} 
+              className="newItemSelection"
+            />
+          </div>
+          <div className="userUpdateItem">
+            <select id="" defaultValue={"none"} onChange={onNguoiGiaoHangSelect} className="newItemSelection">
+              <option value="none" disabled>CHỌN NGƯỜI GIAO HÀNG</option>
+              {
+                isLoading ? "loading" : dsNguoiGiaoHang && dsNguoiGiaoHang.map(tg => (
+                  <option value={tg._id} key={tg._id}>{tg.ten}</option>
+                ))
+              }
+            </select>
           </div>
           <div className="userUpdateItem">
             <button className="userUpdateButton">Xử lý</button>

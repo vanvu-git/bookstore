@@ -75,24 +75,18 @@ export default function SachDetails() {
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Chi tiết Sách</h1>
-        <Link to="/newsach">
-          <button className="userAddButton">Create</button>
-        </Link>
+        <h1 className="userTitle">Chi tiết {data?.tensach}</h1>
       </div>
       <div className="userContainer">
         <div className="userShow">
           <div className="userShowTop">
-            <div className="userShowTopTitle">
-              <span className="userShowUsername">{data?.tensach}</span>
-            </div>
           </div>
-          <img src={data?.hinhanh} alt="" style={{width: "100%", display: "block"}}/>
+          <img src={data?.hinhanh} alt="" className="detailImage"/>
           <div className="userShowBottom">
             <span className="userShowTitle">Details</span>
             <div className="userShowInfo">
               <span>ID: </span>
-              <span className="userShowInfoTitle">{data?.id}</span>
+              <span className="userShowInfoTitle">{data?._id}</span>
             </div>
             <div className="userShowInfo">
               <span>Thể loại: </span>
@@ -133,7 +127,7 @@ export default function SachDetails() {
               </div>
               <div className="userUpdateItem">
                 <label>Nhà xuất bản</label>
-                <select id="nhaxuatban" onChange={handleChange} defaultValue={data?.nhaxuatban?._id}>
+                <select id="nhaxuatban" onChange={handleChange} defaultValue={data?.nhaxuatban?._id} className="detailSelection">
                   {
                     isLoading ? "loading" : dsNxb && dsNxb.map(nx => (
                       <option key={nx._id} value={nx._id}>{nx.tennxb}</option>
@@ -143,7 +137,7 @@ export default function SachDetails() {
               </div>
               <div className="userUpdateItem">
                 <label>Thể loại</label>
-                <select id="theloai" onChange={handleChange} defaultValue={data?.theloai?._id}>
+                <select id="theloai" onChange={handleChange} defaultValue={data?.theloai?._id} className="detailSelection">
                   {
                     isLoading ? "loading" : dsTheLoai && dsTheLoai.map(tl => (
                       <option key={tl._id} value={tl._id}>{tl.tentl}</option>
@@ -153,7 +147,7 @@ export default function SachDetails() {
               </div>
               <div className="userUpdateItem">
                 <label>Tác giả</label>
-                <select id="tacgia" onChange={handleChange} defaultValue={data?.tacgia?._id}>
+                <select id="tacgia" onChange={handleChange} defaultValue={data?.tacgia?._id} className="detailSelection">
                   {
                     isLoading ? "loading" : dsTacGia && dsTacGia.map(tg => (
                       <option key={tg._id} value={tg._id}>{tg.tentg}</option>
@@ -184,11 +178,16 @@ export default function SachDetails() {
                 />
               </div>
               <div className="userUpdateItem">
-                <button className="userUpdateButton" onClick={handleEdit}>Update</button>
+                <button className="detailActionBtn" onClick={handleEdit}>Update</button>
               </div>
               <div className="userUpdateItem">
-                <Link to="/dssach">
-                  <button className="userUpdateButton">Quay về danh sách</button>
+                <Link to="/dssach" style={{textDecoration: "none"}}>
+                  <button className="detailActionBtn">Quay về danh sách</button>
+                </Link>
+              </div>
+              <div className="userUpdateItem">
+                <Link to="/newsach" style={{textDecoration: "none"}}>
+                  <button className="detailActionBtn">Thêm sách mới</button>
                 </Link>
               </div>
             </div>

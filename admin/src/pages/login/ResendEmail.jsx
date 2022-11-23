@@ -34,7 +34,7 @@ const LoginForm = () => {
     return (
       <div className="loginContainer">
         <form className="loginForm">
-          <div className="title">Bookstore Admin</div>
+          <div className="title">Bookstore Admin - Reset Email</div>
           <div className="inputGroup">
             <label htmlFor="username">Username</label>
             <input 
@@ -63,7 +63,6 @@ const LoginForm = () => {
           {
             error && 
             <div className="alert">
-              <span className="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
               <strong>OOPS!</strong>  {error.message};
             </div>
           }

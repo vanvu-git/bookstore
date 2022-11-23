@@ -31,12 +31,10 @@ export default function NewTheLoai() {
           <input type="text" id="mota" onChange={handleChange} placeholder="ABC xyz" />
         </div>
       </form>
-      <div>
-        <button onClick={handleCreate} className="newUserButton">Create</button>
-      </div>
-      <div>
-        <Link to="/dstheloai">
-          <button className="newUserButton">Quay về danh sách</button>
+      <div className="actionBtnContainer">
+        <button onClick={handleCreate} className="newItemActionButton">Thêm</button>
+        <Link to="/dstheloai" className="noLinkUnderline">
+          <button className="newItemActionButton">Quay về danh sách</button>
         </Link>
       </div>
     </div>

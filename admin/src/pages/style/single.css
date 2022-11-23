@@ -152,3 +152,34 @@
     color: white;
     font-weight: 600;
 }
+
+.detailImage {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.detailTitle {
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.detailSelection {
+  padding: 8px 4px;
+}
+
+.detailActionBtn {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  color: white;
+  background-color: black;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.noLinkUnderline {
+  text-decoration: none;
+}

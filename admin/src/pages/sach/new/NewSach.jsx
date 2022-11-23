@@ -77,9 +77,12 @@ export default function NewSach() {
       <form className="newUserForm">
         <div className="newUserItem">
           <img src={
-            imageFile ? URL.createObjectURL(imageFile) : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-          } />
+              imageFile ? URL.createObjectURL(imageFile) : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+            }
+            className="newItemImg" 
+          />
         </div>
+        <div className="newUserItem"></div>
         <div className="newUserItem">
           <label>Tên Sách</label>
           <input type="text" id="tensach" onChange={handleChange} placeholder="tên tác giả" />
@@ -105,7 +108,8 @@ export default function NewSach() {
         </div>
         <div className="newUserItem">
           <label>Thể loại</label>
-          <select id="theloai" onChange={handleChange}>
+          <select id="theloai" onChange={handleChange} className="newItemSelection" defaultValue={"none"}>
+            <option value="none" disabled>CHỌN THỂ LOẠI</option>
             {
               loading ? "loading" : dsTheLoai && dsTheLoai.map(tl => (
                 <option key={tl._id} value={tl._id}>{tl.tentl}</option>
@@ -115,7 +119,8 @@ export default function NewSach() {
         </div>
         <div className="newUserItem">
           <label>Nhà xuất bản</label>
-          <select id="nhaxuatban" onChange={handleChange}>
+          <select id="nhaxuatban" onChange={handleChange} className="newItemSelection" defaultValue={"none"}>
+            <option value="none" disabled>CHỌN NHÀ XUẤT BẢN</option>
             {
               loading ? "loading" : dsNxb && dsNxb.map(nxb => (
                 <option value={nxb._id} key={nxb._id}>{nxb.tennxb}</option>
@@ -125,7 +130,8 @@ export default function NewSach() {
         </div>
         <div className="newUserItem">
           <label>Tác giả</label>
-          <select id="tacgia" onChange={handleChange}>
+          <select id="tacgia" onChange={handleChange} className="newItemSelection" defaultValue={"none"}>
+            <option value="none" disabled>CHỌN TÁC GIẢ</option>
             {
               loading ? "loading" : dsTacGia && dsTacGia.map(tg => (
                 <option value={tg._id} key={tg._id}>{tg.tentg}</option>
@@ -134,12 +140,10 @@ export default function NewSach() {
           </select>
         </div>
       </form>
-      <div>
-        <button onClick={handleCreate} className="newUserButton">Create</button>
-      </div>
-      <div>
-        <Link to="/dssach">
-          <button className="newUserButton">Quay về danh sách</button>
+      <div className="actionBtnContainer">
+        <button onClick={handleCreate} className="newItemActionButton">Create</button>
+        <Link to="/dssach" className="noLinkUnderline">
+          <button className="newItemActionButton">Quay về danh sách</button>
         </Link>
       </div>
     </div>

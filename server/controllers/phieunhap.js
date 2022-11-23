@@ -39,7 +39,7 @@ const phieunhapController = {
 
     findId: async(req, res) => {
         try{
-            const posts = await phieunhap.findById(req.params.id);
+            const posts = await phieunhap.findById(req.params.id).populate('chitiet.sach');
             res.status(200).json({success: true,data: posts});
         }catch(error){
             console.log(error);

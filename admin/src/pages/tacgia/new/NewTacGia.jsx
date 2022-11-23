@@ -35,12 +35,10 @@ export default function NewTacGia() {
           <input type="text"id="sdt" onChange={handleChange} placeholder="1 23 456 789" />
         </div>
       </form>
-      <div>
-        <button onClick={handleCreate} className="newUserButton">Create</button>
-      </div>
-      <div>
-        <Link to="/dstacgia">
-          <button className="newUserButton">Quay về danh sách</button>
+      <div className="actionBtnContainer">
+        <button onClick={handleCreate} className="newItemActionButton">Thêm</button>
+        <Link to="/dstacgia" className="noLinkUnderline">
+          <button className="newItemActionButton">Quay về danh sách</button>
         </Link>
       </div>
     </div>
