@@ -30,6 +30,12 @@ const AuthReducer = (state, action) => {
         loading: false,
         error: null,
       };
+    case "CHANGE_INFO": 
+    return{
+      user: action.payload,
+      loading: false,
+      error: "success",
+    };
     case "LOGIN_FAILURE":
       return {
         user: null,

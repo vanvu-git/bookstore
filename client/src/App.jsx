@@ -13,6 +13,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import { VerifiedUser } from "@material-ui/icons";
+import ReSendVerify from "./pages/ReSendVerify";
 
 
 
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/login" element={<LoginRoute user={user}><Login /></LoginRoute>} />
         <Route path="/forgetpassword" element={<LoginRoute user={user}><ForgetPassword /></LoginRoute>} />
         <Route path="/register" element={<LoginRoute user={user}><Register /></LoginRoute>} />
+        <Route path="/resendemail" element={<LoginRoute user={user}><ReSendVerify /></LoginRoute>} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/products" element={<ProductList />} />
         <Route path="/product/:id" element={<Product />} />

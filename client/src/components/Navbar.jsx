@@ -121,7 +121,6 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
           <SearchContainer>
             <Input placeholder="Search" onKeyUp={(event) => {enterPressEvent(event);}} onChange={e=>setSearchKey(e.target.value)}/>
             <Search style={{ color: "gray", fontSize: 16 }} />

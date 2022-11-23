@@ -108,7 +108,7 @@ const Footer = () => {
         </SocialContainer>
       </Left>
       <Center>
-        <Title>Useful Links</Title>
+        <Title>Link</Title>
         <List>
           <ListItem>Home</ListItem>
           <ListItem>Cart</ListItem>

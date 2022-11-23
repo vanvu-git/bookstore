@@ -85,8 +85,8 @@ const OptionContainer = styled.div`
 
 const Avatar = styled.img`
   border-radius: 50%;
-  width: 6em;
-  height: 6em;
+  width: 10vw;
+  height: 10vw;
 `;
 const Name = styled.span`
     padding-top: 20%;
@@ -131,8 +131,14 @@ const Title = styled.div`
 
 const Input = styled.input`
   width: 70%;
-  margin: 20px 0;
+  margin: 10px 0;
   padding: 10px;
+  float: right;
+`;
+const NameFor = styled.span`  
+  font-size: 16px;
+  margin: 15px 0 0 0;
+  color:gray;   
 `;
 const Button = styled.div`
   width: 40%;
@@ -159,6 +165,13 @@ const SuccessBox = styled.div`
   color: white;
   width: 90%  ;
 `;
+const WrapperInput = styled.div`
+  width: 80%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
 const CloseButton = styled.span`
       margin-left: 15px;
       color: white;
@@ -175,13 +188,43 @@ const CloseButton = styled.span`
 export default function ProfilePage() {
   // 0: Thông tin cá nhân 1: đổi mật khẩu 2:Lịch sử 3: logout
   const [tab, setTab] = useState(0);
+  const [changeProfile, setChangeProfile] = useState({
+    ho: null,
+    ten: null,
+    ngaysinh: null
+  });
   const [changePassData, setChangePassData] = useState ({
     oldpassword: "",
     newpassword: "",
     repassword: ""
   });
+  const {user, dispatch} = useContext(AuthContext); 
   const [error, setError] = useState(null);
   const [msg, setMsg] = useState(null);
+  const logoutPressed = async () => {
+    localStorage.setItem('user', null);
+    window.location.reload();
+  }
+  const handleProfile = async (e) => {
+    e.preventDefault();
+    try {
+      if ( changeProfile.ho == null || changeProfile.ten == null) {
+        setError("Vui lòng nhập đầy đủ các trường")
+      }
+      else {
+        const res = await axios.put("/auth/update", changeProfile);
+        setMsg(true);
+        setError(null);
+        dispatch({type: "CHANGE_INFO", payload: res.data.data});
+      }
+
+    } catch (err) {
+    
+      setMsg(null);
+      setError(err.response.data.message);
+    }
+    
+  };
   const handleChangePassword = async (e) => {
     e.preventDefault();
     try {
@@ -208,27 +251,40 @@ export default function ProfilePage() {
    <Container>
       <LeftCol>
         <AvatarContainer>
-          <Avatar src="https://www.meme-arsenal.com/memes/dfecd78991b07d583a1230fbe57c398f.jpg"></Avatar>
-          <Name>Trần Đại Phát</Name>
+          <Avatar src={user.hinhanh}></Avatar>
+          <Name>{user.ho +" "+ user.ten}</Name>
         </AvatarContainer>
         <OptionContainer>
           <Option onClick={() => setTab(0)}>Thông tin cá nhân</Option>
           <Option onClick={() =>setTab(1)}>Đổi mật khẩu</Option>
           <Option onClick={() =>setTab(2)}>Lịch sử đặt hàng</Option>
-          <Option onClick={() =>setTab(3)}>Logut</Option>
+          <Option onClick={logoutPressed}>Logut</Option>
         </OptionContainer>
       </LeftCol>
       <RightCol>
         {tab == 0 && <ContentContainer>
           <Title>Thông tin cá nhân</Title>
-        </ContentContainer>}
-        {tab == 1 && 
-        <ContentContainer>
-          <Title>Đổi mật khẩu</Title>
-          <Input placeholder="Mật khẩu hiện tại" onChange={e => setChangePassData({...changePassData, oldpassword: e.target.value})} value= {changePassData.oldpassword} />
-          <Input placeholder="Mật khẩu mới" onChange={e => setChangePassData({...changePassData, newpassword: e.target.value})} value= {changePassData.newpassword} />
-          <Input placeholder="Nhập lại mật khẩu" onChange={e => setChangePassData({...changePassData, repassword: e.target.value})} value= {changePassData.repassword} />
-          <Button onClick={(e)=>handleChangePassword(e)}>Reset</Button>
+          <WrapperInput>
+            <NameFor>Username</NameFor>
+            <Input placeholder={user.username} disabled />
+          </WrapperInput>
+          <WrapperInput>
+            <NameFor>Email</NameFor>
+            <Input placeholder={user.email} disabled />
+          </WrapperInput>
+          <WrapperInput>
+            <NameFor>Họ</NameFor>
+            <Input placeholder={user.ho} onChange={e=>setChangeProfile({...changeProfile, ho: e.target.value})} value={changeProfile.ho} />
+          </WrapperInput>
+          <WrapperInput>
+            <NameFor>Tên</NameFor>
+            <Input placeholder={user.ten} onChange={e=>setChangeProfile({...changeProfile, ten: e.target.value})} value={changeProfile.ten} />
+          </WrapperInput>
+          <WrapperInput>
+            <NameFor>Ngày Sinh </NameFor>
+            <Input type="date" value={user.ngaysinh} onChange={(e) => {setChangeProfile({...changeProfile, ngaysinh: (e.target.value)})}} />
+          </WrapperInput>
+          <Button onClick={e=>handleProfile(e)}>Change</Button>
           {error!=null && <Alert>
             <CloseButton onclick="this.parentElement.style.display='none';">&times;</CloseButton>
             <strong>OOPS!</strong>  {error}
@@ -237,6 +293,18 @@ export default function ProfilePage() {
             <CloseButton onclick="this.parentElement.style.display='none';">&times;</CloseButton>
             <strong>Thành công!</strong> Đổi password thành công.
           </SuccessBox>}
+        </ContentContainer>}
+        {tab == 1 && 
+        <ContentContainer>
+          <Title>Đổi mật khẩu</Title>
+          <Input type="password" placeholder="Mật khẩu hiện tại" onChange={e => setChangePassData({...changePassData, oldpassword: e.target.value})} value= {changePassData.oldpassword} />
+          <Input type="password" placeholder="Mật khẩu mới" onChange={e => setChangePassData({...changePassData, newpassword: e.target.value})} value= {changePassData.newpassword} />
+          <Input type="password" placeholder="Nhập lại mật khẩu" onChange={e => setChangePassData({...changePassData, repassword: e.target.value})} value= {changePassData.repassword} />
+          <Button onClick={(e)=>handleChangePassword(e)}>Reset</Button>
+          {error!=null && <Alert>
+            <CloseButton onclick="this.parentElement.style.display='none';">&times;</CloseButton>
+            <strong>OOPS!</strong>  {error}
+          </Alert>}
         </ContentContainer>}
         {tab == 2 && <ContentContainer>
           <Title>Lịch sử đặt hàng</Title>

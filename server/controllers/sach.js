@@ -164,6 +164,16 @@ const sachController = {
             res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
+    find4lastest: async(req, res) => {
+        try{
+            const posts = await sach.find().sort({creatAt:-1}).limit(4);
+            res.status(200).json({success: true,data: posts});
+            
+        }catch(error){
+            console.log(error);
+            res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    }
 }
 
 module.exports = sachController

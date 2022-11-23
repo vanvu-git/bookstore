@@ -124,7 +124,7 @@ const handleSumit = async (e) => {
           </Alert>}
           {message.success===true && <SuccessBox>
             <CloseButton onclick="this.parentElement.style.display='none';">&times;</CloseButton>
-            <strong>Thành công!</strong>  {message.message +" ."} <Link to="/login">Nhấn vào đây để đăng nhập.</Link> 
+            <strong>Thành công!</strong>  {message.message +" ."} Vui lòng xác thực gmail để tiếp tục.
           </SuccessBox>}
         </Form>
       </Wrapper>
