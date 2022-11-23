@@ -101,32 +101,6 @@ const userController = {
         }
     },
 
-    update:async(req,res)=>{
-        const {ho, ten,sdt,email,ngaysinh,hinhanh} = req.body;
-        
-        try{
-            let updatedUser = {
-                ho,
-                ten,
-                sdt,
-                email,
-                ngaysinh,
-                hinhanh
-            }
-    
-            const userUpdateCondition = {_id: req.params.id};
-            updatedUser = await User.findByIdAndUpdate(userUpdateCondition, updatedUser, {new: true});
-            
-            if(!updatedUser)
-            return res.status(401).json({success: false, message:'update fail'});
-    
-            res.json({success: true, message: 'update successfully!!!', data: updatedUser});
-    
-        }catch(error){
-            console.log(error);
-            return res.status(500).json({success: false, message: 'Internal server error'});
-        }
-    },
     lock :  async(req,res)=>{
         try{
             const user  = await User.findById(req.params.id);

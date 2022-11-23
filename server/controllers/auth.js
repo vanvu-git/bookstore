@@ -14,7 +14,7 @@ const ramdomPassword = (length) => {
 };
 const authController = {
      register : async(req,res)=>{
-        const {username, password, repassword, ho, ten,sdt,email,quyen,ngaysinh,hinhanh} = req.body;
+        const {username, password, repassword, ho, ten,sdt,email,ngaysinh,hinhanh} = req.body;
         
         if(!username || !password)
         return res.status(400).json({success: false, message: 'Missing username or password'});
@@ -59,9 +59,10 @@ const authController = {
     },
 
     login : async(req,res)=>{
-        const username = req.body.username;
-        const Password = req.body.password;
-        
+        var username = req.body.username;
+        var Password = req.body.password;
+        username = username.trim();
+        Password = Password.trim();
         if(!username || !Password)
         return res.status(400).json({success: false, message: 'Missing username or password'});
     
@@ -75,7 +76,7 @@ const authController = {
             if(!passwordValid)
             return res.status(400).json({success: false, message: 'Incorrect username or password'});
             if(!user.emailVerified)
-            return res.status(400).json({success: false, message: 'user do not verify email'});
+            return res.status(403).json({success: false, message: 'user do not verify email'});
 
             if(!user.trangthai)
             return res.status(403).json({success: false, message: 'forbidden'});
@@ -114,6 +115,7 @@ const authController = {
             const hashedPassword = await argon2.hash(newpassword);
 
             user.password = hashedPassword;
+            user.createdAt = Date.now();
             await user.save();
 
             res.json({success: true, message: 'update successfully!!!'});
@@ -121,6 +123,33 @@ const authController = {
         }catch(error){
             console.log(error);
             res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
+
+    update:async(req,res)=>{
+        const {ho, ten,sdt,email,ngaysinh,hinhanh} = req.body;
+        
+        try{
+            let updatedUser = {
+                ho,
+                ten,
+                sdt,
+                email,
+                ngaysinh,
+                hinhanh
+            }
+    
+            const userUpdateCondition = {_id: req.userId};
+            updatedUser = await User.findByIdAndUpdate(userUpdateCondition, updatedUser, {new: true}).select('-password');
+            
+            if(!updatedUser)
+            return res.status(401).json({success: false, message:'update fail'});
+    
+            res.json({success: true, message: 'update successfully!!!', data: updatedUser});
+    
+        }catch(error){
+            console.log(error);
+            return res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
 
@@ -187,7 +216,9 @@ const authController = {
         try{
             const user = await User.findById(req.userId);
             if(!user)
-            return res.status(400).json({success: false, message: 'user not found'});
+            return res.writeHead(301, {
+                Location: `http://localhost:3000/failemail`
+            }).end();
             user.emailVerified = true;
             user.trangthai = true;
             await user.save();
@@ -196,7 +227,9 @@ const authController = {
               }).end();
         }catch(error){
             console.log(error);
-            res.status(500).json({success: false, message: 'Internal server error'})
+            res.writeHead(500, {
+                Location: `http://localhost:3000/failemail`
+            }).end();
         }
     },
 

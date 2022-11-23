@@ -11,11 +11,18 @@ const verifyToken = async (req, res, next) => {
 
     try{
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const iat = decoded.iat*1000;
+        
         const User = await user.findById(decoded.userId);
         if(!User)
         return res.status(403).json({success: false, message: 'Invalid token'});
+
+        if(iat < User.createdAt.getTime())
+        return res.clearCookie("accessToken").status(403).json({success: false, message: 'User changed password please relogin to continue'});
+
         if(!User.trangthai)
         return res.status(403).json({success: false, message: 'forbidden'});
+        
         req.userId = decoded.userId;
         req.quyen = User.quyen;
         next();
@@ -27,18 +34,24 @@ const verifyToken = async (req, res, next) => {
 const verifyEmailToken = async (req, res, next) => {
     const token = req.params.token;
     if(!token)
-    return res.status(401).json({success: false, message: 'Acess token not found'})
+    return res.writeHead(301, {
+        Location: `http://localhost:3000/failemail`
+    }).end();
 
     try{
         const decoded = jwt.verify(token, process.env.EMAIL_TOKEN_SECRET);
         const User = await user.findById(decoded.userId);
         if(!User)
-        return res.status(403).json({success: false, message: 'Invalid token'});
+        return res.writeHead(301, {
+            Location: `http://localhost:3000/failemail`
+        }).end();
         req.userId = decoded.userId;
         next();
     }catch(error){
         console.log(error);
-        return res.status(403).json({success: false, message: error});
+        res.writeHead(301, {
+            Location: `http://localhost:3000/failemail`
+        }).end();
     }   
 }
 const isNhanVien = async (req, res, next) => {
@@ -63,4 +76,17 @@ const isAdmin = async (req, res, next) => {
     }   
 }
 
-module.exports = {verifyToken , isNhanVien, isAdmin, verifyEmailToken};
+const isKhachhang = async (req, res, next) => {
+    try{
+        const quyen = parseInt(req.quyen);
+        if(quyen == 0) next();
+        else return res.status(403).json({success: false, message: 'not allow'})
+    }catch(error){
+        console.log(error);
+        return res.status(403).json({success: false, message: 'not allow'});
+    }   
+}
+
+
+
+module.exports = {verifyToken , isKhachhang, isNhanVien, isAdmin, verifyEmailToken};

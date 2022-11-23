@@ -90,9 +90,7 @@ const Footer = () => {
       <Left>
         <Logo>Bookstore.</Logo>
         <Desc>
-          There are many variations of passages of Lorem Ipsum available, but
-          the majority have suffered alteration in some form, by injected
-          humour, or randomised words which don't look even slightly believable.
+          Tầm nhìn và khát vọng của chúng tôi là nâng tầm tri thức Việt
         </Desc>
         <SocialContainer>
           <SocialIcon color="3B5999">
