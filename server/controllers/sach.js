@@ -166,7 +166,8 @@ const sachController = {
     },
     find4lastest: async(req, res) => {
         try{
-            const posts = await sach.find().sort({creatAt:-1}).limit(4);
+            const posts = await sach.find().sort({createdAt: -1}).limit(4);
+            console.log(posts);
             res.status(200).json({success: true,data: posts});
             
         }catch(error){
