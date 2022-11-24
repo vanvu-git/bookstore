@@ -147,15 +147,11 @@ export default function NewPhieuNhap() {
       <div className="addProductListContainer">
         {newProductInput()}
       </div>
-      <div>
-        <button onClick={handleAddMore} className="newUserButton">Thêm sản phẩm</button>
-      </div>
-      <div>
-        <button onClick={handleCreate} className="newUserButton">Create</button>
-      </div>
-      <div>
-        <Link to="/dsphieunhap">
-          <button className="newUserButton">Quay về danh sách</button>
+      <div className="actionBtnContainer">
+        <button onClick={handleAddMore} className="newItemActionButton">Thêm sản phẩm</button>
+        <button onClick={handleCreate} className="newItemActionButton">Thêm phiếu nhập</button>
+        <Link to="/dsphieunhap" className="noLinkUnderline">
+          <button className="newItemActionButton">Quay về danh sách</button>
         </Link>
       </div>
     </div>

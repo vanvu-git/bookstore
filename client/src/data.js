@@ -2,22 +2,22 @@ export const sliderItems = [
     {
       id: 1,
       img: "https://assets.entrepreneur.com/content/3x2/2000/20150729211514-man-reading-book-hipster.jpeg",
-      title: "BookStore",
-      desc: "In a world without books, only those who read, have a chance to thrive.",
+      title: "Book Store",
+      desc: "Chị ong nâu nâu, chị bay đi đâu đi đâu",
       bg: "f5fafd",
     },
     {
       id: 2,
       img: "https://thumbs.dreamstime.com/b/reading-e-book-top-stack-books-yellow-background-vertical-concept-education-electronic-gadgets-192187574.jpg",
-      title: "BookStore",
-      desc: "Anyone who says they have only one life to live must not know how to read a book.",
+      title: "Book Store",
+      desc: "Việc đọc rất quan trọng. Nếu bạn biết cách đọc, cả thế giới sẽ mở ra cho bạn - Barack Obama",
       bg: "fcf1ed",
     },
     {
       id: 3,
       img: "https://www.oberlo.com/media/1612639204-image3.jpg",
       title: "BookStore",
-      desc: "Reading: Travel the world, no gas required!",
+      desc: "Cần cù bù siêng năng",
       bg: "fbf0f4",
     },
   ];

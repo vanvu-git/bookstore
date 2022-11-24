@@ -105,7 +105,7 @@ const Slider = () => {
             <InfoContainer>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
-              <Button onClick={()=>{navigate("/products")}}>CỬA HÀNG</Button>
+              <Button onClick={()=>{navigate("/products")}}>Xem thêm sản phẩm</Button>
             </InfoContainer>
           </Slide>
         ))}

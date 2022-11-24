@@ -39,12 +39,10 @@ export default function NewNhaCungCap() {
           <input type="text"id="email" onChange={handleChange} placeholder="ncc@email.com" />
         </div>
       </form>
-      <div>
-        <button onClick={handleCreate} className="newUserButton">Create</button>
-      </div>
-      <div>
-        <Link to="/dsncc">
-          <button className="newUserButton">Quay về danh sách</button>
+      <div className="actionBtnContainer">
+        <button onClick={handleCreate} className="newItemActionButton">Thêm</button>
+        <Link to="/dsncc" className="noLinkUnderline">
+          <button className="newItemActionButton">Quay về danh sách</button>
         </Link>
       </div>
     </div>

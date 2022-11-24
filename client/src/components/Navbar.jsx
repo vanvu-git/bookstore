@@ -128,7 +128,7 @@ const Navbar = () => {
         </Left>
         <Center>
           <Logo>
-            <Link to="/">BOOKSTORE</Link>
+            <Link to="/" style={{textDecoration: "none", color: "black"}}>BOOKSTORE</Link>
           </Logo>
         </Center>
         <Right>

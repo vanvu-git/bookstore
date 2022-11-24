@@ -49,8 +49,9 @@ const Circle = styled.div`
 `;
 
 const Image = styled.img`
-  height: 75%;
-  width: 75%;
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
   z-index: 2;
 `;
 
@@ -74,18 +75,19 @@ const ItemName = styled.div`
   width: 100%;
   position: absolute;
   font-size: 20px;
-  bottom: 25px;
+  bottom: 24px;
   z-index: 10;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.7);
 `;
 const ItemPrice = styled.div`
-z-index: 10;
-position: absolute;
+  z-index: 10;
+  position: absolute;
   width: 100%;
   font-size: 20px;
   text-align: center;
   color: #ca2027;
+  background-color: rgba(255, 255, 255, 0.5);
   bottom: 0;
   float: bottom;
 `;
@@ -109,7 +111,7 @@ const Product = ({ item }) => {
       <ItemName>
         {item.tensach}
       </ItemName>
-      <ItemPrice>{item.dongia}</ItemPrice>
+      <ItemPrice>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.dongia)}</ItemPrice>
     </Container>
   );
 };

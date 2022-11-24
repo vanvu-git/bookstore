@@ -18,9 +18,19 @@ const Title = styled.h1`
 
 const Home = () => {
   const [data, setData] = useState(null);
-  useEffect(() => {
-    axios.get("/sach/findlastest/4").then(response => {
+  const [manga, setManga] = useState(null);
+  useEffect(async () => {
+    await axios.get("/sach/findlastest/4").then(response => {
       setData(response.data.data);
+    })
+    await axios.get("/sach").then(response => {
+      let mangaList = [];
+      let res = response;
+      res.data.data?.map( m => {
+        console.log(m);
+        if(m?.theloai?.tentl === "Manga") mangaList.push(m);
+      })
+      setManga(mangaList.slice(-4));
     })
   }, []);
   return (
@@ -28,8 +38,10 @@ const Home = () => {
       <Announcement />
       <Navbar />
       <Slider />
-      <Title>Top 4 NEW Books</Title>
+      <Title>Sách mới nè</Title>
       <Products productsList={data}/>
+      <Title>Manga cho bạn</Title>
+      <Products productsList={manga}/>
       <Newsletter/>
       <Footer/>
     </div>
