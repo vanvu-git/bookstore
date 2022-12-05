@@ -189,6 +189,22 @@ const hoadonRouter = {
             console.log(error);
             res.status(500).json({success: false, message: 'Xóa đơn thành công'});
         }
+    }, 
+    updateNguoiGiao: async(req, res, next) => {
+        const {shiper} = req.body;
+        if(!shiper)
+        return res.status(400).json({success: false, message: 'Người giao là bắt buộc'});
+        try {
+           const existhHoaDon = await hoadon.findOne({_id: req.params.id});
+           if(!existhHoaDon)
+           return res.status(400).json({success: false, message: 'Hóa đơn không tồn tại'});
+           const {nguoigiao, ...other} = existhHoaDon.thongtingiaohang;
+           const updateHoaDon =  await hoadon.findByIdAndUpdate(req.params.id, {$set: {thongtingiaohang:{nguoigiao: shiper, ...other}}}, {new: true}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
+           res.json({success: true, message: 'Update đơn thành công', hoadon: updateHoaDon});
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({success: false, message: 'Cập nhật người giao hàng thất bại'});
+        }
     }
 
 }
