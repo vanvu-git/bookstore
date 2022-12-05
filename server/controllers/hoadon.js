@@ -27,7 +27,7 @@ const hoadonRouter = {
     },
     getById: async(req, res, next) => {
         try {
-            const hd = await hoadon.findById(req.params.id).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach');;
+            const hd = await hoadon.findById(req.params.id).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
             res.status(200).json({success: true, hd});
     
         } catch (error) {
@@ -37,7 +37,7 @@ const hoadonRouter = {
     },
     getAll: async(req, res, next) => {
         try {
-            const hd = await hoadon.find().populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach');;
+            const hd = await hoadon.find().populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
             res.status(200).json({success: true, hd});
     
         } catch (error) {
@@ -47,7 +47,7 @@ const hoadonRouter = {
     },
     getByTrangThai: async(req, res, next) => {
         try {
-            const hoadons = await hoadon.find({trangthai: req.params.status}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach');;
+            const hoadons = await hoadon.find({trangthai: req.params.status}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -62,7 +62,7 @@ const hoadonRouter = {
             if (ngayBatDau > ngayKetThuc) {
                 return res.status(400).json({success: false, message: "Tham số 'startdate' và 'enddate' không phù hợp."});
             }
-            const hoadons = await hoadon.find({createdAt: {$gte: ngayBatDau , $lte: ngayKetThuc}}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach');;
+            const hoadons = await hoadon.find({createdAt: {$gte: ngayBatDau , $lte: ngayKetThuc}}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');;
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -72,7 +72,7 @@ const hoadonRouter = {
     }, 
     getByKhach: async(req, res, next) => {
         try {
-            const hoadons = await hoadon.find({makhachhang: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach');
+            const hoadons = await hoadon.find({makhachhang: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach').populate('thongtingiaohang.nguoigiao');
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -82,7 +82,7 @@ const hoadonRouter = {
     },
     getByNhanVien: async(req, res, next) => {
         try {
-            const hoadons = await hoadon.find({manhanvien: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach');;
+            const hoadons = await hoadon.find({manhanvien: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');;
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -123,7 +123,7 @@ const hoadonRouter = {
     },
     getLatest5Invoice: async(req, res, next) => {
         try {
-            const hd = await hoadon.find().sort({createdAt:-1}).limit(5).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach');;
+            const hd = await hoadon.find().sort({createdAt:-1}).limit(5).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
 
             res.status(200).json({success: true, hd});
     
