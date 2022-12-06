@@ -139,7 +139,8 @@ const hoadonRouter = {
             {
                 return res.status(401).json({success: false, message:'Cập nhật trạng thái hóa đơn thất bại do hóa đơn đã bị hủy hoặc đã hoàn thành.'});   
             }
-            const updateHoaDon = await hoadon.findByIdAndUpdate(req.params.id, {$set: {trangthai: req.params.status, manhanvien: req.params.manhanvien}}, {new: true,  runValidators: true});
+            console.log(req.userId);
+            const updateHoaDon = await hoadon.findByIdAndUpdate(req.params.id, {$set: {trangthai: req.params.status, manhanvien: req.userId}}, {new: true,  runValidators: true});
             if (!updateHoaDon) {
                 return res.status(401).json({success: false, message:'Cập nhật trạng thái hóa đơn thất bại'});
             }

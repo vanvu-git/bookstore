@@ -9,7 +9,7 @@ import {
   PhoneAndroid,
   Publish,
 } from "@material-ui/icons";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link, Redirect, useLocation, useHistory } from "react-router-dom";
 import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -25,6 +25,8 @@ export default function HoaDonDetails() {
   const [nguoiGiaoHang, setNGH] = useState();
   const [dsNguoiGiaoHang, setDsNGH] = useState([]);
   const [shipping, setShipping] = useState(0);
+
+  const history = useHistory();
 
   useEffect(async() => {
     await axios.get(`/hoadon/${id}`)
@@ -71,6 +73,13 @@ export default function HoaDonDetails() {
 
   const onSetShipping = async (e) => {
     setShipping(e.target.value);
+  }
+
+  const handleHoaDon = async (e) => {
+    const empId = localStorage.getItem('user')._id;
+    console.log(empId);
+    await axios.put(`/hoadon/${id}/status/DangXuLy/staff/${empId}`);
+    history.push("/dshoadon");
   }
 
   if (isLoading) {
@@ -154,7 +163,7 @@ export default function HoaDonDetails() {
             </select>
           </div>
           <div className="userUpdateItem">
-            <button className="userUpdateButton">Xử lý</button>
+            <button className="userUpdateButton" onClick={handleHoaDon}>Xử lý</button>
           </div>
         </div>
       </div>

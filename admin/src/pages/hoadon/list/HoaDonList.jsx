@@ -26,9 +26,8 @@ export default function HoaDonList() {
   };
   
   const columns = [
-    { field: "_id", headerName: "ID", width: 150 },
     {
-      field: "createAt",
+      field: "createdAt",
       headerName: "Ngày tạo",
       width: 200,
     },

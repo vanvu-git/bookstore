@@ -200,6 +200,7 @@ const authController = {
         };
         const hashedPassword = await argon2.hash(newPass);
         account.password = hashedPassword;
+        account.createdAt = Date.now();
         account.save();
         transporter.sendMail(mailOptions, function (err, info) {
             if(err)
