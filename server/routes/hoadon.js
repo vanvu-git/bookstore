@@ -13,8 +13,9 @@ router.get('/findbycustomer/:id',verifyToken, hoadonRouter.getByKhach); // lấy
 router.get('/findbystaff/:id',verifyToken, hoadonRouter.getByNhanVien); // lấy danh sách hóa đơn theo khách
 router.get('/amountbymonth/:month',verifyToken, isAdmin, hoadonRouter.getAmountByMonth);
 router.get('/latest/createdate',verifyToken, isNhanVien, hoadonRouter.getLatest5Invoice);
-router.put('/:id/status/:status/staff/:manhanvien',verifyToken, isNhanVien, hoadonRouter.updateTrangThai); // cập nhật trạng thái hóa đơn (thay đổi sl sách khi từ xử lý sang đã xác nhân) (thêm mã nhân viên) - dành cho admin
-router.put('/:id/cancel',verifyToken, isKhachhang, hoadonRouter.huyDon); // hủy hóa đơn - đanh cho khách
+router.put('/:id/status/:status/staff/:manhanvien', hoadonRouter.updateTrangThai); // cập nhật trạng thái hóa đơn (thay đổi sl sách khi từ xử lý sang đã xác nhân) (thêm mã nhân viên) - dành cho admin
+router.put('/:id/cancel',verifyToken, isKhachhang, hoadonRouter.huyDon);
+router.put('/:id/shiperupdate',verifyToken, isNhanVien,hoadonRouter.updateNguoiGiao); 
 router.delete('/:id',verifyToken, isNhanVien, hoadonRouter.delete); // xóa  hóa đơn
 
 module.exports = router;

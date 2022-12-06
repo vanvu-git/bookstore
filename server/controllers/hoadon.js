@@ -27,7 +27,7 @@ const hoadonRouter = {
     },
     getById: async(req, res, next) => {
         try {
-            const hd = await hoadon.findById(req.params.id).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            const hd = await hoadon.findById(req.params.id).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
             res.status(200).json({success: true, hd});
     
         } catch (error) {
@@ -37,7 +37,7 @@ const hoadonRouter = {
     },
     getAll: async(req, res, next) => {
         try {
-            const hd = await hoadon.find().populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            const hd = await hoadon.find().populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
             res.status(200).json({success: true, hd});
     
         } catch (error) {
@@ -47,7 +47,7 @@ const hoadonRouter = {
     },
     getByTrangThai: async(req, res, next) => {
         try {
-            const hoadons = await hoadon.find({trangthai: req.params.status}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            const hoadons = await hoadon.find({trangthai: req.params.status}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -62,7 +62,7 @@ const hoadonRouter = {
             if (ngayBatDau > ngayKetThuc) {
                 return res.status(400).json({success: false, message: "Tham số 'startdate' và 'enddate' không phù hợp."});
             }
-            const hoadons = await hoadon.find({createdAt: {$gte: ngayBatDau , $lte: ngayKetThuc}}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            const hoadons = await hoadon.find({createdAt: {$gte: ngayBatDau , $lte: ngayKetThuc}}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');;
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -72,7 +72,7 @@ const hoadonRouter = {
     }, 
     getByKhach: async(req, res, next) => {
         try {
-            const hoadons = await hoadon.find({makhachhang: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            const hoadons = await hoadon.find({makhachhang: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('chitiet.masach').populate('thongtingiaohang.nguoigiao');
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -82,7 +82,7 @@ const hoadonRouter = {
     },
     getByNhanVien: async(req, res, next) => {
         try {
-            const hoadons = await hoadon.find({manhanvien: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            const hoadons = await hoadon.find({manhanvien: req.params.id}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');;
             res.status(200).json({success: true, hoadons});
     
         } catch (error) {
@@ -123,7 +123,7 @@ const hoadonRouter = {
     },
     getLatest5Invoice: async(req, res, next) => {
         try {
-            const hd = await hoadon.find().sort({createdAt:-1}).limit(5).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email");
+            const hd = await hoadon.find().sort({createdAt:-1}).limit(5).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
 
             res.status(200).json({success: true, hd});
     
@@ -189,6 +189,22 @@ const hoadonRouter = {
         }catch (error) {
             console.log(error);
             res.status(500).json({success: false, message: 'Xóa đơn thành công'});
+        }
+    }, 
+    updateNguoiGiao: async(req, res, next) => {
+        const {shiper} = req.body;
+        if(!shiper)
+        return res.status(400).json({success: false, message: 'Người giao là bắt buộc'});
+        try {
+           const existhHoaDon = await hoadon.findOne({_id: req.params.id});
+           if(!existhHoaDon)
+           return res.status(400).json({success: false, message: 'Hóa đơn không tồn tại'});
+           const {nguoigiao, ...other} = existhHoaDon.thongtingiaohang;
+           const updateHoaDon =  await hoadon.findByIdAndUpdate(req.params.id, {$set: {thongtingiaohang:{nguoigiao: shiper, ...other}}}, {new: true}).populate('makhachhang', "ho ten sdt email").populate('manhanvien', "ho ten sdt email").populate('thongtingiaohang.nguoigiao').populate('chitiet.masach');
+           res.json({success: true, message: 'Update đơn thành công', hoadon: updateHoaDon});
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({success: false, message: 'Cập nhật người giao hàng thất bại'});
         }
     }
 

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import axios from 'axios';
+import { Info, Cancel, Details} from "@material-ui/icons";
+import { useEffect } from "react";
 
 const Row = styled.div`
   display: flex;
@@ -63,8 +65,6 @@ const AvatarContainer = styled.div`
   box-shadow: 0 0 0 gray, 
   0 0 0 transparent, 8px 8px 15px gray; 
   padding: 20px 10px;
-  
- 
 `;
 const OptionContainer = styled.div`
   margin: 5vh 0vh;
@@ -119,6 +119,9 @@ const ContentContainer = styled.div`
 
 `;
 
+const Tab = styled.span`
+  
+`;
 const Title = styled.div`
   margin-top: 10px;
   border-bottom: 2px solid gray;
@@ -127,6 +130,40 @@ const Title = styled.div`
   height: 5%;
   color:gray;
 `;
+
+
+const ItemRow = styled.div`
+  margin-top: 1em;
+  border-bottom: 1px solid gray;
+  width: 85%;
+  padding: 10px;
+  display:flex;
+  justify-content: space-between;
+  &:hover {
+    background: #D3D3D3;
+  }
+`;
+const TitleLabelRow = styled.span`
+  font-style: bold;
+  font-size: 20px;
+  color: #484848;
+  margin-right:${props => props.id? "15%": "0px"}
+`;
+const ItemRowPrimary = styled.div`
+  margin-top: 3em;
+  border-bottom: 3px solid gray;
+  width: 85%;
+  padding: 10px;
+  display:flex;
+  justify-content: space-between;
+  
+`;
+
+const LabelRow= styled.div`
+  color: #696969;
+  max-width: 20%
+`;
+
 
 
 const Input = styled.input`
@@ -183,8 +220,39 @@ const CloseButton = styled.span`
       transition: 0.3s;
 `;
 
+const ShippingInforContainer = styled.div`
+  width: 85%;
+  border: 2px solid gray;
+  border-radius: 25px;
+  flex-direction: column;
+  margin: 20px 0px;
+  padding: 10px;
 
 
+`
+const BoldItem = styled.span`
+  font-weight: bold;
+`;
+const ButtonStatus = styled.button`
+  width: 20%;
+  background: ${props => props.cancel? "red": "green"};
+  padding: 5px !important;
+  
+  font-size: 20px !important;
+  border-color: red !important;
+  border-radius: 25px !important;
+  color: white !important;
+`;
+const ItemShipping = styled.div`
+    padding: 10px 0px;
+    color: gray;
+  `;
+
+  const ImageDetail = styled.img`
+  width: 200px;
+  height: 100px;
+  margin-top: 2vh;
+`;
 export default function ProfilePage() {
   // 0: Thông tin cá nhân 1: đổi mật khẩu 2:Lịch sử 3: logout
   const [tab, setTab] = useState(0);
@@ -201,6 +269,10 @@ export default function ProfilePage() {
   const {user, dispatch} = useContext(AuthContext); 
   const [error, setError] = useState(null);
   const [msg, setMsg] = useState(null);
+  const [historyData, setHistoryData] = useState(null);
+  const [detailInvoice, setDetailInvoice] = useState(null);
+ 
+
   const logoutPressed = async () => {
     localStorage.setItem('user', null);
     window.location.reload();
@@ -247,6 +319,27 @@ export default function ProfilePage() {
     }
     
   };
+
+  const viewDetailInvoice = (id) => {
+    var invoice = historyData.find(index => {
+      return index._id === id;
+    });
+    console.log(invoice);
+    setDetailInvoice(invoice);
+    setTab(3);
+  }
+  const cancelInvoice = (idInvoice) => {
+    axios.put(`/hoadon/${idInvoice}/cancel`).then(response => {
+      setTab(2);
+    });
+  }
+
+  useEffect(async () => {
+    await axios.get(`/hoadon/findByCustomer/${user._id}`).then(response => {
+      setHistoryData(response.data.hoadons);
+    });
+
+  }, [historyData]);
   return (
    <Container>
       <LeftCol>
@@ -308,9 +401,44 @@ export default function ProfilePage() {
         </ContentContainer>}
         {tab == 2 && <ContentContainer>
           <Title>Lịch sử đặt hàng</Title>
+          <ItemRowPrimary>
+            <TitleLabelRow id>Mã Đơn</TitleLabelRow>
+            <TitleLabelRow>Ngày Đặt</TitleLabelRow>
+            <TitleLabelRow>Giá</TitleLabelRow>
+            <TitleLabelRow>Trạng Thái</TitleLabelRow>
+          </ItemRowPrimary>
+          {historyData == null && <div>loading...</div>}
+          {historyData!= null && 
+          historyData.map((index) => {
+            return <ItemRow onClick={()=> viewDetailInvoice(index._id)}>
+                    <LabelRow>{index._id}</LabelRow>
+                    <LabelRow>{new Date(index.createdAt).toLocaleString()}</LabelRow>
+                    <LabelRow>{index.tongtien}</LabelRow>
+                    <LabelRow>{index.trangthai}</LabelRow>
+                  </ItemRow>
+          })}
         </ContentContainer>}
         {tab == 3 && <ContentContainer>
-          <Title>Logut</Title>
+          {detailInvoice == null && <div>loading...</div>}
+          {detailInvoice != null && <Title>Chi tiết của hóa đơn: {detailInvoice._id}</Title>}  
+          {detailInvoice != null && <ShippingInforContainer>
+                                          <ItemShipping><BoldItem>Địa Chỉ:</BoldItem> {detailInvoice.thongtingiaohang.diachi}</ItemShipping>
+                                          <ItemShipping><BoldItem>Người Nhận:</BoldItem> {detailInvoice.thongtingiaohang.nguoinhan}</ItemShipping>
+                                          <ItemShipping><BoldItem>SDT:</BoldItem> {detailInvoice.thongtingiaohang.sdtnhan}</ItemShipping>
+                                          <ItemShipping><BoldItem>Người Giao:</BoldItem> {(detailInvoice.thongtingiaohang.nguoigiao === null ) ? "Chưa có người giao" : detailInvoice.thongtingiaohang.nguoigiao}</ItemShipping>
+                                          <ItemShipping><BoldItem>Trạng Thái:</BoldItem> {detailInvoice.trangthai}</ItemShipping>
+                                          {(detailInvoice.trangthai == "ChuaXuLy" || detailInvoice.trangthai == "DangXuLy" ) && <ItemShipping><ButtonStatus cancel onClick={()=>cancelInvoice(detailInvoice._id)}>Hủy</ButtonStatus></ItemShipping>}
+                                  </ShippingInforContainer>}
+          {detailInvoice != null && <ItemRowPrimary><TitleLabelRow>Danh Sách Sản Phẩm</TitleLabelRow></ItemRowPrimary>}
+          {detailInvoice !=null &&
+              detailInvoice.chitiet.map(index => {
+                return <ItemRow>
+                          <LabelRow><ImageDetail src={index.masach.hinhanh} /></LabelRow>
+                          <LabelRow><BoldItem>Tên Sách: </BoldItem>{ index.masach.tensach}</LabelRow>
+                          <LabelRow><BoldItem>Đơn Giá x Số Lượng: </BoldItem>{index.dongia} x {index.soluong}  </LabelRow>
+                      </ItemRow>
+              })
+          }
         </ContentContainer>}
       </RightCol>
     </Container>
