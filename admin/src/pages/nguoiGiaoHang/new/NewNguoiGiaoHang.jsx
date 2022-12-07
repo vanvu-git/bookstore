@@ -24,7 +24,7 @@ export default function NewNguoiGiaoHang() {
 
   return (
     <div className="newUser">
-      <h1 className="newUserTitle">Thêm người dùng mới</h1>
+      <h1 className="newUserTitle">Thêm người giao hàng mới</h1>
       <form className="newUserForm">
         <div className="newUserItem">
           <label>Tên</label>

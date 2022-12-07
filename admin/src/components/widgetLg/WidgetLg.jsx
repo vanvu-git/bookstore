@@ -14,6 +14,7 @@ export default function WidgetLg() {
     await axios.get(`/hoadon/latest/createdate`)
     .then(async response => {
       setNewestHoadon(response.data.hd);
+      console.log(response.data.hd);
       return response.data.hd;
     });
     setLoading(false);
@@ -35,7 +36,7 @@ export default function WidgetLg() {
           newestHoadon.map( hd => (
             <tr className="widgetLgTr" key={hd?._id}>
               <td className="widgetLgUser">
-                <span className="widgetLgName">{hd?.makhachang}</span>
+                <span className="widgetLgName">{`${hd?.makhachhang?.ho} ${hd?.makhachhang?.ten}`}</span>
               </td>
               <td className="widgetLgDate">{hd?.createdAt?.substring(0,10)}</td>
               <td className="widgetLgAmount">{hd?.tongtien}</td>

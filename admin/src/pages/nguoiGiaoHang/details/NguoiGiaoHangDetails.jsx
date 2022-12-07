@@ -114,11 +114,13 @@ export default function NguoiGiaoHangDetails() {
                   onChange={handleChange}
                 />
               </div>
-              <select id="trangthai" defaultValue={data.trangthai}>
-                <option value="0">Khóa</option>
-                <option value="1">Rảnh</option>
-                <option value="2">Đang giao hàng</option>
-              </select>
+              <div className="userUpdateItem">
+                <select id="trangthai" defaultValue={data.trangthai} className="newItemSelection">
+                  <option value="0">Khóa</option>
+                  <option value="1">Rảnh</option>
+                  <option value="2">Đang giao hàng</option>
+                </select>
+              </div>
               <div className="userUpdateItem">
                 <button className="userUpdateButton" onClick={handleEdit}>Update</button>
               </div>

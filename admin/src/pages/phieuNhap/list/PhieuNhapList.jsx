@@ -13,7 +13,7 @@ export default function PhieuNhapList() {
 
   useEffect(() => {
     axios.get("/phieunhap").then(response => {
-      setData(response.data.data);
+      setData(response.data.data.reverse());
       setLoading(false);
     })
   }, []);
@@ -25,7 +25,6 @@ export default function PhieuNhapList() {
   };
   
   const columns = [
-    { field: "_id", headerName: "ID", width: 150 },
     { 
       field: "ngaynhap", 
       headerName: "Ngày nhập hàng", 
@@ -40,6 +39,12 @@ export default function PhieuNhapList() {
       field: "trangthai",
       headerName: "Trạng thái",
       width: 200,
+      valueGetter: (params) => {
+        if(params.row.trangthai == true) {
+          return "Đã xử lý"
+        }
+        return "Chưa xử lý"
+      }
     },
     {
       field: "action",

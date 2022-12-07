@@ -26,7 +26,6 @@ export default function NguoiGiaoHangList() {
   };
   
   const columns = [
-    { field: "_id", headerName: "ID", width: 90 },
     {
       field: "ten",
       headerName: "Tên",
@@ -46,6 +45,16 @@ export default function NguoiGiaoHangList() {
       field: "trangthai",
       headerName: "Trạng thái",
       width: 150,
+      valueGetter: (params) => {
+        switch(params.row.trangthai) {
+          case(0):
+          return "Bị khóa"
+          case(1):
+          return "Đang rảnh"
+          case(2):
+          return "Đang giao hàng"
+        }
+      }
     },
     {
       field: "action",

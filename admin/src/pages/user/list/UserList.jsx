@@ -26,26 +26,25 @@ export default function UserList() {
   };
   
   const columns = [
-    { field: "_id", headerName: "ID", width: 50 },
     {
       field: "username",
       headerName: "Username",
-      width: 200
+      width: 150
     },
     {
       field: "ho",
       headerName: "Họ",
-      width: 200,
+      width: 100,
     },
     {
       field: "ten",
       headerName: "Tên",
-      width: 200,
+      width: 100,
     },
     {
       field: "sdt",
       headerName: "Số điện thoại",
-      width: 100,
+      width: 150,
     },
     {
       field: "quyen",
@@ -54,18 +53,34 @@ export default function UserList() {
     },
     {
       field: "ngaysinh",
-      headerName: "Password",
-      width: 100,
+      headerName: "Ngày sinh",
+      width: 150,
+      valueGetter: (params) => {
+        if(params.row.ngaysinh)
+          return params.row.ngaysinh.substring(0, 10);
+        return "Trống"
+      } 
     },
     {
-      field: "createAt",
+      field: "createdAt",
       headerName: "Ngày tạo",
-      width: 100,
+      width: 150,
+      valueGetter: (params) => {
+        if(params.row.createdAt)
+          return params.row.createdAt.substring(0, 10);
+        return "Trống"
+      } 
     },
     {
       field: "trangthai",
       headerName: "Trạng thái",
-      width: 100,
+      width: 120,
+      valueGetter: (params) => {
+        if(params.row.trangthai) {
+          return "Đang kích hoạt";
+        }
+        return "Bị khóa";
+      }
     },
     {
       field: "action",

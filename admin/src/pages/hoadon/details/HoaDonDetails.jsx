@@ -1,15 +1,10 @@
 import {
-  CalendarToday,
   House,
-  LocationSearching,
-  MailOutline,
   Money,
-  PermIdentity,
   Person,
-  PhoneAndroid,
-  Publish,
+  LocalShipping
 } from "@material-ui/icons";
-import { Link, Redirect, useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import "../../style/single.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -22,9 +17,9 @@ export default function HoaDonDetails() {
   const [khachHang, setKhachHang] = useState();
   const [nhanVien, setNhanVien] = useState();
   const [info, setInfo] = useState();
-  const [nguoiGiaoHang, setNGH] = useState();
+  const [nguoiGiaoHang, setNGH] = useState(null);
   const [dsNguoiGiaoHang, setDsNGH] = useState([]);
-  const [shipping, setShipping] = useState(0);
+  const [shippingFee, setShippingFee] = useState(0);
 
   const history = useHistory();
 
@@ -32,6 +27,7 @@ export default function HoaDonDetails() {
     await axios.get(`/hoadon/${id}`)
     .then(async response => {
       setData(response.data.hd);
+      console.log(response.data.hd);
       return response.data.hd;
     })
     .then(async hd => {
@@ -43,8 +39,8 @@ export default function HoaDonDetails() {
       setDsNGH(response.data.data);
     });
 
+    
     setLoading(false);
-    console.log(data);
   }, []);
 
   const handleEdit = () => {
@@ -69,16 +65,46 @@ export default function HoaDonDetails() {
 
   const onNguoiGiaoHangSelect = async (e) => {
     setNGH(e.target.value);
+    console.log(nguoiGiaoHang);
   }
 
-  const onSetShipping = async (e) => {
-    setShipping(e.target.value);
+  const onSetShippingFee = async (e) => {
+    setShippingFee(e.target.value);
   }
 
   const handleHoaDon = async (e) => {
-    const empId = localStorage.getItem('user')._id;
-    console.log(empId);
-    await axios.put(`/hoadon/${id}/status/DangXuLy/staff/${empId}`);
+    const user = JSON.parse(localStorage.getItem('user'));
+    let empId = user._id;
+    const res = await axios.put(`/hoadon/${id}/status/DangXuLy/staff/${empId}`);
+    console.log(`/hoadon/${id}/status/DangXuLy/staff/${empId}`);
+    console.log(res);
+    // history.push("/dshoadon");
+  }
+
+  const handleShipper = async (e) => {
+    if(nguoiGiaoHang == null) {
+      alert('Chưa chọn người giao hàng');
+      return;
+    }
+    const params = JSON.stringify({
+      'shiper': nguoiGiaoHang
+    });
+
+    await axios.put(
+      `/hoadon/${id}/shiperupdate`, 
+      {'shiper': nguoiGiaoHang}
+    ).then((res) => {
+      console.log(res);
+    });
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    let empId = user._id;
+    await axios.put(
+      `/hoadon/${id}/status/DangGiao/staff/${empId}`
+    ).then((res) => {
+      console.log(res);
+    });
+
     history.push("/dshoadon");
   }
 
@@ -115,6 +141,14 @@ export default function HoaDonDetails() {
               Khách hàng:
               <span className="userShowInfoTitle">{`${khachHang?.ho} ${khachHang?.ten}`}</span>
             </div>
+            {
+              data?.thongtingiaohang?.nguoigiao &&
+              <div className="userShowInfo">
+                <LocalShipping  className="userShowIcon"/>
+                Người giao hàng:
+                <span className="userShowInfoTitle">{`${data?.thongtingiaohang?.nguoigiao?.ten}`}</span>
+              </div>
+            }
           </div>
         </div>
         <div className="userShow">
@@ -127,7 +161,7 @@ export default function HoaDonDetails() {
               isLoading ? "Loading..." : data?.chitiet && data?.chitiet?.map(ct => (
                 <div key={ct._id}>
                   <p>
-                    Mã Sách: <a href={`/sach/${ct.masach}`}>{ct.masach}</a>
+                    Mã Sách: <a href={`/sach/${ct.masach?.tensach}`}>{ct.masach?.tensach}</a>
                   </p>
                   <br />
                   <p>Số lượng: {ct.soluong}</p>
@@ -147,7 +181,7 @@ export default function HoaDonDetails() {
               type="number" 
               id="" 
               placeholder="phí shipping"
-              onChange={onSetShipping} 
+              onChange={onSetShippingFee} 
               style={{width: "100%" }} 
               className="newItemSelection"
             />
@@ -165,6 +199,17 @@ export default function HoaDonDetails() {
           <div className="userUpdateItem">
             <button className="userUpdateButton" onClick={handleHoaDon}>Xử lý</button>
           </div>
+          {
+            data?.thongtingiaohang?.nguoigiao 
+            ?
+            <div className="userUpdateItem">
+              <button className="userUpdateButton" disabled={true}>Đang giao hàng</button>
+            </div>
+            :
+            <div className="userUpdateItem">
+              <button className="userUpdateButton" onClick={handleShipper}>Giao hàng</button>
+            </div>
+          }
         </div>
       </div>
     </div>

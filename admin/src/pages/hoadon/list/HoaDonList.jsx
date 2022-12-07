@@ -13,7 +13,7 @@ export default function HoaDonList() {
 
   useEffect(() => {
     axios.get("/hoadon").then(response => {
-      setData(response.data.hd);
+      setData(response.data?.hd?.reverse());
       setLoading(false);
       console.log(data);
     })
@@ -40,6 +40,15 @@ export default function HoaDonList() {
       field: "trangthai",
       headerName: "Trạng thái",
       width: 200,
+      valueGetter: (params) => {
+        if(params.row.trangthai == "ChuaXuLy") return "Chưa xử lý";
+        if(params.row.trangthai == "DangXuLy") return "Đang xử lý";
+        if(params.row.trangthai == "DaXacNhan") return "Đã xác nhận";
+        if(params.row.trangthai == "DangGiao") return "Đang giao";
+        if(params.row.trangthai == "Huy") return "Hủy";
+        if(params.row.trangthai == "HoanThanh") return "Hoàn Thành";
+        return params.row.trangthai;
+      }
     },
     {
       field: "action",

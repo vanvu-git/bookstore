@@ -13,7 +13,7 @@ export default function SachList() {
 
   useEffect(() => {
     axios.get("/sach").then(response => {
-      setData(response.data.data);
+      setData(response.data.data.reverse());
       setLoading(false);
     })
   }, []);
