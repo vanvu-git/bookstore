@@ -30,6 +30,9 @@ export default function HoaDonList() {
       field: "createdAt",
       headerName: "Ngày tạo",
       width: 200,
+      valueGetter: (params) => {
+        return new Date(params.row.createdAt).toUTCString().replace("GMT","");
+      }
     },
     {
       field: "tongtien",
