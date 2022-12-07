@@ -223,9 +223,17 @@ const authController = {
             user.emailVerified = true;
             user.trangthai = true;
             await user.save();
+            if(user.quyen == 0){
             res.writeHead(301, {
                 Location: `http://localhost:3000/login`
               }).end();
+              return;
+            }else{
+                res.writeHead(301, {
+                    Location: `http://localhost:7070/login`
+                  }).end();
+                  return;
+            }
         }catch(error){
             console.log(error);
             res.writeHead(500, {
