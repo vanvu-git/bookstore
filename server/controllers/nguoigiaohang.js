@@ -99,6 +99,8 @@ const nguoigiaohangController = {
             const ngh  = await nguoigiaohang.findById(req.params.id);
             if(!ngh)
             return res.status(400).json({success: false, message: 'nguoigiaohang not found'});
+            if(ngh.trangthai == 2)
+            return res.status(400).json({success: false, message: 'nguoigiaohang is in progress'});
             ngh.trangthai = 0;
             await ngh.save();
             return res.status(200).json({success: true, message: 'lock successfully!!!', data: ngh});
@@ -107,8 +109,40 @@ const nguoigiaohangController = {
             return res.status(500).json({success: false, message: 'Internal server error'});
         }
     },
+    unlock :  async(req,res)=>{
+        try{
+            const ngh  = await nguoigiaohang.findById(req.params.id);
+            if(!ngh)
+            return res.status(400).json({success: false, message: 'nguoigiaohang not found'});
+            if(ngh.trangthai != 0)
+            return res.status(400).json({success: false, message: 'nguoigiaohang is not locked'});
+            ngh.trangthai = 1;
+            await ngh.save();
+            return res.status(200).json({success: true, message: 'unlock successfully!!!', data: ngh});
+        }catch(error){
+            console.log(error);
+            return res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
     
-
+    changeStatus :  async(req,res)=>{
+        try{
+            const ngh  = await nguoigiaohang.findById(req.params.id);
+            if(!ngh)
+            return res.status(400).json({success: false, message: 'nguoigiaohang not found'});
+            if(ngh.trangthai == 0)
+            return res.status(403).json({success: false, message: 'nguoigiaohang is locked'});
+            const trangthai = req.body.trangthai;
+            if(!trangthai)
+            return res.status(403).json({success: false, message: 'trangthai not found'});
+            ngh.trangthai = trangthai;
+            await ngh.save();
+            return res.status(200).json({success: true, message: 'change status successfully!!!', data: ngh});
+        }catch(error){
+            console.log(error);
+            return res.status(500).json({success: false, message: 'Internal server error'});
+        }
+    },
 }
 
 
