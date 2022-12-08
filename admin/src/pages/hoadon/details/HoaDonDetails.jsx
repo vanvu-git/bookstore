@@ -2,7 +2,9 @@ import {
   House,
   Money,
   Person,
-  LocalShipping
+  LocalShipping,
+  AttachMoney,
+  Call
 } from "@material-ui/icons";
 import { useLocation, useHistory } from "react-router-dom";
 import "../../style/single.css";
@@ -64,6 +66,11 @@ export default function HoaDonDetails() {
   }
 
   const onNguoiGiaoHangSelect = async (e) => {
+    if(data.thongtingiaohang?.nguoigiao !== null) {
+      alert("Đơn hàng này đã có người giao!");
+      e.target.value = 'none';
+      return;
+    }
     setNGH(e.target.value);
     console.log(nguoiGiaoHang);
   }
@@ -104,6 +111,13 @@ export default function HoaDonDetails() {
     ).then((res) => {
       console.log(res);
     });
+    
+    await axios.put(
+      `/nguoigiaohang/changestatus/${nguoiGiaoHang}`,
+      {'trangthai': 2}
+    ).then((res) => {
+      console.log(res);
+    });
 
     history.push("/dshoadon");
   }
@@ -129,7 +143,14 @@ export default function HoaDonDetails() {
             <div className="userShowInfo">
               <Money className="userShowIcon" />
               Tổng tiền:
-              <span className="userShowInfoTitle">{data?.tongtien}</span>
+              <span className="userShowInfoTitle">{new Intl.NumberFormat().format(data?.tongtien)} vnd</span>
+            </div>
+            <div className="userShowInfo">
+              <AttachMoney className="userShowIcon" />
+              Phí vận chuyển:
+              <span className="userShowInfoTitle">
+                {new Intl.NumberFormat().format(data?.thongtingiaohang?.tienship)} vnd
+              </span>
             </div>
             <div className="userShowInfo">
               <Person className="userShowIcon" />
@@ -140,6 +161,11 @@ export default function HoaDonDetails() {
               <House className="userShowIcon" />
               Khách hàng:
               <span className="userShowInfoTitle">{`${khachHang?.ho} ${khachHang?.ten}`}</span>
+            </div>
+            <div className="userShowInfo">
+              <Call className="userShowIcon" />
+              Số điện thoại nhận hàng:
+              <span className="userShowInfoTitle">{data?.thongtingiaohang?.sdtnhan}</span>
             </div>
             {
               data?.thongtingiaohang?.nguoigiao &&
@@ -166,25 +192,15 @@ export default function HoaDonDetails() {
                   <br />
                   <p>Số lượng: {ct.soluong}</p>
                   <br />
-                  <p>Đơn giá: {ct.dongia}</p>
+                  <p>Đơn giá: {new Intl.NumberFormat().format(ct.dongia)} VND</p>
                   <br />
-                  <p>Thành tiền: {ct.thanhtien}</p>
+                  <p>Thành tiền: {new Intl.NumberFormat().format(ct.thanhtien)} VND</p>
                   <br />
                   <br />
                   <br />
                 </div>
               ))
             }
-          </div>
-          <div className="userUpdateItem">
-            <input 
-              type="number" 
-              id="" 
-              placeholder="phí shipping"
-              onChange={onSetShippingFee} 
-              style={{width: "100%" }} 
-              className="newItemSelection"
-            />
           </div>
           <div className="userUpdateItem">
             <select id="" defaultValue={"none"} onChange={onNguoiGiaoHangSelect} className="newItemSelection">
