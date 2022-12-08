@@ -30,6 +30,13 @@ const nguoigiaohangController = {
     
     find: async(req, res) => {
         try{
+            var trangthai = req.query.trangthai;
+            if(trangthai){
+                trangthai = parseInt(trangthai);
+                if(trangthai < 1 || trangthai > 2) trangthai = 1;
+                const posts = await nguoigiaohang.find({trangthai : trangthai});
+                return res.status(200).json({success: true, data: posts});
+            }
             const posts = await nguoigiaohang.find();
             res.status(200).json({success: true, data: posts});
             
