@@ -37,7 +37,10 @@ export default function HoaDonList() {
     {
       field: "tongtien",
       headerName: "Tổng tiền",
-      width: 200,
+      width: 180,
+      valueGetter: (params) => {
+        return new Intl.NumberFormat().format(params.row.tongtien);
+      }
     },
     {
       field: "trangthai",
