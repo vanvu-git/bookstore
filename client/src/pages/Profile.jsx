@@ -324,8 +324,8 @@ export default function ProfilePage() {
     var invoice = historyData.find(index => {
       return index._id === id;
     });
-    console.log(invoice);
     setDetailInvoice(invoice);
+    console.log(invoice)
     setTab(3);
   }
   const cancelInvoice = (idInvoice) => {
@@ -425,7 +425,7 @@ export default function ProfilePage() {
                                           <ItemShipping><BoldItem>Địa Chỉ:</BoldItem> {detailInvoice.thongtingiaohang.diachi}</ItemShipping>
                                           <ItemShipping><BoldItem>Người Nhận:</BoldItem> {detailInvoice.thongtingiaohang.nguoinhan}</ItemShipping>
                                           <ItemShipping><BoldItem>SDT:</BoldItem> {detailInvoice.thongtingiaohang.sdtnhan}</ItemShipping>
-                                          <ItemShipping><BoldItem>Người Giao:</BoldItem> {(detailInvoice.thongtingiaohang.nguoigiao === null ) ? "Chưa có người giao" : detailInvoice.thongtingiaohang.nguoigiao}</ItemShipping>
+                                          <ItemShipping><BoldItem>Người Giao:</BoldItem> {(detailInvoice.thongtingiaohang.nguoigiao === null ) ? "Chưa có người giao" : detailInvoice.thongtingiaohang.nguoigiao.ten}</ItemShipping>
                                           <ItemShipping><BoldItem>Trạng Thái:</BoldItem> {detailInvoice.trangthai}</ItemShipping>
                                           {(detailInvoice.trangthai == "ChuaXuLy" || detailInvoice.trangthai == "DangXuLy" ) && <ItemShipping><ButtonStatus cancel onClick={()=>cancelInvoice(detailInvoice._id)}>Hủy</ButtonStatus></ItemShipping>}
                                   </ShippingInforContainer>}
